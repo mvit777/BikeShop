@@ -1,5 +1,5 @@
 # blazorBikeShopClient
-A thrown away blazor wasml client for bikeDistributor library
+A thrown away blazor wasml client for the bikeDistributor library
 
 This is actually my first try at building an wasml blazor app. 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
