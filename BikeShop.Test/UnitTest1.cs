@@ -33,10 +33,11 @@ namespace BikeShop.Test
         {
             BsonClassMap.RegisterClassMap<Bike>();
             BsonClassMap.RegisterClassMap<BikeVariant>();
-            var mongoUrl = "mongodb+srv://tr_mongouser2:jX9lnzMHo80P39fW@cluster0.i90tq.mongodb.net/BikeDb?retryWrites=true&w=majority";//MongoSettings["url"];
+            //var mongoUrl = "mongodb+srv://tr_mongouser2:jX9lnzMHo80P39fW@cluster0.i90tq.mongodb.net/BikeDb?retryWrites=true&w=majority";//MongoSettings["url"];
+            var mongoUrl = "mongodb+srv://tr_mongouser2:jX9lnzMHo80P39fW@cluster0.i90tq.mongodb.net/?authSource=admin";
             var mongoDb = "BikeDb";//MongoSettings["dbName"];
             var mongoServicesNs = "BikeDistributor.Infrastructure.services";//MongoSettings["servicesNamespace"];
-            var mongoContext = new MongoDBContext(mongoUrl);
+            var mongoContext = new MongoDBContext(mongoUrl, mongoDb);
             var BS = new MongoBikeService(mongoContext);
 
             var bikes = (List<MongoEntityBike>)await BS.Get();
