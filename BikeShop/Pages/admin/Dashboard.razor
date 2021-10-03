@@ -1,10 +1,12 @@
 ﻿@page "/admin/dashboard"
-@using Microsoft.Extensions.Configuration
 @*@inject IConfiguration Configuration*@
-
+@using MV.Framework.interfaces;
+@using BikeDistributor.Infrastructure.services;
+@using BikeDistributor.Domain.Entities;
+@inject IMongoService bs;
 <h3>Admin Dashboard</h3>
 <div>
-    
+
 </div>
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -26,7 +28,28 @@
         <a class="nav-link" href="#">Discounts</a>
     </li>
 </ul>
+@if (EntityBikes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (MongoEntityBike b in EntityBikes)
+    {
+        <div>
+            <h4>@b.Bike.Model</h4>
+            <span>@b.TotalPrice</span>
+        </div>
+    }
+}
 @code {
-    
+    private MongoBikeService BS;
+    private List<MongoEntityBike> EntityBikes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        BS = (MongoBikeService)bs;
+        EntityBikes = await BS.Get();
+    }
 
 }

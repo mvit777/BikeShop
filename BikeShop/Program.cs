@@ -19,27 +19,33 @@ namespace BikeShop
     {
         public static async Task Main(string[] args)
         {
-            // var configuration = new ConfigurationBuilder()
-            //.SetBasePath(Directory.GetCurrentDirectory()) // This is the line you would change if your configuration files were somewhere else
-            //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            
+            var mongoUrl = "";
+            var mongoDb = "";
+
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+            builder.Services.AddScoped(sp => http);
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            using var response = await http.GetAsync("appsettings.json");
+            using var stream = await response.Content.ReadAsStreamAsync();
+            builder.Configuration.AddJsonStream(stream);
+            mongoUrl = builder.Configuration.GetValue<string>("Mongo:url");
+            mongoDb = builder.Configuration.GetValue<string>("Mongo:dbName");
+            
             //=======================
-            var mongoUrl = "mongodb://tr_mongouser2:jX9lnzMHo80P39fW@cluster0.i90tq.mongodb.net/?authSource=admin";
-            var mongoDb = "BikeDb";
             var mongoContext = new MongoDBContext(mongoUrl, mongoDb);
             var BS = new MongoBikeService(mongoContext);
-            builder.Services.AddSingleton(bs=>BS);
+            builder.Services.AddSingleton<IMongoService>(bs=>BS);
             //=======================
             await builder.Build().RunAsync();
-          
         }
 
-        
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+            
+        //}
+
 
     }
 }
