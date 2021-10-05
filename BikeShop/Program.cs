@@ -30,9 +30,9 @@ namespace BikeShop
             using var response = await http.GetAsync("appsettings.json");
             using var stream = await response.Content.ReadAsStreamAsync();
             builder.Configuration.AddJsonStream(stream);
-            mongoUrl = builder.Configuration.GetValue<string>("Mongo:url");
-            mongoDb = builder.Configuration.GetValue<string>("Mongo:dbName");
-            
+            mongoUrl = builder.Configuration.GetSection("Mongo").GetValue<string>("url","");
+            mongoDb = builder.Configuration.GetSection("Mongo").GetValue<string>("dbName", "");
+
             //=======================
             var mongoContext = new MongoDBContext(mongoUrl, mongoDb);
             var BS = new MongoBikeService(mongoContext);

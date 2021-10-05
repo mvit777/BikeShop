@@ -1,12 +1,13 @@
 ﻿@page "/admin/dashboard"
-@*@inject IConfiguration Configuration*@
+@using Microsoft.Extensions.Configuration
 @using MV.Framework.interfaces;
 @using BikeDistributor.Infrastructure.services;
 @using BikeDistributor.Domain.Entities;
+@inject IConfiguration Configuration
 @inject IMongoService bs;
 <h3>Admin Dashboard</h3>
 <div>
-
+   ecce homo <span>@Configuration.GetSection("Mongo").GetValue("url","")</span>
 </div>
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -49,7 +50,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         BS = (MongoBikeService)bs;
-        EntityBikes = await BS.Get();
+        EntityBikes = await BS.Get();//return fucking shit nothing
     }
 
 }
