@@ -3,8 +3,10 @@ using BikeDistributor.Domain.Models;
 using BikeDistributor.Infrastructure.core;
 using BikeDistributor.Infrastructure.services;
 using FluentAssertions;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MV.Framework.providers;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -55,7 +57,9 @@ namespace BikeShop.Test
             var restClient = new RestClient(baseurl);
             var request = new RestRequest(action, DataFormat.Json);
             var response = restClient.Get(request);
-            response.Should().BeNull();//find how to map response.Content
+            //throw new Exception(response.Content);
+            List<MongoEntityBike> mebs = JsonUtils.GetListFromJArrayBikeEntities(response.Content);
+            mebs.Count.Should().BeOneOf(new int[] { 2 });
         }
     }
 }
