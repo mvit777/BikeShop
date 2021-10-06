@@ -1,4 +1,4 @@
-# blazorBikeShopClient
+# BikeShop
 A thrown away blazor wasm client for the bikeDistributor library
 
 This is actually my first try at building an wasm blazor app. 
