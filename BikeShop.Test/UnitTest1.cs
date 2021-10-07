@@ -30,7 +30,7 @@ namespace BikeShop.Test
             var BS = (MongoBikeService)MongoServiceFactory
                                                 .GetMongoService(mongoUrl, mongoDb, mongoServicesNs, "MongoBikeService");
 
-            var bikes = (List<MongoEntityBike>) await BS.Get();
+            var bikes = await BS.Get();
             bikes.Count.Should().BeOneOf(new int[] {2});
 
         }
