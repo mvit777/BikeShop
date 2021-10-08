@@ -23,7 +23,7 @@ After a a day of unsuccesful trying to connect to a MongoDb server I fully under
 ...code is executing in the browser sandbox ....
 `
 this applies only to blazor wasm (not blazor server) but it means http is the only protocol that works which in turn means 
-the whole System.Net namespace is not supported which in turn means no direct connection to Databases or sending mails unless I 
+the whole System.Net namespace (with the exception of System.Net.http) is not supported which in turn means no direct connection to Databases or sending mails unless I 
 put up a webservice backend. That makes wasm not exactly the perfect candidate for testing the portability of my library...
 Next time I'll make sure to better read the docs
 
