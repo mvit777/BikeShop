@@ -46,17 +46,18 @@ else
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
-    private string url;
+    //private string url;
     private string responseContent;
 
     protected override async Task OnInitializedAsync()
     {
-        url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
+        //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
             responseContent = "items fetched: " + EntityBikes.Count.ToString();
+            responseContent += "<br />" + jsonResponse;
             //string content = await response.Content.ReadAsStringAsync();
             //HttpRequestMessage message = new HttpRequestMessage //could be a problema of client opening in https and sending to http
             //{
