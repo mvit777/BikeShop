@@ -1,26 +1,25 @@
 ﻿@page "/admin/dashboard"
 @using Microsoft.Extensions.Configuration
-@using MV.Framework.interfaces;
-@using BikeDistributor.Infrastructure.services;
 @using BikeDistributor.Domain.Entities;
-@inject IConfiguration Configuration
-@inject IMongoService bs;
+@using BikeDistributor.Infrastructure.core;
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
 <h3>Admin Dashboard</h3>
 <div>
-   ecce homo <span>@Configuration.GetSection("Mongo").GetValue("url","")</span>
+    <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
 </div>
 <ul class="nav nav-tabs">
     <li class="nav-item">
         <a class="nav-link" href="#">Stats</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Bikes</a>
+        <a class="nav-link active" href="#">Bikes</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Bikes' Options</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="#">Customers</a>
+        <a class="nav-link" href="#">Customers</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Orders</a>
@@ -29,9 +28,11 @@
         <a class="nav-link" href="#">Discounts</a>
     </li>
 </ul>
+<span>@responseContent</span>
 @if (EntityBikes == null)
 {
     <p><em>Loading...</em></p>
+    
 }
 else
 {
@@ -44,13 +45,38 @@ else
     }
 }
 @code {
-    private MongoBikeService BS;
     private List<MongoEntityBike> EntityBikes;
+    private string url;
+    private string responseContent;
 
     protected override async Task OnInitializedAsync()
     {
-        BS = (MongoBikeService)bs;
-        EntityBikes = await BS.Get();//return fucking shit nothing
+        url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
+        try
+        {
+            var jsonResponse = await RestClient.GetStringAsync("/bike");
+            EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
+            responseContent = "items fetched: " + EntityBikes.Count.ToString();
+            //string content = await response.Content.ReadAsStringAsync();
+            //HttpRequestMessage message = new HttpRequestMessage //could be a problema of client opening in https and sending to http
+            //{
+            //    RequestUri = new Uri(url + "/bike"), //url= 172.XX.XX.XX:8600
+            //    Method = HttpMethod.Get
+            //};
+
+            //using (var response = await RestClient.SendAsync(message)) //maybe just /bike
+            //{
+            //    string apiResponse = await response.Content.ReadAsStringAsync();
+            //    EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(apiResponse);
+
+            //}
+
+        }
+        catch(Exception ex)
+        {
+            responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
+        }
+
     }
 
 }

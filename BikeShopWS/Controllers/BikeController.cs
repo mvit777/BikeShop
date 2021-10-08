@@ -9,9 +9,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
 using BikeDistributor.Domain.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace BikeShopWS.Controllers
 {
+    [EnableCors("PolicyName")]
     [ApiController]
     [Route("[controller]")]
     public class BikeController : ControllerBase

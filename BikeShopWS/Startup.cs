@@ -33,6 +33,10 @@ namespace BikeShopWS
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("PolicyName", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });//it has to be here before everything
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,7 +46,7 @@ namespace BikeShopWS
             services.AddSingleton(Config => config);
             var mongoContext = GetMongoContext(config);
             var bs = new MongoBikeService(mongoContext);
-            services.AddSingleton<IMongoService>(BS => bs);
+            services.AddScoped<IMongoService>(BS => bs);
         }
 
         private MongoDBContext GetMongoContext(WsConfig config)
@@ -68,9 +72,12 @@ namespace BikeShopWS
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeShopWS v1"));
             }
 
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("PolicyName"); //it has to be here between routing and auth
 
             app.UseAuthorization();
 
