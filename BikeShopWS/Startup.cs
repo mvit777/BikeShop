@@ -88,6 +88,7 @@ namespace BikeShopWS
 
             BsonClassMap.RegisterClassMap<Bike>();
             BsonClassMap.RegisterClassMap<BikeVariant>();
+            BsonClassMap.RegisterClassMap<BikeOption>();
         }
     }
 }

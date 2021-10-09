@@ -1,5 +1,6 @@
 ﻿@page "/admin/dashboard"
 @using Microsoft.Extensions.Configuration
+@using BikeDistributor.Domain.Models;
 @using BikeDistributor.Domain.Entities;
 @using BikeDistributor.Infrastructure.core;
 @inject IConfiguration Configuration;
@@ -36,11 +37,23 @@
 }
 else
 {
-    @foreach (MongoEntityBike b in EntityBikes)
+    @foreach (MongoEntityBike e in EntityBikes)
     {
         <div>
-            <h4>@b.Bike.Model</h4>
-            <span>@b.TotalPrice</span>
+            <h4>@e.Bike.Model</h4>
+            <span>@e.TotalPrice</span>
+            <div>
+                Details:<br />
+                <span>@e.Bike.BasePrice</span><br />
+                <span>@e.Bike.Brand</span><br />
+                @if(e.SelectedOptions != null) { 
+                    foreach(BikeOption o in e.SelectedOptions)
+                        {
+                            <span>@o.Name</span>
+                        }
+                }
+                
+            </div>
         </div>
     }
 }
@@ -58,6 +71,7 @@ else
             EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
             responseContent = "items fetched: " + EntityBikes.Count.ToString();
             responseContent += "<br />" + jsonResponse;
+            #region "DeadCode"
             //string content = await response.Content.ReadAsStringAsync();
             //HttpRequestMessage message = new HttpRequestMessage //could be a problema of client opening in https and sending to http
             //{
@@ -71,9 +85,11 @@ else
             //    EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(apiResponse);
 
             //}
+            #endregion
+            //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
         }
