@@ -3,8 +3,10 @@ A thrown away blazor wasm client for the bikeDistributor library
 
 This is actually my first try at building an wasm blazor app. 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
-In fact the programming model is very much the same but a lot smoother. 
+In fact the programming model (*) is very much the same but a lot smoother. 
 You get a strong Déjà vu  feeling and start thinking that "...this is how webforms should have been back in the days..."
+
+(*) after some more testing I realised this remark applies more to Blazor Server than Blazor wasm
 
 Blazor is very young and I don't think it has a very large pool of potential users besides those developers 
 who are not in love with javascript.
