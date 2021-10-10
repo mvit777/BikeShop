@@ -1,5 +1,5 @@
 # BikeShop
-A thrown away blazor wasm client for the [BikeDistributor library](https://github.com/mvit777/BikeDistributor)
+A thrown away blazor wasm client for consuming the [BikeDistributor library](https://github.com/mvit777/BikeDistributor)
 
 This is actually my first try at building an [wasm blazor app](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0). 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
@@ -54,7 +54,7 @@ var restBaseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string
 var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
 builder.Services.AddScoped(RestClient => restClient);
 ```
-now to retrieve items from the database from a blazor page it is as simple as this:
+now to retrieve items from the database from a blazor page is as simple as this:
 ```csharp
 ... (omitted)
 @inject HttpClient RestClient;
