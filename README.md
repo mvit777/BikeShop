@@ -66,4 +66,8 @@ protected override async Task OnInitializedAsync()
  }
 }
 ```
+or even simplier if your entity can deserialize without any helper method
+```csharp
+EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
+```
 (...more to come...)
