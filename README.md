@@ -44,7 +44,7 @@ builder.Configuration.AddJsonStream(stream);
 ```
 In essence, the [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-5.0) is a relatively new class (at least for me) 
 that is shipped by default with any recent .NET/NetCore release and I will probably use it in place of RestSharp for my next projects. 
-Apart from being the only choice available, it favors ease of use (just like RestSharp) and features a lot async methods by default.
+Apart from being the only choice available, it favors ease of use (just like RestSharp) and features a lot of async methods by default.
 
 Since my BikeShopWS is located at localhost:8021 all I had to do is create another instance pointing it to the ws url and register it as service as well
 ```csharp
