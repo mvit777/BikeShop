@@ -52,7 +52,7 @@ var restBaseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string
 var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
 builder.Services.AddScoped(RestClient => restClient);
 ```
-now to retrieve items from the database from a blazor page it is simple as this (sort of):
+now to retrieve items from the database from a blazor page it is as simple as this:
 ```csharp
 ... (omitted)
 @inject HttpClient RestClient;
