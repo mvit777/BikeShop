@@ -46,11 +46,24 @@ In essence, the [HttpClient](https://docs.microsoft.com/en-us/dotnet/api/system.
 that is shipped by default with any recent .NET/NetCore release and I will probably use it in place of RestSharp. 
 Apart from being the only choice available, it favors ease of use (just like RestSharp) and features a lot async methods by default.
 
-Since my BikeShopWS is located at localhost:8021 all I had to do is create another instance pointing it to the ws url and register it a service as well
+Since my BikeShopWS is located at localhost:8021 all I had to do is create another instance pointing it to the ws url and register it as service as well
 ```csharp
 var restBaseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl", "");
 var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
 builder.Services.AddScoped(RestClient => restClient);
 ```
-
+now to retrieve items from the database from a blazor page it is simple as this (sort of):
+```csharp
+... (omitted)
+@inject HttpClient RestClient;
+... (omitted)
+@code {
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    var jsonResponse = await RestClient.GetStringAsync("/bike");
+    EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
+ }
+}
+```
 (...more to come...)
