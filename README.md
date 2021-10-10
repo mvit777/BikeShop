@@ -71,3 +71,6 @@ or even simplier if your entity can deserialize without any helper method
 EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 ```
 (...more to come...)
+
+## Last Paragraph: a quick note about the (redundant) BikeShopWS ##
+(...more to come...)
