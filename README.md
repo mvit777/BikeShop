@@ -27,5 +27,8 @@ the whole System.Net namespace (with the exception of System.Net.Http) is not su
 put up a webservice backend. That makes wasm not exactly the perfect candidate for testing the portability of my library...
 Next time I'll make sure to better read the docs
 
+## a nice findout: the HttpClient ##
+Being forced to add a (bit redundant) Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
+That was only to realise that also the RestSharp package relies on System.Net and therefore is also `not supported by the platform`
 
 (...more to come...)
