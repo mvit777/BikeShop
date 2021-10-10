@@ -76,3 +76,5 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 
 ## Last Paragraph: a quick note about the (redundant) BikeShopWS ##
 (...more to come...)
+
+### Related and inspiring links ###
