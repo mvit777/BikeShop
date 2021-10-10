@@ -33,7 +33,7 @@ That was only to realise that also the RestSharp package unexpectedly relies on 
 After a brief search on the internet and a look at Program.cs I spotted the solution:
 In fact the Program.cs bootstrap of an wasmp app has this code by default:
 
-```
+```csharp
 //instantiates the HttpClient and registers it as a service pointing the base url of the app itself
 var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 builder.Services.AddScoped(localClient => http);
