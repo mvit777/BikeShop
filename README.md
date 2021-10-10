@@ -33,12 +33,12 @@ That was only to realise that also the RestSharp package unexpectedly relies on 
 After a brief search on the internet and a look at Program.cs I spotted the solution:
 In fact the bootstrap of an wasmp app has this code by default:
 
-`var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+```var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 builder.Services.AddScoped(localClient => http);
 
 using var response = await http.GetAsync("appsettings.json");
 using var stream = await response.Content.ReadAsStreamAsync();
 builder.Configuration.AddJsonStream(stream);
-`
+```
 
 (...more to come...)
