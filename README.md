@@ -1,5 +1,5 @@
 # BikeShop
-A thrown away blazor wasm client for the bikeDistributor library
+A thrown away blazor wasm client for the [BikeDistributor library](https://github.com/mvit777/BikeDistributor)
 
 This is actually my first try at building an wasm blazor app. 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
