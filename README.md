@@ -31,11 +31,13 @@ Next time I'll make sure to better read the docs
 Being forced to add a (bit redundant) Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
 That was only to realise that also the RestSharp package unexpectedly relies on System.Net and therefore is also `not supported by the platform`.
 After a brief search on the internet and a look at Program.cs I spotted the solution:
-In fact the bootstrap of an wasmp app has this code by default:
+In fact the Program.cs bootstrap of an wasmp app has this code by default:
 
-```var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+```
+//instantiates the HttpClient and registers it as a service pointing the base url of the app itself
+var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 builder.Services.AddScoped(localClient => http);
-
+//as weird as it looks this is the way it retrieves the appsettings.json configuration file
 using var response = await http.GetAsync("appsettings.json");
 using var stream = await response.Content.ReadAsStreamAsync();
 builder.Configuration.AddJsonStream(stream);
