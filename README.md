@@ -17,7 +17,7 @@ As far as I tested (which is not much) I noticed:
 - templating and site wire-framing is truly quick
 - services registration and DI are very similar to an aspnetcoreMVC project but a bit more messy 
 
-got service registration working but ran into....
+In the meanwhile I got service registration working but ran into....
 
 ## my first big gotcha ##
 After a a day of unsuccesful trying to connect to a MongoDb server I fully understood the implications of this sentence on Microsoft docs
