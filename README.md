@@ -64,7 +64,7 @@ private List<MongoEntityBike> EntityBikes;
 protected override async Task OnInitializedAsync()
  {
     var jsonResponse = await RestClient.GetStringAsync("/bike");
-    EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
+    EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
  }
 }
 ```
