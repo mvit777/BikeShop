@@ -8,6 +8,7 @@
 <h3>Admin Dashboard</h3>
 <div>
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
+    <span>@responseContent</span>
 </div>
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -29,7 +30,6 @@
         <a class="nav-link" href="#">Discounts</a>
     </li>
 </ul>
-<span>@responseContent</span>
 @if (EntityBikes == null)
 {
     <p><em>Loading...</em></p>
@@ -68,24 +68,10 @@ else
         try
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
-            EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(jsonResponse);
+            EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             responseContent = "items fetched: " + EntityBikes.Count.ToString();
             responseContent += "<br />" + jsonResponse;
-            #region "DeadCode"
-            //string content = await response.Content.ReadAsStringAsync();
-            //HttpRequestMessage message = new HttpRequestMessage //could be a problema of client opening in https and sending to http
-            //{
-            //    RequestUri = new Uri(url + "/bike"), //url= 172.XX.XX.XX:8600
-            //    Method = HttpMethod.Get
-            //};
-
-            //using (var response = await RestClient.SendAsync(message)) //maybe just /bike
-            //{
-            //    string apiResponse = await response.Content.ReadAsStringAsync();
-            //    EntityBikes = JsonUtils.GetListFromJArrayBikeEntities(apiResponse);
-
-            //}
-            #endregion
+           
             //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 
         }

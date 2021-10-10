@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace BikeShopWS.Controllers
 {
-    [EnableCors("PolicyName")]
+    [EnableCors("AllowAll")]
     [ApiController]
     [Route("[controller]")]
     public class BikeController : ControllerBase

@@ -2,6 +2,7 @@ using BikeDistributor.Domain.Entities;
 using BikeDistributor.Domain.Models;
 using BikeDistributor.Infrastructure.core;
 using BikeDistributor.Infrastructure.services;
+using BikeShopWS.Infrastructure;
 using FluentAssertions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -10,16 +11,24 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using Xunit;
 
 namespace BikeShop.Test
 {
     public class UnitTest1
     {
+        private WsConfig _configWS;
+        private Config _blazorConfig;
+        private Config _testConfig;
+        private HttpClient _restClient;
+        private bool _BsonTypesRegistered = false;
         public UnitTest1()
         {
             BsonClassMap.RegisterClassMap<Bike>();
             BsonClassMap.RegisterClassMap<BikeVariant>();
+            BsonClassMap.RegisterClassMap<BikeOption>();
+            BsonClassMap.RegisterClassMap<MongoEntityBike>();
         }
         [Fact]
         public async void TestMongoBikeService()
@@ -58,8 +67,10 @@ namespace BikeShop.Test
             var request = new RestRequest(action, DataFormat.Json);
             var response = restClient.Get(request);
             //throw new Exception(response.Content);
-            List<MongoEntityBike> mebs = JsonUtils.GetListFromJArrayBikeEntities(response.Content);
+            List<MongoEntityBike> mebs = JsonUtils.DeserializeMongoEntityBikeList(response.Content);
             mebs.Count.Should().BeOneOf(new int[] { 2 });
+            var MebVariant = mebs.Find(x => x.IsStandard == false);
+            MebVariant.SelectedOptions.Count.Should().BeOneOf(new int[] { 5 });
         }
     }
 }
