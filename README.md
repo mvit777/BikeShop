@@ -78,3 +78,10 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 (...more to come...)
 
 ### Related and inspiring links ###
+
+
+### TOT (Totally Out of Topic) ###
+After the Klitschko fight I called Tyson Fury a mediocre boxer that took advantage of an aging champion.
+Well, not only he proved me wrong in every fight he fought since that, but last night he proved himself to be probaly one of the best Heavyweight ever.
+Why am I writing this since the chances to meet him  in an airport :) are even lower than the guy giving a fuck for my remarks?
+...I hate to get it wrong when it comes to boxing forecasts...
