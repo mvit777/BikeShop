@@ -13,7 +13,7 @@ who are not in love with javascript.
 
 As far as I tested (which is not much) I noticed:
 - project folder structure is clear and very customisable
-- routing is a breeze. You just assign url directly in the blazor partial
+- routing is a breeze. You just assign urls directly in the blazor partial
 - templating and site wire-framing is truly quick
 - services registration and DI are very similar to an aspnetcoreMVC project but a bit more messy 
 
