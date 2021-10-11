@@ -1,4 +1,5 @@
 using BikeDistributor.Domain.Models;
+using BikeDistributor.Infrastructure.core;
 using BikeDistributor.Infrastructure.services;
 using BikeShopWS.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization;
 using MV.Framework.interfaces;
 using MV.Framework.providers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,22 +45,30 @@ namespace BikeShopWS
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BikeShopWS", Version = "v1" });
             });
             var config = new WsConfig(@"./appsettings.json");
-            services.AddSingleton(Config => config);
+            
             var mongoContext = GetMongoContext(config);
-            var bs = new MongoBikeService(mongoContext);
-            services.AddScoped<IMongoService>(BS => bs);       
+            var register = new MongoServiceInstanceRegister();
+            //save services in the register
+            foreach(string sp in mongoContext.MongoSettings.Services)
+            {
+                string className = sp;
+                var service = MongoServiceFactory.GetMongoService(mongoContext, className);
+                register.SetServiceInstance(service, className);
+                //services.AddScoped<IMongoService>(sp => service);
+            }
+            services.AddScoped(r=>register);
+            config.DefaultMongoSettings = mongoContext.MongoSettings;
+            services.AddScoped(c=>config);
+            //foreach(string bsontype in mongoContext.MongoSettings.BsonTypes)
+            //{
+                
+            //}
         }
 
         private MongoDBContext GetMongoContext(WsConfig config)
         {
-            //var mongoUrl = "mongodb+srv://tr_mongouser2:jX9lnzMHo80P39fW@cluster0.i90tq.mongodb.net/?authSource=admin";
-            //var mongoDb = "BikeDb";//MongoSettings["dbName"];
-            ////var mongoUrl = Configuration.GetSection("Mongo").GetValue<string>("url");
-            ////var mongoDb = Configuration.GetSection("Mongo").GetValue<string>("dbName");
-            //var mongoServicesNs = "BikeDistributor.Infrastructure.services";//MongoSettings["servicesNamespace"];
-
-            //return new MongoDBContext(mongoUrl, mongoDb);
             var mongosettings = config.GetClassObject<MongoSettings>("Mongo");
+
             return new MongoDBContext(mongosettings);
         }
 
@@ -85,7 +95,6 @@ namespace BikeShopWS
             {
                 endpoints.MapControllers();
             });
-
             BsonClassMap.RegisterClassMap<Bike>();
             BsonClassMap.RegisterClassMap<BikeVariant>();
             BsonClassMap.RegisterClassMap<BikeOption>();

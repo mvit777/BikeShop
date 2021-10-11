@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
 using BikeDistributor.Domain.Models;
 using Microsoft.AspNetCore.Cors;
+using MV.Framework.providers;
+using BikeDistributor.Infrastructure.core;
+using BikeShopWS.Infrastructure;
 
 namespace BikeShopWS.Controllers
 {
@@ -20,11 +23,15 @@ namespace BikeShopWS.Controllers
     {
 
         private readonly ILogger<BikeController> _logger;
+        private MongoServiceInstanceRegister _register;
         private readonly MongoBikeService _bikeService;
-        public BikeController(ILogger<BikeController> logger, IMongoService bikeService)
+        private WsConfig _config;
+        public BikeController(ILogger<BikeController> logger, MongoServiceInstanceRegister register, WsConfig config)
         {
             _logger = logger;
-            _bikeService = (MongoBikeService)bikeService;
+            _register = register;
+            _config = config;
+            _bikeService = (MongoBikeService)_register.GetServiceInstance("MongoBikeService", _config.GetMongoServiceIdentity("MongoBikeService")); //"BikeDistributor.Infrastructure.services.MongoBikeService, BikeDistributor"
         }
         [HttpGet]
         public async Task<List<MongoEntityBike>> Get()

@@ -8,10 +8,15 @@ namespace BikeShopWS.Infrastructure
 {
     public class WsConfig : BikeDistributor.Infrastructure.core.Config
     {
-        
+        public MongoSettings DefaultMongoSettings { get; set; }
         public WsConfig(string jsonFilePath) : base(jsonFilePath)
         {
             
+        }
+
+        public string GetMongoServiceIdentity(string serviceName)
+        {
+            return DefaultMongoSettings.servicesNameSpace + "." + serviceName + ", " + DefaultMongoSettings.servicesDll;
         }
 
         
