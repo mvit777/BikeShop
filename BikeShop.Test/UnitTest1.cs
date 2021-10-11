@@ -27,10 +27,13 @@ namespace BikeShop.Test
         private string _baseUrl = "http://localhost:8021";
         public UnitTest1()
         {
-            BsonClassMap.RegisterClassMap<Bike>();
-            BsonClassMap.RegisterClassMap<BikeVariant>();
-            BsonClassMap.RegisterClassMap<BikeOption>();
-            BsonClassMap.RegisterClassMap<MongoEntityBike>();
+            if (!BsonClassMap.IsClassMapRegistered(typeof(Bike)))
+            {
+                BsonClassMap.RegisterClassMap<Bike>();
+                BsonClassMap.RegisterClassMap<BikeVariant>();
+                BsonClassMap.RegisterClassMap<BikeOption>();
+                BsonClassMap.RegisterClassMap<MongoEntityBike>();
+            }
             _restClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
             _configWS = GetWSConfig();
         }

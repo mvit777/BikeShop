@@ -42,7 +42,7 @@ namespace BikeShopWS.Controllers
             }
             catch(Exception ex)
             {
-                _logger.Log(LogLevel.Critical, ex.Message, Array.Empty<object>());
+                _logger.Log(LogLevel.Warning, ex.Message, Array.Empty<object>());
                 return null;
             }
             
