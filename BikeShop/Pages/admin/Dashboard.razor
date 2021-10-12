@@ -5,6 +5,7 @@
 @using BikeDistributor.Infrastructure.core;
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
 <h3>Admin Dashboard</h3>
 <ul class="nav nav-tabs" id="adminTabs" role="tablist">
     <li class="nav-item">
@@ -30,7 +31,7 @@
 <div class="tab-content">
     <div class="tab-pane" id="stats" role="tabpanel" aria-labelledby="stats-tab">...</div>
     <div class="tab-pane active" id="bikes" role="tabpanel" aria-labelledby="bikes-tab">
-        <BikeShop.Shared.Components.admin.AdminProductList  />
+        <BikeShop.Shared.Components.admin.AdminProductList />
     </div>
     <div class="tab-pane" id="options" role="tabpanel" aria-labelledby="options-tab">...</div>
     <div class="tab-pane" id="customers" role="tabpanel" aria-labelledby="customers-tab">...</div>
@@ -39,6 +40,11 @@
 </div>
 
 @code {
-    
+    protected override async Task OnInitializedAsync()
+    {
+        //study life cycle to understand where is better to place js calls
+        await JSRuntime.InvokeAsync<object>("SayHello", "Marcello");
+
+    }
 
 }
