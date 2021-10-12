@@ -80,6 +80,7 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 ### Related and inspiring links ###
 - [ezzylearning.net](https://www.ezzylearning.net/tutorials/blazor) has an entire section devoted to Blazor. I especially liked the tutorials on components
 - [Blazor University](https://blazor-university.com/) is a very coincise and quick reference at every aspect of Blazor
+- [Blazor Developer Italiani](https://blazordev.it/) a site entirely devoted to Blazor in the italian language. It features lenghty and deep tutorials on the topic.
 
 ### TOT (Totally Out of Topic) ###
 After the Klitschko fight I called Tyson Fury a mediocre boxer that took advantage of an aging champion.
