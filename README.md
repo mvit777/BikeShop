@@ -81,6 +81,7 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 - [ezzylearning.net](https://www.ezzylearning.net/tutorials/blazor) has an entire section devoted to Blazor. I especially liked the tutorials on components
 - [Blazor University](https://blazor-university.com/) is a very coincise and quick reference at every aspect of Blazor
 - [Blazor Developer Italiani](https://blazordev.it/) a site entirely devoted to Blazor in the italian language. It features lenghty and deep tutorials on the topic.
+- [RestClient](https://github.com/MelbourneDeveloper/RestClient.Net) a an alternative to default HttpClient package. I find it very interesting because it actually supports a lot of protocols not only http. It would be a nice addition in my own [MV.Framework library](https://github.com/mvit777/BikeDistributor/tree/master/MV.Framework)
 
 ### TOT (Totally Out of Topic) ###
 After the Klitschko fight I called Tyson Fury a mediocre boxer that took advantage of an aging champion.
