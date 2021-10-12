@@ -1,0 +1,60 @@
+﻿@using BikeDistributor.Domain.Models;
+@using BikeDistributor.Domain.Entities;
+@using BikeDistributor.Infrastructure.core;
+@using BikeShop.BlazorComponents.Components;
+
+@inject HttpClient RestClient;
+
+<h3>Bikes</h3>
+<div>
+    <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
+    <span>@responseContent</span>
+</div>
+
+@if (EntityBikes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <HtmlTable Items="EntityBikes" Context="EntityBike">
+        <HeaderTemplate>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Type</th>
+            <th>Tot. Price</th>
+        </HeaderTemplate>
+        <RowTemplate>
+            <td>@EntityBike.Bike.Model</td>
+            <td>@EntityBike.Bike.Brand</td>
+            <td>@EntityBike.Bike.isStandard</td>
+            <td>@EntityBike.TotalPrice</td>
+        </RowTemplate>
+    </HtmlTable>
+}
+    @code {
+private List<MongoEntityBike> EntityBikes;
+    //private string url;
+    private string responseContent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
+        try
+        {
+            var jsonResponse = await RestClient.GetStringAsync("/bike");
+            EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
+            responseContent = "items fetched: " + EntityBikes.Count.ToString();
+            //responseContent += "<br />" + jsonResponse;
+
+            //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
+
+        }
+        catch (Exception ex)
+        {
+            responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
+        }
+
+    }
+    }

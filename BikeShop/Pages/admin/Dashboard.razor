@@ -6,80 +6,39 @@
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 <h3>Admin Dashboard</h3>
-<div>
-    <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
-    <span>@responseContent</span>
-</div>
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" id="adminTabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link" href="#">Stats</a>
+        <a class="nav-link" href="/admin/dashboard#stats" id="stats-tab" role="tab" aria-controls="stats" aria-selected="false">Stats</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="#">Bikes</a>
+        <a class="nav-link active" href="/admin/dashboard#bikes" id="bikes-tab" role="tab" aria-controls="bikes" aria-selected="true">Bikes</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Bikes' Options</a>
+        <a class="nav-link" href="/admin/dashboard#options" id="options-tab" role="tab" aria-controls="options" aria-selected="false">Bikes' Options</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Customers</a>
+        <a class="nav-link" href="#customers" role="tab" id="customers-tab" aria-controls="customers" aria-selected="false">Customers</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Orders</a>
+        <a class="nav-link" href="#orders" role="tab" id="orders-tab" aria-controls="orders" aria-selected="false">Orders</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Discounts</a>
+        <a class="nav-link" href="#discounts" role="tab" id="discounts-tab" aria-controls="discounts" aria-selected="false">Discounts</a>
     </li>
 </ul>
-@if (EntityBikes == null)
-{
-    <p><em>Loading...</em></p>
-    
-}
-else
-{
-    @foreach (MongoEntityBike e in EntityBikes)
-    {
-        <div>
-            <h4>@e.Bike.Model</h4>
-            <span>@e.TotalPrice</span>
-            <div>
-                Details:<br />
-                <span>@e.Bike.BasePrice</span><br />
-                <span>@e.Bike.Brand</span><br />
-                @if(e.SelectedOptions != null) { 
-                    foreach(BikeOption o in e.SelectedOptions)
-                        {
-                            <span>@o.Name</span>
-                        }
-                }
-                
-            </div>
-        </div>
-    }
-}
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane" id="stats" role="tabpanel" aria-labelledby="stats-tab">...</div>
+    <div class="tab-pane active" id="bikes" role="tabpanel" aria-labelledby="bikes-tab">
+        <BikeShop.Shared.Components.admin.AdminProductList  />
+    </div>
+    <div class="tab-pane" id="options" role="tabpanel" aria-labelledby="options-tab">...</div>
+    <div class="tab-pane" id="customers" role="tabpanel" aria-labelledby="customers-tab">...</div>
+    <div class="tab-pane" id="orders" role="tabpanel" aria-labelledby="orders-tab">...</div>
+    <div class="tab-pane" id="discounts" role="tabpanel" aria-labelledby="discounts-tab">...</div>
+</div>
+
 @code {
-    private List<MongoEntityBike> EntityBikes;
-    //private string url;
-    private string responseContent;
-
-    protected override async Task OnInitializedAsync()
-    {
-        //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
-        try
-        {
-            var jsonResponse = await RestClient.GetStringAsync("/bike");
-            EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-            responseContent = "items fetched: " + EntityBikes.Count.ToString();
-            responseContent += "<br />" + jsonResponse;
-           
-            //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
-
-        }
-        catch (Exception ex)
-        {
-            responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
-        }
-
-    }
+    
 
 }

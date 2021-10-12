@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BikeShop.BlazorComponents\BikeShop.BlazorComponents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="BikeDistributor">
       <HintPath>..\..\NET_5_0\BikeDistributor\bin\Debug\netcoreapp3.1\BikeDistributor.dll</HintPath>
     </Reference>
