@@ -78,6 +78,10 @@ to add support for gRPC to an existing Rest-WS api. I'll detail all the process 
 In the meanwhile I want to move on the topic of templating and components.
 
 ## More Details on: Templating & Components ##
+Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
+All changes should be made in ```wwwroot/index.html```. It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
+replacement. That means some components will work as expected (Ex. tabs) some will not. 
+As a matter of fact, I love Bootstrap and its components and I don't have time/talent to re-invent the wheel so I promptly added ```bootstrap.min.js``` at the bottom, together with a [JQuery Datables](https://www.datatables.net/), which is another component that certainly does take a good amount of solid work to replicate
 
 (...more to come...)
 
