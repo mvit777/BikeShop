@@ -4,9 +4,11 @@
 @using BikeShop.BlazorComponents.Components;
 
 @inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
 
-<h3>Bikes</h3>
+<span class="badge bg-success">Admin</span><span class="badge bg-secondary">Bikes</span>
 <div>
+
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
     <span>@responseContent</span>
 </div>
@@ -17,7 +19,7 @@
 }
 else
 {
-
+<div>
     <HtmlTable Items="EntityBikes" Context="EntityBike">
         <HeaderTemplate>
             <th>Model</th>
@@ -32,6 +34,7 @@ else
             <td>@EntityBike.TotalPrice</td>
         </RowTemplate>
     </HtmlTable>
+</div>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
@@ -40,6 +43,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+
+
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
@@ -56,5 +61,22 @@ else
             responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
         }
 
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        //if (firstRender)
+        //{
+        //    //await JSRuntime.InvokeVoidAsync("bootstrapNS.SayHello", "Marcello");//works
+        //    //await JSRuntime.InvokeVoidAsync("bootstrapNS.MakeRichTables");
+        //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
+
+        //}
+        //if (firstRender)
+        //{
+        //var jQuery = await JSRuntime.InvokeAsync<IJSObjectReference>("$", "table");
+        //await jQuery.InvokeVoidAsync("DataTable");
+        //}
+        //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", ".table", new object[] { });
     }
 }

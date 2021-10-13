@@ -6,29 +6,29 @@
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
-<h3>Admin Dashboard</h3>
+<h3 class="text-muted">Admin Dashboard</h3>
 <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/dashboard#stats" id="stats-tab" role="tab" aria-controls="stats" aria-selected="false">Stats</a>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#stats" id="stats-tab" aria-controls="stats" aria-selected="false">Stats</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="/admin/dashboard#bikes" id="bikes-tab" role="tab" aria-controls="bikes" aria-selected="true">Bikes</a>
+    <li class="nav-item" role="presentation">
+        <a href="#" class="nav-link active" id="bikes-tab" data-bs-toggle="tab" data-bs-target="#bikes" aria-controls="bikes" aria-selected="true">Bikes</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/dashboard#options" id="options-tab" role="tab" aria-controls="options" aria-selected="false">Bikes' Options</a>
+    <li class="nav-item" role="presentation">
+        <a href="#" class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options" aria-controls="options" aria-selected="false">Bikes' Options</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#customers" role="tab" id="customers-tab" aria-controls="customers" aria-selected="false">Customers</a>
+    <li class="nav-item" role="presentation">
+        <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#customers" id="customers-tab" aria-controls="customers" aria-selected="false">Customers</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#orders" role="tab" id="orders-tab" aria-controls="orders" aria-selected="false">Orders</a>
+    <li class="nav-item" role="presentation">
+        <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#orders" id="orders-tab" aria-controls="orders" aria-selected="false">Orders</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#discounts" role="tab" id="discounts-tab" aria-controls="discounts" aria-selected="false">Discounts</a>
+    <li class="nav-item" role="presentation">
+        <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#discount" id="discounts-tab" aria-controls="discounts" aria-selected="false">Discounts</a>
     </li>
 </ul>
 <!-- Tab panes -->
-<div class="tab-content">
+<div class="tab-content" id="adminTabsContent">
     <div class="tab-pane" id="stats" role="tabpanel" aria-labelledby="stats-tab">...</div>
     <div class="tab-pane active" id="bikes" role="tabpanel" aria-labelledby="bikes-tab">
         <BikeShop.Shared.Components.admin.AdminProductList />
@@ -40,11 +40,20 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        //study life cycle to understand where is better to place js calls
-        await JSRuntime.InvokeAsync<object>("SayHello", "Marcello");
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    //study life cycle to understand where is better to place js calls
+    //    //await JSRuntime.InvokeAsync<object>("SayHello", "Marcello");
 
-    }
+    //}
+    //protected async override Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        //await JSRuntime.InvokeVoidAsync("initializeCounterComponent", container);
+    //        //await JSRuntime.InvokeVoidAsync("bootstrapNS.MakeRichTables");
+    //        //await JSRuntime.InvokeAsync<object>("bootstrapNS.SayHello", "marc");
+    //    }
+    //}
 
 }
