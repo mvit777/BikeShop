@@ -72,6 +72,13 @@ or even simplier if your entity can deserialize without any helper method
 ```csharp
 EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 ```
+While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports gRPC out-of-the-box (sort of).
+An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
+to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
+In the meanwhile I want to move on the topic of templating and components.
+
+## More Details on: Templating & Components ##
+
 (...more to come...)
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
