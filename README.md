@@ -72,6 +72,20 @@ or even simplier if your entity can deserialize without any helper method
 ```csharp
 EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 ```
+While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports gRPC out-of-the-box (sort of).
+An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
+to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
+In the meanwhile I want to move on the topic of templating and components.
+
+## More Details on: Templating & Components ##
+Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
+All changes should be made in ```wwwroot/index.html```. It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
+replacement. That means some components will work as expected (Ex. tabs) some will not. 
+As a matter of fact, I love Bootstrap, its components and JQuery and I don't have time/talent to re-invent the wheel so I promptly added ```jquery.min.js``` and ```bootstrap.min.js``` at the bottom, together with a [JQuery Datables](https://www.datatables.net/), which is another component that certainly does take a good amount of solid work to replicate in C#.
+Blazor has already a good ecosystem of commercial components but it does not come any close to what javascript can offer in terms of free/opensource ecosystem (and I doubt it will ever do). 
+In the end what gets rendered in the browser is again just html + javascript and Blazor sports a jsinterop pipeline which allows for a two-way comunication between external javascript and its own components.
+My aim here is to create a small lib of components that will automatise the output of the html structure of some Bootstrap components and the plumbing to external javascript manipulation. Let's see what I achieve...
+
 (...more to come...)
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
