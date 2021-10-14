@@ -1,0 +1,66 @@
+﻿@using BikeDistributor.Domain.Entities;
+@using BikeDistributor.Infrastructure.core;
+@using BikeShop.BlazorComponents.Components;
+
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<span aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page">Bikes'Options</li>
+    </ol>
+</span>
+<div>
+    <span>@responseContent</span>
+</div>
+
+@if (EntityBikeOptions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+        <HtmlTable Items="EntityBikeOptions" Context="EntityBikeOption" TableId="BikeOptionList">
+            <HeaderTemplate>
+                <th>Model</th>
+                <th>Description</th>
+                <th>Tot. Price</th>
+            </HeaderTemplate>
+            <RowTemplate>
+                <td>@EntityBikeOption.BikeOption.Name</td>
+                <td>@EntityBikeOption.BikeOption.Description</td>
+                <td>@EntityBikeOption.BikeOption.Price</td>
+            </RowTemplate>
+        </HtmlTable>
+    
+}
+@code {
+    private List<MongoEntityBikeOption> EntityBikeOptions;
+    //private string url;
+    private string responseContent;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
+        try
+        {
+            var jsonResponse = await RestClient.GetStringAsync("/bikeoption");
+            EntityBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
+            //responseContent = "items fetched: " + EntityBikeOptions.Count.ToString();
+            //responseContent += "<br />" + jsonResponse;
+
+        }
+        catch (Exception ex)
+        {
+            responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
+        }
+
+    }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#OptionList", new object[] { });
+    }
+}

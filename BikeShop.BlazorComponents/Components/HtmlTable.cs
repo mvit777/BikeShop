@@ -10,6 +10,9 @@ namespace BikeShop.BlazorComponents.Components
     public partial class HtmlTable<TItem>
     {
         [Parameter]
+        public string TableId { get; set; }
+        
+        [Parameter]
         public RenderFragment HeaderTemplate { get; set; }
 
         [Parameter]

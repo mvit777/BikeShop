@@ -22,6 +22,7 @@ var bootstrapNS = {};
 }).apply(bootstrapNS);
 
 //remember it's a spa, so it is only called once when the DOM of initial screen is ready
+//and therefore is for the most useless
 $(document).ready(function () {
    
 });

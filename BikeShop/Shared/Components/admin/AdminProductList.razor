@@ -6,7 +6,12 @@
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
 
-<span class="badge bg-success">Admin</span><span class="badge bg-secondary">Bikes</span>
+<span aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page">Bikes</li>
+    </ol>
+</span>
 <div>
 
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
@@ -19,8 +24,7 @@
 }
 else
 {
-<div>
-    <HtmlTable Items="EntityBikes" Context="EntityBike">
+    <HtmlTable Items="EntityBikes" Context="EntityBike" TableId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
             <th>Brand</th>
@@ -29,12 +33,11 @@ else
         </HeaderTemplate>
         <RowTemplate>
             <td>@EntityBike.Bike.Model</td>
-            <td>@EntityBike.Bike.Brand</td>
-            <td>@EntityBike.Bike.isStandard</td>
+            <td>@EntityBike.Bike.Brand</td> 
+            <td>@(EntityBike.Bike.isStandard ? "Standard" : "Custom")</td>
             <td>@EntityBike.TotalPrice</td>
         </RowTemplate>
     </HtmlTable>
-</div>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
@@ -50,7 +53,7 @@ else
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-            responseContent = "items fetched: " + EntityBikes.Count.ToString();
+            //responseContent = "items fetched: " + EntityBikes.Count.ToString();
             //responseContent += "<br />" + jsonResponse;
 
             //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
@@ -77,6 +80,6 @@ else
         //await jQuery.InvokeVoidAsync("DataTable");
         //}
         //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", ".table", new object[] { });
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
     }
 }
