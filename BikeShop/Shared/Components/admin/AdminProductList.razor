@@ -57,10 +57,11 @@ else
             // Do actions against the value 
             // If the value is updating the component make sure to call StateHasChanged
             greeting = $"Welcome {value}";
-            StateHasChanged();//not needed ATM
+            StateHasChanged();//not needed GIT S
+                              //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
+
         });
     }
-
     protected override async Task OnInitializedAsync()
     {
 
@@ -70,11 +71,6 @@ else
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-            SubscribeToMessage();
-            //responseContent = "items fetched: " + EntityBikes.Count.ToString();
-            //responseContent += "<br />" + jsonResponse;
-
-            //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
 
         }
         catch (Exception ex)
@@ -85,19 +81,7 @@ else
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        //if (firstRender)
-        //{
-        //    //await JSRuntime.InvokeVoidAsync("bootstrapNS.SayHello", "Marcello");//works
-        //    //await JSRuntime.InvokeVoidAsync("bootstrapNS.MakeRichTables");
-        //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
 
-        //}
-        //if (firstRender)
-        //{
-        //var jQuery = await JSRuntime.InvokeAsync<IJSObjectReference>("$", "table");
-        //await jQuery.InvokeVoidAsync("DataTable");
-        //}
-        //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
         if (JTableIsLoaded == false)
         {
             await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
