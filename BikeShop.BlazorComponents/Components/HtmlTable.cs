@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BikeShop.BlazorComponents.Components
 {
-    public partial class HtmlTable<TItem>
+    public partial class HtmlTable<TItem> //: IDisposable
     {
         [Parameter]
-        public string TableId { get; set; }
+        public string HTMLId { get; set; }
         
         [Parameter]
         public RenderFragment HeaderTemplate { get; set; }
@@ -23,5 +23,10 @@ namespace BikeShop.BlazorComponents.Components
 
         [Parameter]
         public IReadOnlyList<TItem> Items { get; set; }
+
+        //public void Dispose()
+        //{
+        //    GC.SuppressFinalize(this);
+        //}
     }
 }

@@ -2,6 +2,7 @@
 @using BikeDistributor.Domain.Entities;
 @using BikeDistributor.Infrastructure.core;
 @using BikeShop.BlazorComponents.Components;
+@using AKSoftware.Blazor.Utilities;
 
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
@@ -24,18 +25,21 @@
 }
 else
 {
-    <HtmlTable Items="EntityBikes" Context="EntityBike" TableId="BikeList">
+    <span>@greeting</span>
+    <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
             <th>Brand</th>
             <th>Type</th>
             <th>Tot. Price</th>
+            <th>&nbsp;</th>
         </HeaderTemplate>
         <RowTemplate>
             <td>@EntityBike.Bike.Model</td>
             <td>@EntityBike.Bike.Brand</td> 
             <td>@(EntityBike.Bike.isStandard ? "Standard" : "Custom")</td>
             <td>@EntityBike.TotalPrice</td>
+            <td><Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" Label="EDIT" ClickEventName="BikeList_editIemClick"/></td>
         </RowTemplate>
     </HtmlTable>
 }
@@ -43,6 +47,19 @@ else
     private List<MongoEntityBike> EntityBikes;
     //private string url;
     private string responseContent;
+    private string greeting;
+    private bool JTableIsLoaded { get; set; } = false;
+
+    public void SubscribeToMessage()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        {
+            // Do actions against the value 
+            // If the value is updating the component make sure to call StateHasChanged
+            greeting = $"Welcome {value}";
+            StateHasChanged();//not needed ATM
+        });
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,6 +70,7 @@ else
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
+            SubscribeToMessage();
             //responseContent = "items fetched: " + EntityBikes.Count.ToString();
             //responseContent += "<br />" + jsonResponse;
 
@@ -80,6 +98,11 @@ else
         //await jQuery.InvokeVoidAsync("DataTable");
         //}
         //await JSRuntime.InvokeAsync<object>("initializeDataTable", ".table");
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+        if (JTableIsLoaded == false)
+        {
+            await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+            JTableIsLoaded = true;
+        }
+
     }
 }
