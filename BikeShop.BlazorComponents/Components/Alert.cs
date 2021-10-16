@@ -14,8 +14,7 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public virtual string HTMLCssClass { get; set; }
         [Parameter]
-        public RenderFragment<string> RowTemplate { get; set; }
-        [Parameter]
-        public string Content { get; set; }
+        public RenderFragment ChildContent { get; set; }
+        
     }
 }

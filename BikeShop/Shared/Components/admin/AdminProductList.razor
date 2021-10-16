@@ -26,7 +26,10 @@
 else
 {
      <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
-    <Alert HTMLId="MainAlert" HTMLCssClass="alert-danger" Content="@greeting" />
+     <div style="clear:both"></div>
+     <Alert HTMLId="MainAlert" HTMLCssClass="alert-danger" @ref="MainAlert">
+        @greeting
+    </Alert>
     <div style="clear:both"></div>
      <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
@@ -61,17 +64,19 @@ else
     private string responseContent;
     private string greeting;
     private bool JTableIsLoaded { get; set; } = false;
+    private ElementReference MainAlert;
 
     public void SubscribeToMessage()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
         {
-        // Do actions against the value
-        // If the value is updating the component make sure to call StateHasChanged
-        greeting = $"You are editing {value}";
-        //JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
-        StateHasChanged();//not needed now causes a datattable warning
-    });
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            greeting = $"You are editing {value}";
+            
+            //JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
+            StateHasChanged();//not needed now causes a datattable warning
+        });
     }
     protected override async Task OnInitializedAsync()
     {
