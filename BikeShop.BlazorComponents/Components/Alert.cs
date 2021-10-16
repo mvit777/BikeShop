@@ -12,9 +12,27 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public virtual string HTMLId {get; set;}
         [Parameter]
-        public virtual string HTMLCssClass { get; set; }
+        public virtual string HTMLCssClass { get; set; } = "alert-primary";
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
-        
+        public virtual RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public virtual bool Visible { get; set; } = false;
+        public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
+        {
+            Visible = visible;
+            if (executeStateHasChanged)
+            {
+                StateHasChanged();
+            }
+            
+        }
+        public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
+        {
+            HTMLCssClass = cssClass;
+            if (executeStateHasChanged)
+            {
+                StateHasChanged();
+            }
+        }
     }
 }

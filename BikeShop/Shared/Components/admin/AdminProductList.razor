@@ -26,9 +26,10 @@
 else
 {
      <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
-     <div style="clear:both"></div>
-     <Alert HTMLId="MainAlert" HTMLCssClass="alert-danger" @ref="MainAlert">
-        @greeting
+     <div style="clear:both;"></div>
+     <br />
+     <Alert HTMLId="MainAlert" @ref="MainAlert">
+        @message
     </Alert>
     <div style="clear:both"></div>
      <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
@@ -62,18 +63,34 @@ else
     private List<MongoEntityBike> EntityBikes;
     //private string url;
     private string responseContent;
-    private string greeting;
-    private bool JTableIsLoaded { get; set; } = false;
-    private ElementReference MainAlert;
+    private string message;
+    //private ElementReference MainAlert;
+    private Alert MainAlert;
 
-    public void SubscribeToMessage()
+    public void SubscribeToDeleteItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
+        {
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"Please confirm you want to delete item {value}";
+            MainAlert.ChangeCssClass("alert-danger");
+            MainAlert.ChangeVisible(true);
+
+            StateHasChanged();//not needed now causes a datattable warning
+        });
+    }
+
+    public void SubscribeToEditItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
         {
             // Do actions against the value
             // If the value is updating the component make sure to call StateHasChanged
-            greeting = $"You are editing {value}";
-            
+            message = $"You are editing {value}";
+            MainAlert.ChangeCssClass("alert-primary");
+            MainAlert.ChangeVisible(true);
+
             //JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
             StateHasChanged();//not needed now causes a datattable warning
         });
@@ -86,7 +103,8 @@ else
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-            SubscribeToMessage();
+            SubscribeToEditItemClick();
+            SubscribeToDeleteItemClick();
         }
         catch (Exception ex)
         {

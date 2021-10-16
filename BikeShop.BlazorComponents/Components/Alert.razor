@@ -1,11 +1,15 @@
-﻿<div class="alert @HTMLCssClass" role="alert">
-    <!--A simple primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.-->
-    @ChildContent
-</div>
+﻿@if (Visible)
+{
+    <div class="alert @HTMLCssClass" role="alert">
+        <!--A simple primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.-->
+        @ChildContent
+    </div>
+}
+
 
 @code {
     ////**************************
-    ////TODO: ADD SOME CODE TO PARSE 
+    ////TODO: ADD SOME CODE TO PARSE
     ////MARKDOWN OPTIONALLY?
     ////***************************/
 }
