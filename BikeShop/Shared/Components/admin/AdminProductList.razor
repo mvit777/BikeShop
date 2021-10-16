@@ -21,12 +21,14 @@
 
 @if (EntityBikes == null)
 {
-    <p><em>Loading...</em></p>
+<Spinner />    
 }
 else
 {
-    <span>@greeting</span>
-    <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+     <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
+    <Alert HTMLId="MainAlert" HTMLCssClass="alert-danger" Content="@greeting" />
+    <div style="clear:both"></div>
+     <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
             <th>Brand</th>
@@ -36,10 +38,20 @@ else
         </HeaderTemplate>
         <RowTemplate>
             <td>@EntityBike.Bike.Model</td>
-            <td>@EntityBike.Bike.Brand</td> 
-            <td>@(EntityBike.Bike.isStandard ? "Standard" : "Custom")</td>
+            <td>@EntityBike.Bike.Brand</td>
+            <td>
+                @(EntityBike.Bike.isStandard ? "Standard" : "Custom")
+                @if (EntityBike.IsStandard == false)
+                    {
+                    <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_addOptionsButton")" Icon="oi oi-plus" HTMLCssClass="btn-success btn-sm float-right" Label="ADD OPTIONS" ClickEventName="BikeList_addOptionsIemClick" />
+                    }
+            </td>
             <td>@EntityBike.TotalPrice</td>
-            <td><Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" Label="EDIT" ClickEventName="BikeList_editIemClick"/></td>
+            <td>
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Label="DELETE" ClickEventName="BikeList_deleteIemClick" />
+
+            </td>
         </RowTemplate>
     </HtmlTable>
 }
@@ -54,12 +66,12 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
         {
-            // Do actions against the value 
-            // If the value is updating the component make sure to call StateHasChanged
-            greeting = $"Welcome {value}";
-            JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
-            StateHasChanged();//not needed now causes a datattable warning
-        });
+        // Do actions against the value
+        // If the value is updating the component make sure to call StateHasChanged
+        greeting = $"You are editing {value}";
+        //JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
+        StateHasChanged();//not needed now causes a datattable warning
+    });
     }
     protected override async Task OnInitializedAsync()
     {
@@ -81,7 +93,5 @@ else
     {
 
         await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
-
-       
     }
 }

@@ -1,4 +1,9 @@
-﻿<button type="button" class="btn @HTMLCssClass" id="@HTMLId"  @onclick="SendMessage">@Label</button>
+﻿<button type="button" class="btn @HTMLCssClass" id="@HTMLId"  @onclick="SendMessage" @onclick:preventDefault="PreventDefault">
+    @if (Icon != "") {
+    <span class="@Icon">&nbsp;</span>
+    }    
+     @Label
+</button>
 
 @code {
 

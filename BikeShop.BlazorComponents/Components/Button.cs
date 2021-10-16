@@ -11,7 +11,7 @@ namespace BikeShop.BlazorComponents.Components
     public partial class Button
     {
         /// <summary>
-        /// If used in table, HTMLId might identify the row something like @rowId_ButtonEdit
+        /// If used in a table, HTMLId might identify the row something like @rowId_ButtonEdit
         /// </summary>
         [Parameter]
         public virtual string HTMLId { get; set; }
@@ -20,7 +20,11 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public virtual string Label { get; set; }
         [Parameter]
+        public virtual string Icon { get; set; }
+        [Parameter]
         public virtual string ClickEventName { get; set; }
+        [Parameter]
+        public virtual bool PreventDefault { get; set; } = true;
 
 
         //[Parameter]
@@ -28,7 +32,7 @@ namespace BikeShop.BlazorComponents.Components
 
         public virtual void SendMessage()
         {
-            string valueToSend = "Hi from Component instance " + HTMLId;
+            string valueToSend = HTMLId;
             MessagingCenter.Send(this, ClickEventName, valueToSend);
         }
 

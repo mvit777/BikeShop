@@ -1,9 +1,4 @@
-﻿//a test function from global space
-var SayHello = function Hello(name) {
-    alert('Hello  from ' + name + ' call!!!');
-}
-
-//define namespace for bootstrap components
+﻿//define namespace for bootstrap components
 var bootstrapNS = {};
 //register js namespace for bootstrap components
 (function () {
@@ -15,21 +10,10 @@ var bootstrapNS = {};
         this.SayHello();
     }
     this.SayHello = function (name) {
-        alert("Hello, from comp" + this.version + " call");
+        alert("Hello, from bootstrap-datatables component lib " + this.version + " call");
     }
     this.JSDataTable = function (table, options) {
-        //console.log(table);
-        //if (this.hasOwnProperty(table) == false) {
-        //    console.log("table " + table + " is not present");
-        //    var oTable = $(table).DataTable(options);
-        //    this.JSDataTables[table] = oTable;
-        //} else {
-        //    console.log("table " + table + " is present");
-        //}
-        if ($.fn.dataTable.isDataTable(table)) {
-            //table.destroy();
-        }
-        else {
+        if (!$.fn.dataTable.isDataTable(table)) {
             table = $(table).DataTable(options);
             this.JSDataTables[table] = table;
         }
