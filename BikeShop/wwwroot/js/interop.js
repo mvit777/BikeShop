@@ -8,6 +8,7 @@ var bootstrapNS = {};
 //register js namespace for bootstrap components
 (function () {
     this.version = "component 1.0";//just a reminder on how to use scoped ns variables
+    this.JSDataTables = {};
 
     this.initComponent = function (name) {
         //SayHello(name);//call to outside function SayHello
@@ -17,7 +18,21 @@ var bootstrapNS = {};
         alert("Hello, from comp" + this.version + " call");
     }
     this.JSDataTable = function (table, options) {
-        $(table).DataTable(options);
+        //console.log(table);
+        //if (this.hasOwnProperty(table) == false) {
+        //    console.log("table " + table + " is not present");
+        //    var oTable = $(table).DataTable(options);
+        //    this.JSDataTables[table] = oTable;
+        //} else {
+        //    console.log("table " + table + " is present");
+        //}
+        if ($.fn.dataTable.isDataTable(table)) {
+            //table.destroy();
+        }
+        else {
+            table = $(table).DataTable(options);
+            this.JSDataTables[table] = table;
+        }
     }
 }).apply(bootstrapNS);
 

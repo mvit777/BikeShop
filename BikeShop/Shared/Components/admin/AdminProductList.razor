@@ -7,12 +7,12 @@
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
 
-<span aria-label="breadcrumb">
+<div aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item active" aria-current="page">Admin</li>
         <li class="breadcrumb-item active" aria-current="page">Bikes</li>
     </ol>
-</span>
+</div>
 <div>
 
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
@@ -57,21 +57,19 @@ else
             // Do actions against the value 
             // If the value is updating the component make sure to call StateHasChanged
             greeting = $"Welcome {value}";
-            StateHasChanged();//not needed GIT S
-                              //EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
-
+            JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
+            StateHasChanged();//not needed now causes a datattable warning
         });
     }
     protected override async Task OnInitializedAsync()
     {
-
 
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-
+            SubscribeToMessage();
         }
         catch (Exception ex)
         {
@@ -82,11 +80,8 @@ else
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
 
-        if (JTableIsLoaded == false)
-        {
-            await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
-            JTableIsLoaded = true;
-        }
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
 
+       
     }
 }
