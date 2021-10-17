@@ -59,14 +59,18 @@ else
         </RowTemplate>
     </HtmlTable>
     <!-- POLISH THIS COMPONENT-->
-    <Modal HTMLId="EditBikeModal" ShowHeader="true" HeaderTitle="EDIT" HTMLCssClass="modal-xl">
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-xl">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="exampleModalLabel">Title</h5>
+            <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </HeaderTemplate>
         <ChildContent>
             Tanto va la gatta al lardo
         </ChildContent>
         <FooterTemplate>
-            <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            here save and close buttons
         </FooterTemplate>
     </Modal>
 }
