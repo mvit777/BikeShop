@@ -58,10 +58,16 @@ else
             </td>
         </RowTemplate>
     </HtmlTable>
+    <!-- POLISH THIS COMPONENT-->
     <Modal HTMLId="EditBikeModal" ShowHeader="true" HeaderTitle="EDIT" HTMLCssClass="modal-xl">
         <ChildContent>
             Tanto va la gatta al lardo
         </ChildContent>
+        <FooterTemplate>
+            <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </FooterTemplate>
     </Modal>
 }
 @code {
@@ -72,12 +78,17 @@ else
     //private ElementReference MainAlert;
     private Alert MainAlert;
 
+    public void CloseEditBikeModal()
+    {
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");
+        MainAlert.ChangeVisible(false);
+    }
+
     public void SubscribeToModalClosing()
     {
         MessagingCenter.Subscribe<Button, string>(this, "ModalClosing", (sender, value) =>
         {
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", value, "hide");
-            MainAlert.ChangeVisible(false);
+
             StateHasChanged();
         });
     }
@@ -107,7 +118,6 @@ else
             MainAlert.ChangeVisible(true);
 
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
-            SubscribeToModalClosing();
             StateHasChanged();
         });
     }
@@ -121,6 +131,7 @@ else
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             SubscribeToEditItemClick();
             SubscribeToDeleteItemClick();
+
         }
         catch (Exception ex)
         {

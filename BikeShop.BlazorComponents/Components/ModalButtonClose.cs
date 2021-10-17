@@ -1,5 +1,6 @@
 ﻿using AKSoftware.Blazor.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,9 @@ namespace BikeShop.BlazorComponents.Components
         public string TargetHTMLId { get; set; }
         [Parameter]
         public virtual bool PreventDefault { get; set; } = true;
-        public void NotifyModalClosing()
-        {
-            string valueToSend = TargetHTMLId;
-            MessagingCenter.Send(this, "ModalClosing", "#"+valueToSend);
-        }
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
+       
     }
     
 }
