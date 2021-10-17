@@ -12,6 +12,9 @@ var bootstrapNS = {};
     this.SayHello = function (name) {
         alert("Hello, from bootstrap-datatables component lib " + this.version + " call");
     }
+    this.ToggleModal = function (modal, mode) {
+        $(modal).modal(mode);
+    }
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {
             table = $(table).DataTable(options);

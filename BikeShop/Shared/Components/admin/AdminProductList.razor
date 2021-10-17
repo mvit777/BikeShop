@@ -53,11 +53,16 @@ else
             <td>@EntityBike.TotalPrice</td>
             <td>
                 <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Label="EDIT" ClickEventName="BikeList_editIemClick" />
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Label="DELETE" ClickEventName="BikeList_deleteIemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
 
             </td>
         </RowTemplate>
     </HtmlTable>
+    <Modal HTMLId="EditBikeModal" ShowHeader="true" HeaderTitle="EDIT" HTMLCssClass="modal-xl">
+        <ChildContent>
+            Tanto va la gatta al lardo
+        </ChildContent>
+    </Modal>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
@@ -66,6 +71,16 @@ else
     private string message;
     //private ElementReference MainAlert;
     private Alert MainAlert;
+
+    public void SubscribeToModalClosing()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "ModalClosing", (sender, value) =>
+        {
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", value, "hide");
+            MainAlert.ChangeVisible(false);
+            StateHasChanged();
+        });
+    }
 
     public void SubscribeToDeleteItemClick()
     {
@@ -77,7 +92,7 @@ else
             MainAlert.ChangeCssClass("alert-danger");
             MainAlert.ChangeVisible(true);
 
-            StateHasChanged();//not needed now causes a datattable warning
+            StateHasChanged();
         });
     }
 
@@ -91,8 +106,9 @@ else
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
 
-            //JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });//I want actually destroy the table
-            StateHasChanged();//not needed now causes a datattable warning
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+            SubscribeToModalClosing();
+            StateHasChanged();
         });
     }
     protected override async Task OnInitializedAsync()
