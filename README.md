@@ -92,6 +92,7 @@ My aim here is to create a small lib of components that will automatise the outp
 (...more to come...)
 
 ### Related and inspiring links ###
+- [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0) An introduction to Blazor
 - [ezzylearning.net](https://www.ezzylearning.net/tutorials/blazor) has an entire section devoted to Blazor. I especially liked the tutorials on components
 - [Blazor University](https://blazor-university.com/) is a very coincise and quick reference at every aspect of Blazor
 - [Blazor Developer Italiani](https://blazordev.it/) a site entirely devoted to Blazor in the italian language. It features detailed and in-depth tutorials on the topic.
