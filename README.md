@@ -70,7 +70,7 @@ protected override async Task OnInitializedAsync()
 ```
 or even simplier if your entity can deserialize without any helper method
 ```csharp
-EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bike");
+EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
 ```
 While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports gRPC out-of-the-box (sort of).
 An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
