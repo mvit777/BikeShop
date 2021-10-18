@@ -3,6 +3,7 @@
 @using BikeDistributor.Infrastructure.core;
 @using BikeShop.BlazorComponents.Components;
 @using AKSoftware.Blazor.Utilities;
+@using BikeShop.Helpers;
 
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
@@ -21,18 +22,19 @@
 
 @if (EntityBikes == null)
 {
-<Spinner />    
+    <Spinner />
+
 }
 else
 {
-     <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
-     <div style="clear:both;"></div>
-     <br />
-     <Alert HTMLId="MainAlert" @ref="MainAlert">
+    <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
+    <div style="clear:both;"></div>
+    <br />
+    <Alert HTMLId="MainAlert" @ref="MainAlert">
         @message
     </Alert>
     <div style="clear:both"></div>
-     <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+    <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
             <th>Brand</th>
@@ -46,56 +48,79 @@ else
             <td>
                 @(EntityBike.Bike.isStandard ? "Standard" : "Custom")
                 @if (EntityBike.IsStandard == false)
-                    {
+                {
                     <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_addOptionsButton")" Icon="oi oi-plus" HTMLCssClass="btn-success btn-sm float-right" Label="ADD OPTIONS" ClickEventName="BikeList_addOptionsIemClick" />
-                    }
+                }
             </td>
             <td>@EntityBike.TotalPrice</td>
             <td>
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Label="EDIT" ClickEventName="BikeList_editIemClick" />
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Icon="oi oi-trash" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
 
             </td>
         </RowTemplate>
     </HtmlTable>
-    <!-- POLISH THIS COMPONENT-->
-    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-xl">
+    <!-- temp-->
+    <!-- HIDDEN MODALS -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
         <HeaderTemplate>
-            <h5 class="modal-title" id="exampleModalLabel">Title</h5>
+            <h5 class="modal-title" id="exampleModalLabel"><span class="oi oi-pencil"></span> Editing @selectedId</h5>
             <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </HeaderTemplate>
         <ChildContent>
-            Tanto va la gatta al lardo
+            <EditForm EditContext="@EditContext" class="row p-3">
+                <div class="col-md-6 mb-3">
+                    <label for="Model">Model</label>
+                    <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="BasePrice">Price</label>
+                    <InputNumber id="BasePrice" @bind-Value="ProductModel.BasePrice" class="form-control" />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Description">Description</label>
+                    <InputTextArea id="Description" @bind-Value="ProductModel.Description" class="form-control" />
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="form-check">
+                        <InputCheckbox id="IsStandard" @bind-Value="ProductModel.isStandard" class="form-check-input" />
+                        <label class="form-check-label" for="IsStandard">
+                            Standard
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </EditForm>
         </ChildContent>
-        <FooterTemplate>
+        @*<FooterTemplate>
             here save and close buttons
-        </FooterTemplate>
+        </FooterTemplate>*@
     </Modal>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
-    //private string url;
+    private string selectedId = "";
     private string responseContent;
     private string message;
     //private ElementReference MainAlert;
     private Alert MainAlert;
+    private GenericBike ProductModel = new GenericBike();
+    private EditContext EditContext;
 
+    #region "Form handlers"
+
+    #endregion
+    #region "Components handlers"
     public void CloseEditBikeModal()
     {
         JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");
         MainAlert.ChangeVisible(false);
     }
 
-    public void SubscribeToModalClosing()
-    {
-        MessagingCenter.Subscribe<Button, string>(this, "ModalClosing", (sender, value) =>
-        {
-
-            StateHasChanged();
-        });
-    }
 
     public void SubscribeToDeleteItemClick()
     {
@@ -116,18 +141,33 @@ else
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
         {
             // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {value}";
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
+            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+            if (MongoEntity.Bike.isStandard)
+            {
+                var bike = (Bike)MongoEntity.Bike;
+                ProductModel = JsonUtils.Convert<Bike, GenericBike>(bike);
+            }
+            else
+            {
+                var bike = (BikeVariant)MongoEntity.Bike;
+                ProductModel = JsonUtils.Convert<BikeVariant, GenericBike>(bike);
+            }
 
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
             StateHasChanged();
         });
     }
+    #endregion
+    #region "Page handlers"
     protected override async Task OnInitializedAsync()
     {
 
+        EditContext = new EditContext(ProductModel);
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
@@ -148,4 +188,5 @@ else
 
         await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
     }
+    #endregion
 }

@@ -8,11 +8,13 @@
             <div class="modal-body">
                 @ChildContent
             </div>
+            @if (ShowFooter) { 
             <div class="modal-footer">
                 @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>*@
                 @FooterTemplate
             </div>
+            }
         </div>
     </div>
 </div>

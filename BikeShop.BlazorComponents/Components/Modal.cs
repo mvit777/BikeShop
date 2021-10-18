@@ -14,8 +14,8 @@ namespace BikeShop.BlazorComponents.Components
         public virtual string HTMLId { get; set; }
         [Parameter]
         public virtual string HTMLCssClass { get; set; }
-        //[Parameter]
-        //public virtual bool ShowHeader { get; set; } = true;
+        [Parameter]
+        public virtual bool ShowFooter { get; set; } = true;
         [Parameter]
         public virtual string HeaderTitle { get; set; }
 

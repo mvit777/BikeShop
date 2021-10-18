@@ -52,3 +52,8 @@ a, .btn-link {
     .breadcrumb{
         background-color:white;
     }
+
+    .modal-header{
+        background-color: rebeccapurple !important;
+        color:white !important;
+    }
