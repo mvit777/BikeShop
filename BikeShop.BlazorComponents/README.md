@@ -1,6 +1,16 @@
 ﻿# BikeShop.BlazorComponents
-TODO: clean of unused files and ...
+TODO: clean of unused files and ...still work in progress
 ## Install
+Once you have imported the .dll into your Blazor project, just add a line at the bottom of _Imports.razor
+
+```csharp
+(...omitted..)
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using BikeShop
+@using BikeShop.Shared
+@using BikeShop.BlazorComponents.Components
+```
 
 ## Brief description of the components
 
