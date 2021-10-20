@@ -163,6 +163,27 @@ which gets triggered by the @onclick="SendMessage" handler that I sticked on the
      @Label
 </button>
 ```
+A very cool feature of Messaging Center is that it does not need to be instantiated nor injected somewhere nor registered in a service. It is just there ready to be used everywhere you need it, be it a page, a component or a class. And provide any part of the system a mean to comunicate. 
+Now, we just have to register one or more parts of our system to listen and react when the above-mentioned ```BikeList_editIemClick``` event gets broadcasted.
+Let's say we want to recieve the event on the List of products and open a popup to edit the clicked item. To do so we have to subscribe our page to the event:
+
+```razor
+@page "/somepage"
+(..omitted..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+ }
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+    }
+}
+```
+
 (More to come)
 ## The Resulting Stuff (so far)
 *The list of products*
