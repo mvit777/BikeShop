@@ -63,7 +63,7 @@ now to retrieve items from the database from a blazor page is as simple as this:
 private List<MongoEntityBike> EntityBikes;
 protected override async Task OnInitializedAsync()
  {
-    var jsonResponse = await RestClient.GetStringAsync("/bike");
+    var jsonResponse = await RestClient.GetStringAsync("/bikes");
     EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
  }
 }
