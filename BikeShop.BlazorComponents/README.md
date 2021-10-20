@@ -192,7 +192,7 @@ public void SubscribeToEditItemClick()
 protected override async Task OnInitializedAsync()
  {
     EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
-    SubscribeToEditItemClick();
+    SubscribeToEditItemClick();//we subscribe to event here
  }
  protected async override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -202,6 +202,30 @@ protected override async Task OnInitializedAsync()
 }
 ```
 Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
+
+The last step is adding the [Modal Component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Modal.cs) to the page.
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            (...omitted...)
+            <th>Tot. Price</th>
+            <th>Actions</th>
+        </HeaderTemplate>
+        <RowTemplate>
+           (...omitted...)
+            <td>@EntityBike.TotalPrice</td>
+            <td>
+            <Button HTMLId="@EntityBike.Id" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+            </td>
+        </RowTemplate>
+</HtmlTable>
+    (...omitted...)
+```
 
 (More to come)
 ## The Resulting Stuff (so far)
