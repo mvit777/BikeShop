@@ -165,13 +165,30 @@ which gets triggered by the @onclick="SendMessage" handler that I sticked on the
 ```
 A very cool feature of Messaging Center is that it does not need to be instantiated nor injected somewhere nor registered in a service. It is just there ready to be used everywhere you need it, be it a page, a component or a class. And provide any part of the system a mean to comunicate. 
 Now, we just have to register one or more parts of our system to listen and react when the above-mentioned ```BikeList_editIemClick``` event gets broadcasted.
-Let's say we want to recieve the event on the List of products and open a popup to edit the clicked item. To do so we have to subscribe our page to the event:
+Let's say we want to recieve the event on the List of products and open a popup to edit the clicked item. To do so we have first to subscribe our page to the event:
 
 ```razor
 @page "/somepage"
 (..omitted..)
 @code{
 private List<MongoEntityBike> EntityBikes;
+
+public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        {
+        // Do actions against the value
+        selectedId = value;
+        //we retrieve the full object from our existing list without a trip to the database
+        var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+        //we tell the model to show up
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+        // If the value is updating the component make sure to call StateHasChanged
+        StateHasChanged();
+        });
+    }
+
+
 protected override async Task OnInitializedAsync()
  {
     EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
