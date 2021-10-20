@@ -7,8 +7,6 @@ Once you have imported the .dll into your Blazor project, just add a line at the
 (...omitted..)
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
-@using BikeShop
-@using BikeShop.Shared
 @using BikeShop.BlazorComponents.Components
 ```
 
