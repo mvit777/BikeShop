@@ -5,7 +5,7 @@ Make sure to install the excellent nuget-package [Messaging Center](https://gith
 ```
 Install-Package AKSoftware.Blazor.Utilities
 ```
-Once you have imported the .dll into your Blazor project, just add the two lines at the bottom of _Imports.razor
+Once you also have imported the BikeShop.BlazorComponents.dll into your Blazor project, just add the two lines at the bottom of _Imports.razor
 
 ```razor
 //(...omitted..)
@@ -224,6 +224,20 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
             </td>
         </RowTemplate>
 </HtmlTable>
+ <!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           here goes the content of the modal
+        </ChildContent>
+    </Modal>
     (...omitted...)
 ```
 
