@@ -74,7 +74,7 @@ Imagine we want to build the classic product list table with links for creating/
 [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 
 
-[ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (so of "inspiration" from following links)
+[ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (lot of "inspiration" from following links)
 - [Beginner's guide to Components](https://www.ezzylearning.net/tutorial/a-beginners-guide-to-blazor-components)
 - [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
 - [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
