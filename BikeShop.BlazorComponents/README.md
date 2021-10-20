@@ -1,12 +1,17 @@
 ﻿# BikeShop.BlazorComponents
 TODO: clean of unused files and ...still work in progress
 ## Install
-Once you have imported the .dll into your Blazor project, just add a line at the bottom of _Imports.razor
+Make sure to install the excellent nuget-package Messaging Center at solution level
+```
+Install-Package AKSoftware.Blazor.Utilities
+```
+Once you have imported the .dll into your Blazor project, just add the two lines at the bottom of _Imports.razor
 
 ```csharp
 (...omitted..)
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
+@using AKSoftware.Blazor.Utilities
 @using BikeShop.BlazorComponents.Components
 ```
 Now navigate to the wwwroot folder and add a file interop.js or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
