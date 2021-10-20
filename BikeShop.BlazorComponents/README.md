@@ -134,12 +134,13 @@ So we add it in our table definition on somepage:
            (...omitted...)
             <td>@EntityBike.TotalPrice</td>
             <td>
-            <Button HTMLId="@(EntityBike.Id + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+            <Button HTMLId="@EntityBike.Id" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
             </td>
         </RowTemplate>
 </HtmlTable>
     (...omitted...)
 ```
+which results in our blue edit button. If we take a closer look the most relevant properties are ```HTMLId```, to retrieve the entity we want to edit, and the ```ClickEventName``` which will broadcast the Event ```BikeList_editIemClick``` globally (courtesy of the afore-mentioned [Messaging Center](https://github.com/aksoftware98/blazor-utilities)) and can be consumed by any component on the page.
 
 (More to come)
 ## The Resulting Stuff (so far)
