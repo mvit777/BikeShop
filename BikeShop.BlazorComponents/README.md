@@ -64,6 +64,39 @@ Let's have a closer look...
 
 ## Brief description of the components
 Imagine we want to build the classic product list table with links for creating/editing/deleting items..
+The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source an some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
+Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Type</th>
+            <th>Tot. Price</th>
+        </HeaderTemplate>
+        <RowTemplate>
+            <td>@EntityBike.Bike.Model</td>
+            <td>@EntityBike.Bike.Brand</td>
+            <td>
+                @(EntityBike.Bike.isStandard ? "Standard" : "Custom")
+            </td>
+            <td>@EntityBike.TotalPrice</td>
+        </RowTemplate>
+    </HtmlTable>
+
+@code{
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+ }
+}
+```
 (More to come)
 ## The Resulting Product (so far)
 *The list of products*
