@@ -36,6 +36,24 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
     <script src="js/interop.js"></script>
 </body>
 ```
+now stick this code in the js/interop.js file
+
+```javascript
+//define namespace for bootstrap components
+var bootstrapNS = {};
+//register js namespace for bootstrap components
+(function () {
+    this.ToggleModal = function (modal, mode) {
+        $(modal).modal(mode);
+    }
+    this.JSDataTable = function (table, options) {
+        if (!$.fn.dataTable.isDataTable(table)) {
+            table = $(table).DataTable(options);
+            this.JSDataTables[table] = table;
+        }
+    }
+}).apply(bootstrapNS);
+```
 
 ## Brief description of the components
 
