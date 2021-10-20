@@ -1,8 +1,258 @@
 ﻿# BikeShop.BlazorComponents
-TODO: clean of unused files and ...
+TODO: clean of unused files and ...still work in progress
 ## Install
+Make sure to install the excellent nuget-package [Messaging Center](https://github.com/aksoftware98/blazor-utilities) at solution level
+```
+Install-Package AKSoftware.Blazor.Utilities
+```
+Once you also have imported the BikeShop.BlazorComponents.dll into your Blazor project, just add the two lines at the bottom of _Imports.razor
+
+```razor
+//(...omitted..)
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using AKSoftware.Blazor.Utilities
+@using BikeShop.BlazorComponents.Components
+```
+Now navigate to the wwwroot folder and add a file interop.js or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
+together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) before the closing </body>
+
+*wwwroot/index.html*
+```html
+<html>
+  <head>
+    (...omitted...)
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+    <!-- datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/fh-3.2.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.5/datatables.min.css" />
+    <!-- local -->
+    <link href="css/app.css" rel="stylesheet" />
+    <!-- <link href="BikeShop.styles.css" rel="stylesheet" /> -->
+  </head>
+  <body>
+    (...omitted...)
+    
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/fh-3.2.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.5/datatables.min.js"></script>
+    <script src="js/interop.js"></script>
+</body>
+```
+now stick this code in the wwwroot/js/interop.js file
+
+```javascript
+//define namespace for bootstrap components
+var bootstrapNS = {};
+//register the helper functions in the namespace for bootstrap components
+(function () {
+    this.ToggleModal = function (modal, mode) {
+        $(modal).modal(mode);
+    }
+    this.JSDataTable = function (table, options) {
+        //this will take care we not recreate the table
+        if (!$.fn.dataTable.isDataTable(table)) {
+            $(table).DataTable(options);
+        }
+    }
+}).apply(bootstrapNS);
+```
+So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
+All the other components I wrapped inside my library can either work without javascript (Ex. Tabs) or can just be activated and interacted by C# only. 
+Let's have a closer look...
 
 ## Brief description of the components
+Imagine we want to build the classic product list table with links for creating/editing/deleting items..
+The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source an some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
+Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
 
+*Parental Warning: A lot of code stolen from [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Type</th>
+            <th>Tot. Price</th>
+        </HeaderTemplate>
+        <RowTemplate>
+            <td>@EntityBike.Bike.Model</td>
+            <td>@EntityBike.Bike.Brand</td>
+            <td>
+                @(EntityBike.Bike.isStandard ? "Standard" : "Custom")
+            </td>
+            <td>@EntityBike.TotalPrice</td>
+        </RowTemplate>
+    </HtmlTable>
+
+@code{
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+ }
+}
+```
+this will output a normal html table, to turn it into a JQuery Datable we have to call the function we have set in previous paragraph into the interop.js file
+```razor
+(..omitted..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+ }
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+    }
+}
+```
+Next we want to add an edit button for every row. Here comes in play the [Button component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.razor) and yet again [his associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs)
+So we add it in our table definition on somepage:
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            (...omitted...)
+            <th>Tot. Price</th>
+            <th>Actions</th>
+        </HeaderTemplate>
+        <RowTemplate>
+           (...omitted...)
+            <td>@EntityBike.TotalPrice</td>
+            <td>
+            <Button HTMLId="@EntityBike.Id" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+            </td>
+        </RowTemplate>
+</HtmlTable>
+    (...omitted...)
+```
+which results in our blue edit button. If we take a closer look the most relevant properties are ```HTMLId```, to retrieve the entity we want to edit, and the ```ClickEventName``` which will broadcast the Event ```BikeList_editIemClick``` globally (courtesy of the afore-mentioned [Messaging Center](https://github.com/aksoftware98/blazor-utilities)) and can be consumed by any component on the page.
+
+I named the ```ClickEventName``` as ```BikeList_editIemClick``` but it can have any name. If have you looked into [button associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs) you might have noticed this method:
+
+*Button.cs*
+```csharp
+(...omitted..)
+public virtual void SendMessage(){
+    string valueToSend = HTMLId;
+    MessagingCenter.Send(this, ClickEventName, valueToSend);
+}
+```
+which gets triggered by the @onclick="SendMessage" handler that I sticked on the html button inside the component template
+
+*Button.razor*
+```razor
+<button type="button" class="btn @HTMLCssClass" id="@HTMLId"  @onclick="SendMessage" @onclick:preventDefault="PreventDefault">
+    @if (Icon != "") {
+    <span class="@Icon">&nbsp;</span>
+    }    
+     @Label
+</button>
+```
+A very cool feature of Messaging Center is that it does not need to be instantiated nor injected somewhere nor registered in a service. It is just there ready to be used everywhere you need it, be it a page, a component or a class. And to provide any part of the system a mean to comunicate. 
+Now, we just have to register one or more parts of our system to listen and react when the above-mentioned ```BikeList_editIemClick``` event gets broadcasted.
+Let's say we want to recieve the event on the List of products and open a popup to edit the clicked item. To do so we have first to subscribe our page to the event:
+
+```razor
+@page "/somepage"
+(..omitted..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+
+public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        {
+        // Do actions against the value
+        selectedId = value;
+        //we retrieve the full object from our existing list without a trip to the database
+        var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+        //we tell the bootstrp modal to show up
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+        // If the value is updating the component make sure to call StateHasChanged
+        StateHasChanged();
+        });
+    }
+
+
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+    SubscribeToEditItemClick();//we subscribe to event here
+ }
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+    }
+}
+```
+Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
+
+The last step is adding the [Modal Component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Modal.cs) to the page.
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            (...omitted...)
+            <th>Tot. Price</th>
+            <th>Actions</th>
+        </HeaderTemplate>
+        <RowTemplate>
+           (...omitted...)
+            <td>@EntityBike.TotalPrice</td>
+            <td>
+            <Button HTMLId="@EntityBike.Id" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+            </td>
+        </RowTemplate>
+</HtmlTable>
+ <!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           here goes the content of the modal
+        </ChildContent>
+    </Modal>
+    (...omitted...)
+```
+
+(More to come)
+## The Resulting Stuff (so far)
+*The list of products*
+![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
+*A pop up for editing a product*
+![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
 ## Related links
-[Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
+- [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
+
+
+- [ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (lot of "inspiration" from following links)
+    - [Beginner's guide to Components](https://www.ezzylearning.net/tutorial/a-beginners-guide-to-blazor-components)
+    - [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
+    - [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
+
