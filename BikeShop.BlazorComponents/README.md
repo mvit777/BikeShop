@@ -152,7 +152,7 @@ public virtual void SendMessage(){
     MessagingCenter.Send(this, ClickEventName, valueToSend);
 }
 ```
-which gets triggered by the @onclik="SendMessage" that I sticked on the html button inside the component template
+which gets triggered by the @onclick="SendMessage" that I sticked on the html button inside the component template
 
 *Button.razor*
 ```razor
@@ -170,11 +170,11 @@ which gets triggered by the @onclik="SendMessage" that I sticked on the html but
 *A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
 ## Related links
-[Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
+- [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 
 
-[ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (lot of "inspiration" from following links)
-- [Beginner's guide to Components](https://www.ezzylearning.net/tutorial/a-beginners-guide-to-blazor-components)
-- [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
-- [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
+- [ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (lot of "inspiration" from following links)
+    - [Beginner's guide to Components](https://www.ezzylearning.net/tutorial/a-beginners-guide-to-blazor-components)
+    - [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
+    - [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
 
