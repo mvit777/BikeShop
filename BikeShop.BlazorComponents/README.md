@@ -53,7 +53,7 @@ var bootstrapNS = {};
     }
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {
-            table = $(table).DataTable(options);
+            $(table).DataTable(options);
         }
     }
 }).apply(bootstrapNS);
