@@ -7,7 +7,7 @@ Install-Package AKSoftware.Blazor.Utilities
 ```
 Once you have imported the .dll into your Blazor project, just add the two lines at the bottom of _Imports.razor
 
-```csharp
+```razor
 //(...omitted..)
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
