@@ -34,6 +34,10 @@ else
     <br />
     <Alert HTMLId="MainAlert" @ref="MainAlert">
         @message
+        @if (showConfirmButton) {
+            <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary float-right" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
+            <br />
+        }
     </Alert>
     <div style="clear:both"></div>
     <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
@@ -115,6 +119,8 @@ else
     private GenericBike ProductModel = new GenericBike();
     private EditContext EditContext;
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
+    private bool showConfirmButton = false;
+    private string deletableObjId;
 
     #region "Form handlers"
 
@@ -125,17 +131,31 @@ else
         JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");
         MainAlert.ChangeVisible(false);
     }
+    public void SubscribeToOnDeleteConfirmed()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
+        {
+            message = $"I deleted item {deletableObjId}";
+            //MainAlert.ChangeVisible(false);
+            MainAlert.ChangeCssClass("alert-success");
+            showConfirmButton = false;
+            deletableObjId = null;
+            StateHasChanged();
+        });
+    }
 
 
     public void SubscribeToDeleteItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"Please confirm you want to delete item {value}";
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
+            showConfirmButton = true;
             MainAlert.ChangeVisible(true);
+            deletableObjId = value;
 
             StateHasChanged();
         });
@@ -145,10 +165,10 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -180,7 +200,8 @@ else
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             SubscribeToEditItemClick();
             SubscribeToDeleteItemClick();
-            
+            SubscribeToOnDeleteConfirmed();
+
             CurrentUser = UserService.GetCurrentUser();
 
         }
