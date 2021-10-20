@@ -53,7 +53,9 @@ var bootstrapNS = {};
     }
 }).apply(bootstrapNS);
 ```
-So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables
+So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
+All the other components I wrapped inside my library can function either without javascript (Ex. Tabs) or can just be activated by C# only. 
+Let's have a closer look...
 
 ## Brief description of the components
 
