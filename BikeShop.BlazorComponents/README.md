@@ -240,6 +240,7 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
     </Modal>
     (...omitted...)
 ```
+Should we need a larger Modal, we just set the ```HTMLCssClass``` to something like ```modal-xl```.
 Inside the ```ChildContent``` tag of the modal we can now put an [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0).
 EditForm is a very useful built-in component of Blazor which alleviates the *tedium* of designing and binding a form. Let's see how we can use it
 (More to come)
