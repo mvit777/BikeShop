@@ -1,7 +1,7 @@
 ﻿# BikeShop.BlazorComponents
 TODO: clean of unused files and ...still work in progress
 ## Install
-Make sure to install the excellent nuget-package Messaging Center at solution level
+Make sure to install the excellent nuget-package [Messaging Center](https://github.com/aksoftware98/blazor-utilities) at solution level
 ```
 Install-Package AKSoftware.Blazor.Utilities
 ```
