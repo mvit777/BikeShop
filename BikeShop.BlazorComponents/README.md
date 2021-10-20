@@ -142,6 +142,24 @@ So we add it in our table definition on somepage:
 ```
 which results in our blue edit button. If we take a closer look the most relevant properties are ```HTMLId```, to retrieve the entity we want to edit, and the ```ClickEventName``` which will broadcast the Event ```BikeList_editIemClick``` globally (courtesy of the afore-mentioned [Messaging Center](https://github.com/aksoftware98/blazor-utilities)) and can be consumed by any component on the page.
 
+I named the ```ClickEventName``` as ```BikeList_editIemClick``` but it can have any name. If have you looked into [button associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs) you might have noticed this method:
+```csharp
+(...omitted..)
+public virtual void SendMessage()
+        {
+            string valueToSend = HTMLId;
+            MessagingCenter.Send(this, ClickEventName, valueToSend);
+        }
+```
+which gets triggered by the @onclik="SendMessage" that I sticked on the html button inside the component template
+```
+<button type="button" class="btn @HTMLCssClass" id="@HTMLId"  @onclick="SendMessage" @onclick:preventDefault="PreventDefault">
+    @if (Icon != "") {
+    <span class="@Icon">&nbsp;</span>
+    }    
+     @Label
+</button>
+```
 (More to come)
 ## The Resulting Stuff (so far)
 *The list of products*
