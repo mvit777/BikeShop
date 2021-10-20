@@ -67,6 +67,7 @@ Let's have a closer look...
 Imagine we want to build the classic product list table with links for creating/editing/deleting items..
 The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source an some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
 Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
+
 *Parental Warning: A lot of code stolen from [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
 ```razor
 @page "/somepage"
@@ -115,8 +116,33 @@ protected override async Task OnInitializedAsync()
     }
 }
 ```
+Next we want to add an edit button for every row. Here comes in play the [Button component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.razor) and yet again [his associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs)
+So we add it in our table definition on somepage:
+```razor
+@page "/somepage"
+@inject IConfiguration Configuration;
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+
+<HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+        <HeaderTemplate>
+            (...omitted...)
+            <th>Tot. Price</th>
+            <th>Actions</th>
+        </HeaderTemplate>
+        <RowTemplate>
+           (...omitted...)
+            <td>@EntityBike.TotalPrice</td>
+            <td>
+            <Button HTMLId="@(EntityBike.Id + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+            </td>
+        </RowTemplate>
+</HtmlTable>
+    (...omitted...)
+```
+
 (More to come)
-## The Resulting Product (so far)
+## The Resulting Stuff (so far)
 *The list of products*
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 *A pop up for editing a product*
