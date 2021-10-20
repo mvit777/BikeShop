@@ -20,14 +20,6 @@
 
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
     <span>@responseContent</span>
-    <span>
-        Current user is:
-        @if (CurrentUser != null)
-        {
-            @CurrentUser.Username
-        }
-
-    </span>
 </div>
 
 @if (EntityBikes == null)
@@ -122,7 +114,7 @@ else
     private Alert MainAlert;
     private GenericBike ProductModel = new GenericBike();
     private EditContext EditContext;
-    private BikeShopUserInfo CurrentUser;
+    private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
 
     #region "Form handlers"
 
