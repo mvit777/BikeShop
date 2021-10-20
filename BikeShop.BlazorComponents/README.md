@@ -240,8 +240,13 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
     </Modal>
     (...omitted...)
 ```
-
+Inside the ```ChildContent``` tag of the modal we can now put an [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0).
+EditForm is a very useful built-in component of Blazor which alleviates the *tedium* of designing and binding a form. Let's see how we can use it
 (More to come)
+
+**What about asking for confirmation? AKA the delete button**
+(More to come)
+
 ## The Resulting Stuff (so far)
 *The list of products*
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
