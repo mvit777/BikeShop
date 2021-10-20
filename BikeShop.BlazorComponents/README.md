@@ -63,7 +63,8 @@ All the other components I wrapped inside my library can either work without jav
 Let's have a closer look...
 
 ## Brief description of the components
-
+Imagine we want to build the classic product list table with links for creating/editing/deleting items..
+(More to come)
 ## The Resulting Product (so far)
 *The list of products*
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
