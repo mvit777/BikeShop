@@ -97,6 +97,22 @@ protected override async Task OnInitializedAsync()
  }
 }
 ```
+this will output a normal html table, to turn it into a JQuery Datable we have to call the function we have set in previous paragraph into the interop.js file
+```razor
+(..omitted..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+protected override async Task OnInitializedAsync()
+ {
+    EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
+ }
+ protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+    }
+}
+```
 (More to come)
 ## The Resulting Product (so far)
 *The list of products*
