@@ -64,8 +64,8 @@ Let's have a closer look...
 
 ## Brief description of the components
 
-## The Finished Product (so far)
-*The list of product*
+## The Resulting Product (so far)
+*The list of products*
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 *A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
