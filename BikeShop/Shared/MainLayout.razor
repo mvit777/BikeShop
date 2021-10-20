@@ -1,5 +1,8 @@
 @inherits LayoutComponentBase
-@*@inject IJSRuntime JSRuntime;*@
+@using BikeShop.Services;
+@using Newtonsoft.Json;
+@inject BikeShopUserService UserService;
+@inject IJSRuntime JSRuntime;
 
 <div class="page">
     <div class="sidebar">
@@ -9,6 +12,7 @@
     <div class="main">
         <div class="top-row px-4">
             <!--<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>-->
+            <UserBox />
         </div>
 
         <div class="content px-4">
@@ -16,13 +20,32 @@
         </div>
     </div>
 </div>
-@*@code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+@code {
+    
+    protected override void OnInitialized()
     {
-        if (firstRender)
+        base.OnInitialized();
+        try
         {
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/plugins/jquery/jquery.min.js");
+            
+            UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
+        }
+        catch(Exception ex)
+        {
+            throw new Exception(ex.Message + " " + ex.Source);
         }
     }
-}*@
+    protected override void OnAfterRender(bool firstRender)
+    {
+        //if (firstRender)
+        //    UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
+    }
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/plugins/jquery/jquery.min.js");
+    //    }
+    //}
+}
 

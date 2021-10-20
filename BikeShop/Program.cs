@@ -12,6 +12,8 @@ using BikeDistributor.Infrastructure.core;
 using MV.Framework.interfaces;
 using BikeDistributor.Infrastructure.services;
 using System.IO;
+using BikeShop.Services;
+using Newtonsoft.Json;
 
 namespace BikeShop
 {
@@ -26,7 +28,6 @@ namespace BikeShop
             builder.RootComponents.Add<App>("#app");
             var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
             builder.Services.AddScoped(localClient => http);
-
             using var response = await http.GetAsync("appsettings.json");
             using var stream = await response.Content.ReadAsStreamAsync();
             builder.Configuration.AddJsonStream(stream);
@@ -41,8 +42,26 @@ namespace BikeShop
             var restBaseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl", "");
             var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
             builder.Services.AddScoped(RestClient => restClient);
-            
-            //=================cannot use in blazor wasm==============
+
+            /****************just some shit to pretend we have a login user in place*******/
+            //var users = builder.Configuration.GetSection("BikeShopWS").GetValue<List<BikeShopUserInfo>>("Users");
+            //var users = JsonConvert.DeserializeObject<List<BikeShopUserInfo>>(jsonUsers.ToString());
+            var admin = new BikeShopUserInfo()
+            {
+                Username = "admin",
+                Email = "marcello.vitali@yahoo.it",
+                Image = "ranx.jpg"
+                
+            };
+            var users = new List<BikeShopUserInfo>();
+            users.Add(admin);
+            var UserService = new BikeShopUserService(users);
+            //builder.Services.AddScoped<IUserService>(us=>UserService);
+            builder.Services.AddSingleton(UserService);
+
+            /*****************end of shit*************************************************/
+
+            //=================cannot use RestSharp in blazor wasm==============
             //var restClient = new BaseRestClient(restBaseUrl);
             //builder.Services.AddSingleton<BaseRestClient>(RC => restClient);
             //==========================================================

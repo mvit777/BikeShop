@@ -1,0 +1,56 @@
+﻿@using AKSoftware.Blazor.Utilities;
+@using BikeShop.Services;
+@inject BikeShopUserService UserService;
+
+@if (currentUser != null) { 
+<div class="btn-group">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle" /> @currentUser.Username
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        @*<button class="dropdown-item" type="button">Action</button>
+            <button class="dropdown-item" type="button">Another action</button>
+            <button class="dropdown-item" type="button">Something else here</button>*@
+        <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />
+    </div>
+</div>
+}
+@code {
+    private BikeShopUserInfo currentUser;
+
+
+    protected void SubScribeToUserChanged()
+    {
+        MessagingCenter.Subscribe<BikeShopUserService, string>(this, "OnUserChanged", (sender, value) =>
+        {
+            // Do actions against the value
+
+            currentUser = UserService.GetCurrentUser();
+            StateHasChanged();
+        });
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        currentUser = UserService.GetCurrentUser();
+
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+
+                SubScribeToUserChanged();
+                
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message + " " + ex.Source);
+            }
+
+        }
+    }
+}
