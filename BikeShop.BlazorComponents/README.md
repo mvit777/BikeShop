@@ -41,7 +41,7 @@ now stick this code in the js/interop.js file
 ```javascript
 //define namespace for bootstrap components
 var bootstrapNS = {};
-//register js namespace for bootstrap components
+//register the helper functions in the namespace for bootstrap components
 (function () {
     this.ToggleModal = function (modal, mode) {
         $(modal).modal(mode);
@@ -49,7 +49,6 @@ var bootstrapNS = {};
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {
             table = $(table).DataTable(options);
-            this.JSDataTables[table] = table;
         }
     }
 }).apply(bootstrapNS);
