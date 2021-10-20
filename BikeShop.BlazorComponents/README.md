@@ -53,7 +53,7 @@ var bootstrapNS = {};
     }
 }).apply(bootstrapNS);
 ```
-So far this is the only code needed to make interact Blazor with my components
+So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables
 
 ## Brief description of the components
 
