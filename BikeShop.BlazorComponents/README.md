@@ -54,6 +54,7 @@ var bootstrapNS = {};
     }
 }).apply(bootstrapNS);
 ```
+So far this is the only code needed to make interact Blazor with my components
 
 ## Brief description of the components
 
