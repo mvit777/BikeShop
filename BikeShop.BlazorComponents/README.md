@@ -152,7 +152,7 @@ public virtual void SendMessage(){
     MessagingCenter.Send(this, ClickEventName, valueToSend);
 }
 ```
-which gets triggered by the @onclick="SendMessage" that I sticked on the html button inside the component template
+which gets triggered by the @onclick="SendMessage" handler that I sticked on the html button inside the component template
 
 *Button.razor*
 ```razor
