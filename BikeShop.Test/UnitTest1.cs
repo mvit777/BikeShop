@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -89,26 +90,41 @@ namespace BikeShop.Test
         [Fact]
         public void TestUservice()
         {
-            //var file = @"C:\Users\Marcello\source\repos\Blazor\BikeShop\wwwroot\appsettings.json";
+            var file = @"C:\Users\Marcello\source\repos\Blazor\BikeShop\wwwroot\appsettings.json";
             // var WasmConfig = new Config(file);
             // var jUsers = WasmConfig.GetJObject("Users");
             // var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(jUsers.ToString());
 
-            // var configuration = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
-            var admin = new BikeShopUserInfo()
+            //var configuration = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+            var configuration = new ConfigurationBuilder().AddJsonFile(file).AddInMemoryCollection().Build();
+            var url = configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl");
+            url.Should().Be("http://localhost:8021");
+            var users = configuration.GetSection("Users").GetChildren();
+            //users.Should().Be("caz");
+            users.Count().Should().BeOneOf(new int[] { 2 });
+            var userInfos = new List<BikeShopUserInfo>();
+            foreach(var user in users)
             {
-                Username = "admin",
-                Email = "marcello.vitali@yahoo.it"
-            };
-            //admin.Username= configuration.GetValue<string>(dict["Username"]);
-            //admin.Email = configuration.GetValue<string>(dict["Email"]);
-            var users = new List<BikeShopUserInfo>();
-            users.Add(admin);
-            var us = new BikeShopUserService(users);
+                var userInfo = new BikeShopUserInfo();
+                user.Bind(userInfo);
+                userInfos.Add(userInfo);
+            }
+            var admin = userInfos.Where(x => x.Username == "admin").SingleOrDefault();
+            admin.Role.Should().Be("Admin");
+            //var admin = new BikeShopUserInfo()
+            //{
+            //    Username = "admin",
+            //    Email = "marcello.vitali@yahoo.it"
+            //};
+            ////admin.Username= configuration.GetValue<string>(dict["Username"]);
+            ////admin.Email = configuration.GetValue<string>(dict["Email"]);
+            ////var users = new List<BikeShopUserInfo>();
+            //users.Add(admin);
+            //var us = new BikeShopUserService(users);
             
-            us.LogIn(admin.Username, admin.Email);
-            var currentUser = us.GetCurrentUser();
-            currentUser.Email.Should().Be("marcello.vitali@yahoo.it");
+            //us.LogIn(admin.Username, admin.Email);
+            //var currentUser = us.GetCurrentUser();
+            //currentUser.Email.Should().Be("marcello.vitali@yahoo.it");
 
         }
     }

@@ -43,19 +43,17 @@ namespace BikeShop
             var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
             builder.Services.AddScoped(RestClient => restClient);
 
-            /****************just some shit to pretend we have a login user in place*******/
-            //var users = builder.Configuration.GetSection("BikeShopWS").GetValue<List<BikeShopUserInfo>>("Users");
-            //var users = JsonConvert.DeserializeObject<List<BikeShopUserInfo>>(jsonUsers.ToString());
-            var admin = new BikeShopUserInfo()
+            /****************just some shit to pretend we have a login system in place*******/
+            var users = builder.Configuration.GetSection("Users").GetChildren();
+            
+            var userInfos = new List<BikeShopUserInfo>();
+            foreach (var user in users)
             {
-                Username = "admin",
-                Email = "marcello.vitali@yahoo.it",
-                Image = "ranx.jpg"
-                
-            };
-            var users = new List<BikeShopUserInfo>();
-            users.Add(admin);
-            var UserService = new BikeShopUserService(users);
+                var userInfo = new BikeShopUserInfo();
+                user.Bind(userInfo);
+                userInfos.Add(userInfo);
+            }
+            var UserService = new BikeShopUserService(userInfos);
             //builder.Services.AddScoped<IUserService>(us=>UserService);
             builder.Services.AddSingleton(UserService);
 
