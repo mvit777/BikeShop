@@ -286,8 +286,10 @@ EditForm is a very useful **built-in component of Blazor** which alleviates the 
     </Modal>
     (...omitted...)
 ```
-The interesting parts of the EditForm component are the opening tag property ```EditContext="@EditContext"```, the ```@bind-Value="ProductModel.Model"``` property of every 
-field and the final handler ```@onclick="SaveProduct"``` on the submit button. The rest is just a regular form.
+The interesting parts of the EditForm component are 
+- the opening tag property ```EditContext="@EditContext"```
+- the ```@bind-Value="ProductModel.Model"``` property of every field
+- the final handler ```@onclick="SaveProduct"``` on the submit button. The rest is just a regular form.
 The [EditContext](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-5.0) recieves a model object and takes care 
 of tracking which fields are modified and field validation (you can read much detailed infos on the link I provided to MS Docs).
 We already had a handler in place which is triggerd when some edit button is clicked. Now it is time to add the missing parts...
