@@ -244,7 +244,7 @@ Should we need a larger Modal, we just set the ```HTMLCssClass``` to something l
 
 Inside the ```ChildContent``` tag of the modal we can now put an [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0).
 EditForm is a very useful built-in component of Blazor which alleviates the *tedium* of designing and binding a form. Let's see how we can use it
-```
+```razor
 (...omitted.)
 <!-- HIDDEN EDIT MODAL -->
     <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
