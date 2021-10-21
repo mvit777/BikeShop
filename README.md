@@ -88,7 +88,7 @@ My aim here is to create a [small lib of components](https://github.com/mvit777/
 
 (...more to come...)
 
-Armed with my first set of components, before implementing the full CRUD set I want to...
+Armed with my first set of components, before implementing the full CRUD operations I want to...
 
 ## Shift from Rest to gRPC
 (...more to come..)
