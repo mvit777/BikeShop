@@ -41,7 +41,7 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
     <script src="js/interop.js"></script>
 </body>
 ```
-now stick this code in the wwwroot/js/interop.js file
+now stick this code in the ```wwwroot/js/interop.js``` file
 
 ```javascript
 //define namespace for bootstrap components
