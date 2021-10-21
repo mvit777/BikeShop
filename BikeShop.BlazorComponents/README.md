@@ -320,15 +320,19 @@ protected override async Task OnInitializedAsync()
 
         EditContext = new EditContext(ProductModel); // WE ASSIGN THE MODEL TO THE EditContext
         //(...omitted code..)
-        SubscribeToEditItemClick(); // WE SUBSCRIBE TO THE EditItemClick  EVENT 
+        SubscribeToEditItemClick(); // WE SUBSCRIBE TO THE BikeList_editIemClick  EVENT 
         //(...omitted code..)
     }
 ```
-Now the Modal should show with all fields populated
+Now the Modal should show with all fields populated. Finally, we have to add the ```SaveProduct``` handler which mainly consists of sending 
+the modified Product to the BikeShopWS in order to store it in the database.
 
 (More to come)
 
 **What about asking for confirmation? AKA the delete button**
+In the case of the delete button we want the user to confirm the action before going on with the deletion. In this case the bootstrap Alert, wrapped into 
+the [Alert component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Alert.razor) might come handy.
+Let's see how....
 (More to come)
 
 ## The Resulting Stuff (so far)
