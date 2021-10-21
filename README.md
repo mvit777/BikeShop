@@ -77,7 +77,7 @@ An in-depth explanation of what it is and why it is good thing can be found in t
 to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
 In the meanwhile I want to move on the topic of templating and components.
 
-## More Details on: Templating & Components ##[gRPC](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0)
+## More Details on: Templating & Components ##
 Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
 All changes should be made in ```wwwroot/index.html```. It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
 replacement. That means some components will work as expected (Ex. tabs) some will not. 
