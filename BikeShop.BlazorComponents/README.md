@@ -279,13 +279,15 @@ EditForm is a very useful built-in component of Blazor which alleviates the *ted
                     </div>
                 </div>
                 <div class="col-12 mb-3">
-                    <button type="submit" class="btn btn-primary" @onclick="UpdateProduct">Submit</button>
+                    <button type="submit" class="btn btn-primary" @onclick="SaveProduct">Submit</button>
                 </div>
             </EditForm>
         </ChildContent>
     </Modal>
     (...omitted...)
 ```
+The most interesting parts of the EditForm component are the opening tag property ```EditContext="@EditContext"```, the ```@bind-Value="ProductModel.Model"``` property of every 
+field and the final handler ```@onclick="SaveProduct"``` on the submit button. The rest is just a regular form.
 (More to come)
 
 **What about asking for confirmation? AKA the delete button**
