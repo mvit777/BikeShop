@@ -337,7 +337,7 @@ Let's see how....
 (More to come)
 
 ## The Resulting Stuff (so far)
->*The list of products*
+>*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 >*A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
