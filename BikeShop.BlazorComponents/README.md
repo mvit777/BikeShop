@@ -286,8 +286,46 @@ EditForm is a very useful built-in component of Blazor which alleviates the *ted
     </Modal>
     (...omitted...)
 ```
-The most interesting parts of the EditForm component are the opening tag property ```EditContext="@EditContext"```, the ```@bind-Value="ProductModel.Model"``` property of every 
+The interesting parts of the EditForm component are the opening tag property ```EditContext="@EditContext"```, the ```@bind-Value="ProductModel.Model"``` property of every 
 field and the final handler ```@onclick="SaveProduct"``` on the submit button. The rest is just a regular form.
+The [EditContext](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-5.0) recieves a model object and takes care 
+of tracking which fields are modified and field validation (you can read much detailed infos on the link I provided to MS Docs).
+We already had a handler in place which is triggerd when some edit button is clicked. Now it is time to add the missing parts...
+```
+(..omitted code..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+private Bike ProductModel = new Bike(); // WE CREATE AN EMPTY Bike INSTANCE MAINLY TO HANDLE THE INSERT NEW CASE
+private EditContext EditContext; // WE DECLARE AN EditContext
+
+//we have registered this handler in the OnTaskInitialzed routine
+public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        {
+        // Do actions against the value
+        selectedId = value;
+        //we retrieve the full object from our existing list without a trip to the database
+        var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+        ProductModel = MongoEntity.Bike; //WE ASSIGN ProductModel THE SELECTED ITEM
+        //we tell the bootstrp modal to show up
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+        // If the value is updating the component make sure to call StateHasChanged
+        StateHasChanged();
+        });
+    }
+
+protected override async Task OnInitializedAsync()
+    {
+
+        EditContext = new EditContext(ProductModel); // WE ASSIGN THE MODEL TO THE EditContext
+        (...omitted code..)
+        SubscribeToEditItemClick(); // WE SUBSCRIBE TO THE EditItemClick  EVENT 
+        (...omitted code..)
+    }
+```
+
+
 (More to come)
 
 **What about asking for confirmation? AKA the delete button**
