@@ -41,7 +41,7 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
     <script src="js/interop.js"></script>
 </body>
 ```
-now stick this code in the wwwroot/js/interop.js file
+now stick this code in the ```wwwroot/js/interop.js``` file
 
 ```javascript
 //define namespace for bootstrap components
@@ -152,7 +152,7 @@ public virtual void SendMessage(){
     MessagingCenter.Send(this, ClickEventName, valueToSend);
 }
 ```
-which gets triggered by the @onclick="SendMessage" handler that I sticked on the html button inside the component template
+which gets triggered by the ```@onclick="SendMessage"``` handler that I sticked on the html button inside the component template
 
 *Button.razor*
 ```razor
@@ -194,12 +194,8 @@ protected override async Task OnInitializedAsync()
     EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
     SubscribeToEditItemClick();//we subscribe to event here
  }
- protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
-    }
-}
+ 
+ (...omitted...)
 ```
 Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
 
@@ -240,12 +236,110 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
     </Modal>
     (...omitted...)
 ```
+Should we need a larger Modal, we just set the ```HTMLCssClass``` to something like ```modal-xl```.
+
+Inside the ```ChildContent``` tag of the modal we can now put an [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0).
+EditForm is a very useful **built-in component of Blazor** which alleviates the *tedium* of designing and binding a form. Let's see how we can use it
+```razor
+(...omitted.)
+<!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           <EditForm EditContext="@EditContext" class="row p-3">
+                <div class="col-md-6 mb-3">
+                    <label for="Model">Model</label>
+                    <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="BasePrice">Price</label>
+                    <InputNumber id="BasePrice" @bind-Value="ProductModel.BasePrice" class="form-control" />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Description">Description</label>
+                    <InputTextArea id="Description" @bind-Value="ProductModel.Description" class="form-control" />
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="form-check">
+                        <InputCheckbox id="IsStandard" @bind-Value="ProductModel.isStandard" class="form-check-input" />
+                        <label class="form-check-label" for="IsStandard">
+                            Standard
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <button type="submit" class="btn btn-primary" @onclick="SaveProduct">Submit</button>
+                </div>
+            </EditForm>
+        </ChildContent>
+    </Modal>
+    (...omitted...)
+```
+The interesting parts of the EditForm component are 
+- the opening tag property ```EditContext="@EditContext"```
+- the ```@bind-Value="ProductModel.XXX"``` property of every field
+- the final handler ```@onclick="SaveProduct"``` on the submit button. 
+
+The rest is just a regular form.
+The [EditContext](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-5.0) recieves a model object and takes care 
+of tracking which fields are modified and field validation (you can read much detailed infos on the link I provided to MS Docs).
+We already had a handler in place which is triggerd when some edit button is clicked. Now it is time to add the missing parts...
+```razor
+(..omitted code..)
+@code{
+private List<MongoEntityBike> EntityBikes;
+private Bike ProductModel = new Bike(); // WE CREATE AN EMPTY Bike INSTANCE MAINLY TO HANDLE THE INSERT NEW CASE
+private EditContext EditContext; // WE DECLARE AN EditContext
+
+//we have registered this handler in the OnTaskInitialzed routine
+public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        {
+        // Do actions against the value
+        selectedId = value;
+        //we retrieve the full object from our existing list without a trip to the database
+        var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+        ProductModel = MongoEntity.Bike; //WE ASSIGN ProductModel THE SELECTED ITEM
+        //we tell the bootstrp modal to show up
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+        // If the value is updating the component make sure to call StateHasChanged
+        StateHasChanged();
+        });
+    }
+
+protected override async Task OnInitializedAsync()
+    {
+
+        EditContext = new EditContext(ProductModel); // WE ASSIGN THE MODEL TO THE EditContext
+        //(...omitted code..)
+        SubscribeToEditItemClick(); // WE SUBSCRIBE TO THE BikeList_editIemClick  EVENT 
+        //(...omitted code..)
+    }
+```
+Now the Modal should show with all fields populated. Finally, we have to add the ```SaveProduct``` handler which mainly consists of sending 
+the modified Product to the BikeShopWS in order to store it in the database.
 
 (More to come)
+
+**What about asking for confirmation? AKA the delete button**
+
+In the case of the delete button we want the user to confirm the action before going on with the deletion. In this case the bootstrap Alert, wrapped into 
+the [Alert component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Alert.razor) might come handy.
+Let's see how....
+(More to come)
+
 ## The Resulting Stuff (so far)
-*The list of products*
+>*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
-*A pop up for editing a product*
+>*A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
 ## Related links
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
@@ -256,3 +350,5 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
     - [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
     - [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
 
+- [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0) Bible definition
+  - [ezzylearning tutorial on forms and validation](https://www.ezzylearning.net/tutorial/a-guide-to-blazor-forms-and-validation)

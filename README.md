@@ -72,7 +72,7 @@ or even simplier if your entity can deserialize without any helper method
 ```csharp
 EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
 ```
-While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports gRPC out-of-the-box (sort of).
+While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports [gRPC](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0) out-of-the-box (sort of).
 An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
 to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
 In the meanwhile I want to move on the topic of templating and components.
@@ -87,6 +87,11 @@ In the end what gets rendered in the browser is again just html + javascript and
 My aim here is to create a [small lib of components](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents) that will automatise the output of parametrisable html structure of some Bootstrap components and the plumbing to external javascript manipulation. Let's see what I achieved so far...[BikeShop.BlazorComponents](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents)
 
 (...more to come...)
+
+Armed with my first set of components, before implementing the full CRUD operations I want to...
+
+## Shift from Rest to gRPC
+(...more to come..)
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
 (...more to come...)
