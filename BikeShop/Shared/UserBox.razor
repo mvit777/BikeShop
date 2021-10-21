@@ -7,14 +7,16 @@
 {
     <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle" /> @currentUser.Username
+            <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle border border-dark" /> @currentUser.Username
         </button>
         <div class="dropdown-menu dropdown-menu-right">
             @*<button class="dropdown-item" type="button">Action</button>
                 <button class="dropdown-item" type="button">Another action</button>
                 <button class="dropdown-item" type="button">Something else here</button>*@
             <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />
-            <button class="dropdown-item" type="button" @onclick="OnBtnSettingsClicked">Impersonate</button>
+            <button class="dropdown-item" type="button" @onclick="OnBtnSettingsClicked">
+               <span class="oi oi-people">&nbsp;</span>Impersonate
+            </button>
             <Button HTMLId="btnLogOut" Icon="oi oi-share-boxed" HTMLCssClass="dropdown-item" Label="LogOut" ClickEventName="btnLogOut" />
         </div>
     </div>

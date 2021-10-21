@@ -20,9 +20,9 @@
         </div>
     </div>
     <!-- hidden modal -->
-    <Modal HTMLId="UsersModal" HeaderTitle="Users" HTMLCssClass="modal-md" ShowFooter="false">
+    <Modal HTMLId="UsersModal" HeaderTitle="Users" HTMLCssClass="modal-sm" ShowFooter="false">
         <HeaderTemplate>
-            <h5 class="modal-title" id="UserModalH5"><span class="oi oi-pencil"></span> Pick a User</h5>
+            <h5 class="modal-title" id="UserModalH5"><span class="oi oi-people"></span> Pick a User</h5>
             <span class="rounded-circle  light-purple-bg" style="background-color: white;">
                 <button type="button" class="close" @onclick="CloseUsersModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
                     <span aria-hidden="true">&times;</span>
@@ -34,9 +34,20 @@
             {
                 @foreach (BikeShopUserInfo user in Users)
                 {
-                    <div>
-                        @user.Username;
+            
+                
+                <div class="card" style="width: 16.5rem;">
+                    <div class="card-body text-right">
+                        <div class="float-left"><img src="@("./images/" + user.Image)" class="rounded-circle border border-dark" width="70" height="70" alt="..."></div>                
+                        <div class="card-text text-dark text-wrap">
+                            <strong>@user.Username</strong><br />
+                                                           <em>"@user.AboutMe"</em>
+                            <div class="text-sm-right text-muted">@user.Role</div>
+                        </div>
+                        <a href="#" class="btn btn-primary">Impersonate</a>
                     </div>
+                </div>
+
                 }
             }
         </ChildContent>
