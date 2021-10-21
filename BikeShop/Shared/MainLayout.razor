@@ -19,16 +19,44 @@
             @Body
         </div>
     </div>
+    <!-- hidden modal -->
+    <Modal HTMLId="UsersModal" HeaderTitle="Users" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="UserModalH5"><span class="oi oi-pencil"></span> Pick a User</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseUsersModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            @if (Users != null)
+            {
+                @foreach (BikeShopUserInfo user in Users)
+                {
+                    <div>
+                        @user.Username;
+                    </div>
+                }
+            }
+        </ChildContent>
+    </Modal>
 </div>
 @code {
-    
+    private List<BikeShopUserInfo> Users;
+
+    protected async Task CloseUsersModal()
+    {
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "hide");
+    }
     protected override void OnInitialized()
     {
         base.OnInitialized();
         try
         {
-            
+
             UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
+            Users = UserService.GetUsers();
         }
         catch(Exception ex)
         {

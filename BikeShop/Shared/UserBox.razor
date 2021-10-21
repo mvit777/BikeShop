@@ -1,32 +1,55 @@
 ﻿@using AKSoftware.Blazor.Utilities;
 @using BikeShop.Services;
+@inject IJSRuntime JSRuntime;
 @inject BikeShopUserService UserService;
 
-@if (currentUser != null) { 
-<div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle" /> @currentUser.Username
-    </button>
-    <div class="dropdown-menu dropdown-menu-right">
-        @*<button class="dropdown-item" type="button">Action</button>
-        <button class="dropdown-item" type="button">Another action</button>
-        <button class="dropdown-item" type="button">Something else here</button>*@
-        <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />
-        <Button HTMLId="btnLogOut" Icon="oi oi-share-boxed" HTMLCssClass="dropdown-item" Label="LogOut" ClickEventName="btnLogOut" />
+@if (currentUser != null)
+{
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle" /> @currentUser.Username
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            @*<button class="dropdown-item" type="button">Action</button>
+                <button class="dropdown-item" type="button">Another action</button>
+                <button class="dropdown-item" type="button">Something else here</button>*@
+            <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />
+            <button class="dropdown-item" type="button" @onclick="OnBtnSettingsClicked">Impersonate</button>
+            <Button HTMLId="btnLogOut" Icon="oi oi-share-boxed" HTMLCssClass="dropdown-item" Label="LogOut" ClickEventName="btnLogOut" />
+        </div>
     </div>
-</div>
 }
+
+
+<!--hidden modal-->
+
 @code {
     private BikeShopUserInfo currentUser;
+    private List<BikeShopUserInfo> Users;
 
+    //protected void SubscribeToSettingsClicked()
+    //{
+    //    //btnSettingsClicked
+    //    MessagingCenter.Subscribe<BikeShopUserService, string>(this, "btnSettingsClicked", (sender, value) =>
+    //    {
+    //        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
+    //        StateHasChanged();
+    //    });
+    //}
+    
+    protected async Task OnBtnSettingsClicked()
+    {
+        //placed in MainLayout
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
+    }
 
     protected void SubScribeToUserChanged()
     {
         MessagingCenter.Subscribe<BikeShopUserService, string>(this, "OnUserChanged", (sender, value) =>
         {
-            // Do actions against the value
+        // Do actions against the value
 
-            currentUser = UserService.GetCurrentUser();
+        currentUser = UserService.GetCurrentUser();
             StateHasChanged();
         });
     }
@@ -35,6 +58,7 @@
     {
         base.OnInitialized();
         currentUser = UserService.GetCurrentUser();
+        Users = UserService.GetUsers();
 
     }
     protected override void OnAfterRender(bool firstRender)
@@ -45,9 +69,9 @@
             {
 
                 SubScribeToUserChanged();
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message + " " + ex.Source);
             }

@@ -34,7 +34,7 @@ namespace BikeShop
             //mongoUrl = builder.Configuration.GetSection("Mongo").GetValue<string>("url","");
             //mongoDb = builder.Configuration.GetSection("Mongo").GetValue<string>("dbName", "");
 
-            ////=======================cannot use in blazor wasm
+            ////=======================cannot use tcp in blazor wasm
             //var mongoContext = new MongoDBContext(mongoUrl, mongoDb);
             //var BS = new MongoBikeService(mongoContext);
             //builder.Services.AddSingleton<IMongoService>(bs=>BS);

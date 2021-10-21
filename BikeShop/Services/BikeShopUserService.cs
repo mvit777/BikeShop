@@ -60,5 +60,9 @@ namespace BikeShop.Services
             }
             return false;
         }
+        public List<BikeShopUserInfo> GetUsers()
+        {
+            return _Users;
+        }
     }
 }
