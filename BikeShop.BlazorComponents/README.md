@@ -194,12 +194,8 @@ protected override async Task OnInitializedAsync()
     EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes");
     SubscribeToEditItemClick();//we subscribe to event here
  }
- protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
-    }
-}
+ 
+ (...omitted...)
 ```
 Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
 
