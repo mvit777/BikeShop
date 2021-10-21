@@ -241,8 +241,51 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
     (...omitted...)
 ```
 Should we need a larger Modal, we just set the ```HTMLCssClass``` to something like ```modal-xl```.
+
 Inside the ```ChildContent``` tag of the modal we can now put an [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0).
 EditForm is a very useful built-in component of Blazor which alleviates the *tedium* of designing and binding a form. Let's see how we can use it
+```
+(...omitted.)
+<!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           <EditForm EditContext="@EditContext" class="row p-3">
+                <div class="col-md-6 mb-3">
+                    <label for="Model">Model</label>
+                    <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="BasePrice">Price</label>
+                    <InputNumber id="BasePrice" @bind-Value="ProductModel.BasePrice" class="form-control" />
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="Description">Description</label>
+                    <InputTextArea id="Description" @bind-Value="ProductModel.Description" class="form-control" />
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="form-check">
+                        <InputCheckbox id="IsStandard" @bind-Value="ProductModel.isStandard" class="form-check-input" />
+                        <label class="form-check-label" for="IsStandard">
+                            Standard
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <button type="submit" class="btn btn-primary" @onclick="UpdateProduct">Submit</button>
+                </div>
+            </EditForm>
+        </ChildContent>
+    </Modal>
+    (...omitted...)
+```
 (More to come)
 
 **What about asking for confirmation? AKA the delete button**
