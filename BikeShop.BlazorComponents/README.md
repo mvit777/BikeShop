@@ -291,7 +291,7 @@ field and the final handler ```@onclick="SaveProduct"``` on the submit button. T
 The [EditContext](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-5.0) recieves a model object and takes care 
 of tracking which fields are modified and field validation (you can read much detailed infos on the link I provided to MS Docs).
 We already had a handler in place which is triggerd when some edit button is clicked. Now it is time to add the missing parts...
-```
+```razor
 (..omitted code..)
 @code{
 private List<MongoEntityBike> EntityBikes;
@@ -319,12 +319,12 @@ protected override async Task OnInitializedAsync()
     {
 
         EditContext = new EditContext(ProductModel); // WE ASSIGN THE MODEL TO THE EditContext
-        (...omitted code..)
+        //(...omitted code..)
         SubscribeToEditItemClick(); // WE SUBSCRIBE TO THE EditItemClick  EVENT 
-        (...omitted code..)
+        //(...omitted code..)
     }
 ```
-
+Now the Modal should show with all fields populated
 
 (More to come)
 
