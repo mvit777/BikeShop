@@ -14,7 +14,7 @@ Once you also have imported the BikeShop.BlazorComponents.dll into your Blazor p
 @using AKSoftware.Blazor.Utilities
 @using BikeShop.BlazorComponents.Components
 ```
-Now navigate to the wwwroot folder and add a file interop.js or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
+Now navigate to the ```wwwroot``` folder and add a file ```interop.js``` or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
 together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) before the closing </body>
 
 *wwwroot/index.html*
