@@ -3,7 +3,6 @@
 @using Newtonsoft.Json;
 @inject BikeShopUserService UserService;
 @inject IJSRuntime JSRuntime;
-
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -34,19 +33,26 @@
             {
                 @foreach (BikeShopUserInfo user in Users)
                 {
-            
-                
-                <div class="card" style="width: 16.5rem;">
-                    <div class="card-body text-right">
-                        <div class="float-left"><img src="@("./images/" + user.Image)" class="rounded-circle border border-dark" width="70" height="70" alt="..."></div>                
-                        <div class="card-text text-dark text-wrap">
-                            <strong>@user.Username</strong><br />
-                                                           <em>"@user.AboutMe"</em>
-                            <div class="text-sm-right text-muted">@user.Role</div>
+
+
+                    <div class="card" style="width: 16.5rem;">
+                        <div class="card-body text-right">
+                            <div class="float-left">
+                                <img src="@("./images/" + user.Image)" class="rounded-circle border border-dark" width="70" height="70" alt="...">
+                                @if (user.Role != "Admin")
+                                {
+                                    <br />
+                                    <a class="badge badge-primary badge-pill" href="#">details</a>
+                                }
+                            </div>
+                            <div class="card-text text-dark text-wrap">
+                                <strong>@user.Username</strong><br />
+                                <em>"@user.AboutMe"</em>
+                                <div class="text-sm-right text-muted">@user.Role</div>
+                            </div>
+                            <button class="btn btn-primary" @onclick="@(e => Impersonate(e, user.Username))">Impersonate</button>
                         </div>
-                        <a href="#" class="btn btn-primary">Impersonate</a>
                     </div>
-                </div>
 
                 }
             }
@@ -60,6 +66,12 @@
     {
         await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "hide");
     }
+    private async Task Impersonate(MouseEventArgs e, string username)
+    {
+        UserService.LogIn(username, "");
+        await CloseUsersModal();
+        StateHasChanged();
+    }
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -69,7 +81,7 @@
             UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
             Users = UserService.GetUsers();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw new Exception(ex.Message + " " + ex.Source);
         }

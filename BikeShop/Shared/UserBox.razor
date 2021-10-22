@@ -2,6 +2,7 @@
 @using BikeShop.Services;
 @inject IJSRuntime JSRuntime;
 @inject BikeShopUserService UserService;
+@inject NavigationManager NavigationManager
 
 @if (currentUser != null)
 {
@@ -10,12 +11,11 @@
             <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle border border-dark" /> @currentUser.Username
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-            @*<button class="dropdown-item" type="button">Action</button>
-                <button class="dropdown-item" type="button">Another action</button>
-                <button class="dropdown-item" type="button">Something else here</button>*@
+            <div class="dropdown-item"><span class="text-muted">@currentUser.Role</span></div>
+            <hr style="margin-top:-5px;" />
             <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />
-            <button class="dropdown-item" type="button" @onclick="OnBtnSettingsClicked">
-               <span class="oi oi-people">&nbsp;</span>Impersonate
+            <button class="dropdown-item" type="button" @onclick="OnBtnImpersonateMenuClicked">
+                <span class="oi oi-people">&nbsp;</span>Impersonate
             </button>
             <Button HTMLId="btnLogOut" Icon="oi oi-share-boxed" HTMLCssClass="dropdown-item" Label="LogOut" ClickEventName="btnLogOut" />
         </div>
@@ -28,6 +28,7 @@
 @code {
     private BikeShopUserInfo currentUser;
     private List<BikeShopUserInfo> Users;
+    private string roleAdmin = "Admin";
 
     //protected void SubscribeToSettingsClicked()
     //{
@@ -38,8 +39,8 @@
     //        StateHasChanged();
     //    });
     //}
-    
-    protected async Task OnBtnSettingsClicked()
+
+    protected async Task OnBtnImpersonateMenuClicked()
     {
         //placed in MainLayout
         await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
@@ -49,9 +50,14 @@
     {
         MessagingCenter.Subscribe<BikeShopUserService, string>(this, "OnUserChanged", (sender, value) =>
         {
-        // Do actions against the value
 
-        currentUser = UserService.GetCurrentUser();
+            currentUser = UserService.GetCurrentUser();
+
+            if (currentUser.Role != roleAdmin)
+            {
+                //var Uri = NavigationManager.ToAbsoluteUri("cart");
+                NavigationManager.NavigateTo("/cart");           
+            }
             StateHasChanged();
         });
     }

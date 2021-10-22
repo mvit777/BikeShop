@@ -1,4 +1,5 @@
 ﻿using AKSoftware.Blazor.Utilities;
+using Microsoft.AspNetCore.Components;
 using MV.Framework.providers;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,16 @@ using System.Threading.Tasks;
 namespace BikeShop.Services
 {
     /// <summary>
-    /// Just pretending user as we have no login
+    /// Just pretending we have a login system in place
     /// </summary>
     public class BikeShopUserService : IUserService
     {
         protected BikeShopUserInfo _CurrentUser { get; set; }
         protected string _AdminUsername = "admin";
         protected List<BikeShopUserInfo> _Users;
+        //public NavigationManager NavigationManager { get; set; }
+
+      
 
         public BikeShopUserService(List<BikeShopUserInfo>users)
         {
