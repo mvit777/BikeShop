@@ -342,9 +342,9 @@ Let's see how....
 >*A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
 >*Change user from user box*
-![User Box](https://github.com/mvit777/BikeShop/tree/master/BikeShop/wwwroot/images/docs/BoxUser.png)
+![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
 >*List users*
-![Users List](https://github.com/mvit777/BikeShop/tree/master/BikeShop/wwwroot/images/docs/UsersList.png)
+![Users List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/UsersList.png)
 
 ## Related links
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
