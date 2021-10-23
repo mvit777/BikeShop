@@ -342,6 +342,7 @@ Let's see how....
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 >*A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
+
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
 >*List users*
