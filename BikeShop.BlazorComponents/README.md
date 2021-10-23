@@ -205,7 +205,21 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
-
+(..omitted..)
+<!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           here goes the content of the modal
+        </ChildContent>
+    </Modal>
 <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             (...omitted...)
@@ -220,20 +234,7 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
             </td>
         </RowTemplate>
 </HtmlTable>
- <!-- HIDDEN EDIT MODAL -->
-    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
-        <HeaderTemplate>
-            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
-            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
-                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </span>
-        </HeaderTemplate>
-        <ChildContent>
-           here goes the content of the modal
-        </ChildContent>
-    </Modal>
+ 
     (...omitted...)
 ```
 Should we need a larger Modal, we just set the ```HTMLCssClass``` to something like ```modal-xl```.
