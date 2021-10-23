@@ -108,6 +108,7 @@ Armed with my first set of components, before implementing the full CRUD operati
   - [10 Steps to Replace REST Services with gRPC-Web](https://www.syncfusion.com/blogs/post/10-steps-to-replace-rest-services-with-grpc-web-in-blazor-webassembly.aspx)
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 - [DataTable.Blazor](https://github.com/JustinWilkinson/DataTables.Blazor) A very valuable effort to port JQuery DataTables entirely in C#
+- [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace REST Services with gRPC-Web
 
 ### TOT (Totally Out of Topic) ###
 After the Klitschko fight I called Tyson Fury a mediocre boxer that took advantage of an aging champion.
