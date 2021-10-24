@@ -107,7 +107,7 @@ Armed with my first set of components, before implementing the full CRUD operati
   - [Newton's Annoucement](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0)
   - [10 Steps to Replace REST Services with gRPC-Web](https://www.syncfusion.com/blogs/post/10-steps-to-replace-rest-services-with-grpc-web-in-blazor-webassembly.aspx)
   - [Adding gRPC to an existing service](https://docs.microsoft.com/en-us/aspnet/core/grpc/aspnetcore?view=aspnetcore-5.0&tabs=visual-studio#add-grpc-services-to-an-aspnet-core-app)
-  - [gRPC for .NET configuration](https://docs.microsoft.com/en-us/aspnet/core/grpc/configuration?view=aspnetcore-5.0)
+   - [gRPC for .NET configuration](https://docs.microsoft.com/en-us/aspnet/core/grpc/configuration?view=aspnetcore-5.0)
   - [All in One](https://docs.microsoft.com/en-us/aspnet/core/grpc/httpapi?view=aspnetcore-5.0) 
     >gRPC HTTP API is an experimental extension for ASP.NET Core that creates RESTful JSON APIs for gRPC services. Once configured, gRPC HTTP API allows apps to call gRPC    services with familiar HTTP concepts
 - [grpcurl](https://github.com/fullstorydev/grpcurl/releases) A command line tool curl alike to test gRPC services.
