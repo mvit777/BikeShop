@@ -99,13 +99,13 @@ since for the moment I want to keep co-existing both Api, REST and gRPC, I'm goi
 My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on Window Insider shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS. The quickest way I found to swap from IIS to Kestrel is the following:
 
 Fire up PowerShell ISE (Powershell ISE is handy because it allows to open a multi-tab terminal), issue the command ```$profile``` to find out where the profile file is supposed to go.
-```
+```powershell
 PS C:\Windows\System32> $profile
 C:\Users\<YOUR_USER>\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShellISE_profile.ps1
 
 ```
 create the above file and add this custom command
-```
+```powershell
 function runBikeWs{
     Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
     dotnet run
@@ -114,11 +114,11 @@ function runBikeWs{
 close and re-open Powershell ISE.
 Now when I want to compile, start and let BikeShopWS run, I simply issue:
 
-```
+```powershell
 runBikeWs
 ```
 which runs BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
-```
+```powershell
 Compilazione...
 info: Microsoft.Hosting.Lifetime[0]
       Now listening on: https://localhost:5001
