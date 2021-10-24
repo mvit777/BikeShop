@@ -126,7 +126,7 @@ info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\Users\Marcello\source\repos\Blazor\BikeShopWS
 
 ```
-I temporarily stop the service because now is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the meta-package:  
+I temporarily stop the service because now is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```. Next step is adding gRPC service 
 (...more to come..)
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
