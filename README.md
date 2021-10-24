@@ -110,7 +110,7 @@ issue the command ```. $profile``` (mind the dot) or close and re-open Powershel
 Now when I want to compile, start and let BikeShopWS run, I simply issue:
 
 ```
-PS C:\Users\Marcello\source\repos\Blazor\BikeShopWS> runBikeWs
+runBikeWs
 ```
 which run BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
 ```
