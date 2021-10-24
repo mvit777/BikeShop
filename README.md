@@ -92,8 +92,41 @@ Armed with my first set of components, before implementing the full CRUD operati
 
 ## Shift from Rest to gRPC
 since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
-My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on Window Insider shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS.
+My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on Window Insider shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS. The quickest way I found to swap from IIS to Kestrel is the following:
+Fire up PowerShell ISE, issue the command ```$profile``` to find out where the profile file is supposed to go.
+```
+PS C:\Windows\System32> $profile
+C:\Users\<YOUR_USER>\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShellISE_profile.ps1
 
+```
+create the above file and add this custom command
+```
+function runBikeWs{
+    Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
+    dotnet run
+}
+```
+Powershell ISE is handy because it allows to open a multi-tab terminal. Now when I want to compile, start and let BikeShopWS run, I simply issue:
+
+```
+PS C:\Users\Marcello\source\repos\Blazor\BikeShopWS> runBikeWs
+```
+which run BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
+```
+Compilazione...
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Marcello\source\repos\Blazor\BikeShopWS
+
+```
+I temporarily stop the service because now is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the meta-package:  
 (...more to come..)
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
