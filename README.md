@@ -82,7 +82,7 @@ Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is no
 All changes should be made in ```wwwroot/index.html```. 
 
 It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
-replacement. That means some components will work as expected (Ex. tabs) some will not.
+replacement. That means some components will work as expected (Ex. tabs), while some will not (Ex. Modal).
 
 As a matter of fact, I love Bootstrap, its components and JQuery and I don't have time/talent to re-invent the wheel so I promptly added ```jquery.min.js``` and ```bootstrap.min.js``` at the bottom of ```wwwroot/index.html```, together with [JQuery Datables](https://www.datatables.net/), which is another component that certainly does take a good amount of solid work to replicate in C#.
 
