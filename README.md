@@ -106,7 +106,7 @@ function runBikeWs{
     dotnet run
 }
 ```
-issue the command ```. $profile``` (mind the dot) or close and re-open Powershell ISE.
+close and re-open Powershell ISE.
 Now when I want to compile, start and let BikeShopWS run, I simply issue:
 
 ```
