@@ -112,7 +112,7 @@ Now when I want to compile, start and let BikeShopWS run, I simply issue:
 ```
 runBikeWs
 ```
-which run BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
+which runs BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
 ```
 Compilazione...
 info: Microsoft.Hosting.Lifetime[0]
