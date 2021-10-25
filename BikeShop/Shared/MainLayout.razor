@@ -33,8 +33,6 @@
             {
                 @foreach (BikeShopUserInfo user in Users)
                 {
-
-
                     <div class="card" style="width: 16.5rem;">
                         <div class="card-body text-right">
                             <div class="float-left">
@@ -53,7 +51,6 @@
                             <button class="btn btn-primary" @onclick="@(e => Impersonate(e, user.Username))">Impersonate</button>
                         </div>
                     </div>
-
                 }
             }
         </ChildContent>

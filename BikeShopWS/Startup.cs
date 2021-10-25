@@ -2,6 +2,8 @@ using BikeDistributor.Domain.Models;
 using BikeDistributor.Infrastructure.core;
 using BikeDistributor.Infrastructure.services;
 using BikeShopWS.Infrastructure;
+using GrpcBike;
+using GrpcGreeter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -58,10 +60,18 @@ namespace BikeShopWS
             }
             services.AddScoped(r=>register);
             config.DefaultMongoSettings = mongoContext.MongoSettings;
-            services.AddScoped(c=>config);
+            services.AddScoped(c=>config);//not really needed atm
+            //adding gRpc 23/10/2021
+            services.AddGrpc(options =>
+            {
+                options.EnableDetailedErrors = true;
+                options.MaxReceiveMessageSize = 2 * 1024 * 1024; // 2 MB
+                options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
+            });
+            services.AddGrpcReflection();
             //foreach(string bsontype in mongoContext.MongoSettings.BsonTypes)
             //{
-                
+
             //}
         }
 
@@ -94,6 +104,17 @@ namespace BikeShopWS
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            app.UseEndpoints(endpoints =>
+            {
+                // Communication with gRPC endpoints must be made through a gRPC client.
+                // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
+                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<BikesService>();
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();
+                }
             });
             BsonClassMap.RegisterClassMap<Bike>();
             BsonClassMap.RegisterClassMap<BikeVariant>();
