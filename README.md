@@ -105,7 +105,7 @@ C:\Users\<YOUR_USER>\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShellIS
 
 ```
 create the above file 
-```
+```ps
 New-Item -Path $PROFILE.CurrentUserCurrentHost -Type file -Force
 ```
 and add this custom command
