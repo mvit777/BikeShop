@@ -79,19 +79,71 @@ In the meanwhile I want to move on the topic of templating and components.
 
 ## More Details on: Templating & Components ##
 Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
-All changes should be made in ```wwwroot/index.html```. It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
-replacement. That means some components will work as expected (Ex. tabs) some will not. 
-As a matter of fact, I love Bootstrap, its components and JQuery and I don't have time/talent to re-invent the wheel so I promptly added ```jquery.min.js``` and ```bootstrap.min.js``` at the bottom, together with a [JQuery Datables](https://www.datatables.net/), which is another component that certainly does take a good amount of solid work to replicate in C#.
-Blazor has already a good ecosystem of commercial components but it does not come any close to what javascript can offer in terms of free/opensource ecosystem (and I doubt it will ever do). 
-In the end what gets rendered in the browser is again just html + javascript and Blazor sports a jsinterop pipeline which allows for a two-way comunication between external javascript and its own components.
-My aim here is to create a [small lib of components](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents) that will automatise the output of parametrisable html structure of some Bootstrap components and the plumbing to external javascript manipulation. Let's see what I achieved so far...[BikeShop.BlazorComponents](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents)
+All changes should be made in ```wwwroot/index.html```. 
 
-(...more to come...)
+It does not come with the companion ```bootstrap.min.js``` since Blazor pictures itself as possible complete javascript 
+replacement. That means some components will work as expected (Ex. tabs), while some will not (Ex. Modal).
+
+As a matter of fact, I love Bootstrap, its components and JQuery and I don't have time/talent to re-invent the wheel so I promptly added ```jquery.min.js``` and ```bootstrap.min.js``` at the bottom of ```wwwroot/index.html```, together with [JQuery Datables](https://www.datatables.net/), which is another component that certainly does take a good amount of solid work to replicate in C#.
+
+Blazor has already a rich ecosystem of commercial components but it does not come any close to what javascript can offer in terms of free/opensource ecosystem (and I doubt it will ever do). 
+In the end what gets rendered in the browser is again just html + javascript and Blazor sports a jsinterop pipeline which allows for a two-way comunication between external javascript and its own components.
+My aim here is to create a [small lib of components](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents) that will automatise the output of parametrisable html structure of some Bootstrap components and the plumbing to external javascript manipulation when needed. Let's see what I achieved so far...[BikeShop.BlazorComponents](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents)
+
+(...[more details](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md)...)
 
 Armed with my first set of components, before implementing the full CRUD operations I want to...
 
 ## Shift from Rest to gRPC
+since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
+My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on Window Insider shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS. The quickest way I found to swap from IIS to Kestrel is the following:
+
+Fire up PowerShell ISE (Powershell ISE is handy because it allows to open a multi-tab terminal), issue the command ```$profile``` to find out where the profile file is supposed to go.
+```powershell
+PS C:\Windows\System32> $profile
+C:\Users\<YOUR_USER>\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShellISE_profile.ps1
+
+```
+create the above file 
+```ps
+New-Item -Path $PROFILE.CurrentUserCurrentHost -Type file -Force
+```
+and add this custom command
+```powershell
+function runBikeWs{
+    Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
+    dotnet run
+}
+#since we are here, we also add a command which will be useful later
+function debugBikeWs{
+    grpcui localhost:5001
+}
+```
+close and re-open Powershell ISE.
+Now when I want to compile, start and let BikeShopWS run, I simply issue:
+
+```powershell
+runBikeWs
+```
+which runs BikeShopWS on ports http 5000 and https 5001. In development no further certificate is needed because it is using the one of the REST api
+```powershell
+Compilazione...
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Marcello\source\repos\Blazor\BikeShopWS
+
+```
+I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```. Next step is adding a gRPC service. I want to replicate the **/bikes** GET url which returns the list of bikes from MongoDB.
+
 (...more to come..)
+TODO: add screenshot for gRPCUI debugging tool
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
 (...more to come...)
@@ -103,11 +155,18 @@ Armed with my first set of components, before implementing the full CRUD operati
 - [Blazor Developer Italiani](https://blazordev.it/) a site entirely devoted to Blazor in the italian language. It features detailed and in-depth tutorials on the topic.
 - [RestClient](https://github.com/MelbourneDeveloper/RestClient.Net) an alternative to default HttpClient package. I find it very interesting because it actually supports a lot of protocols not only http. It would be a nice addition in my own [MV.Framework library](https://github.com/mvit777/BikeDistributor/tree/master/MV.Framework)
 - [gRPC](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0) an absolute must-explore alternative to Rest services
+  - [Sanderson's Blog](https://blog.stevensanderson.com/2020/01/15/2020-01-15-grpc-web-in-blazor-webassembly/)
+  - [Newton's Annoucement](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0)
+  - [10 Steps to Replace REST Services with gRPC-Web](https://www.syncfusion.com/blogs/post/10-steps-to-replace-rest-services-with-grpc-web-in-blazor-webassembly.aspx)
+  - [Adding gRPC to an existing service](https://docs.microsoft.com/en-us/aspnet/core/grpc/aspnetcore?view=aspnetcore-5.0&tabs=visual-studio#add-grpc-services-to-an-aspnet-core-app)
+  - [grpcurl](https://github.com/fullstorydev/grpcurl/releases) A command line tool curl alike to test gRPC services.
+   - [gRPC for .NET configuration](https://docs.microsoft.com/en-us/aspnet/core/grpc/configuration?view=aspnetcore-5.0)
+  - [All in One](https://docs.microsoft.com/en-us/aspnet/core/grpc/httpapi?view=aspnetcore-5.0) 
+    >gRPC HTTP API is an experimental extension for ASP.NET Core that creates RESTful JSON APIs for gRPC services. Once configured, gRPC HTTP API allows apps to call gRPC    services with familiar HTTP concepts
+
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 - [DataTable.Blazor](https://github.com/JustinWilkinson/DataTables.Blazor) A very valuable effort to port JQuery DataTables entirely in C#
+- [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace REST Services with gRPC-Web
+- [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
-### TOT (Totally Out of Topic) ###
-After the Klitschko fight I called Tyson Fury a mediocre boxer that took advantage of an aging champion.
-Well, not only he proved me wrong in every fight he fought since that, but last night he proved himself to be probaly one of the best Heavyweight ever.
-Why am I writing this since the chances to meet him  in an airport :) are even lower than the guy giving a fuck for my remarks?
-...I hate to get it wrong when it comes to boxing forecasts...
+

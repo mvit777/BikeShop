@@ -14,7 +14,7 @@ Once you also have imported the BikeShop.BlazorComponents.dll into your Blazor p
 @using AKSoftware.Blazor.Utilities
 @using BikeShop.BlazorComponents.Components
 ```
-Now navigate to the wwwroot folder and add a file interop.js or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
+Now navigate to the ```wwwroot``` folder and add a file ```interop.js``` or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
 together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) before the closing </body>
 
 *wwwroot/index.html*
@@ -68,7 +68,7 @@ Imagine we want to build the classic product list table with links for creating/
 The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source an some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
 Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
 
-*Parental Warning: A lot of code stolen from [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
+*Parental Warning: A lot of code stolen from [Developing a Component Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
 ```razor
 @page "/somepage"
 @inject IConfiguration Configuration;
@@ -205,7 +205,21 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
-
+(..omitted..)
+<!-- HIDDEN EDIT MODAL -->
+    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+           here goes the content of the modal
+        </ChildContent>
+    </Modal>
 <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             (...omitted...)
@@ -220,20 +234,7 @@ The last step is adding the [Modal Component](https://github.com/mvit777/BikeSho
             </td>
         </RowTemplate>
 </HtmlTable>
- <!-- HIDDEN EDIT MODAL -->
-    <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
-        <HeaderTemplate>
-            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
-            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
-                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </span>
-        </HeaderTemplate>
-        <ChildContent>
-           here goes the content of the modal
-        </ChildContent>
-    </Modal>
+ 
     (...omitted...)
 ```
 Should we need a larger Modal, we just set the ```HTMLCssClass``` to something like ```modal-xl```.
@@ -341,6 +342,29 @@ Let's see how....
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 >*A pop up for editing a product*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
+
+>*Change user from user box*
+![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
+>*List users*
+![Users List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/UsersList.png)
+
+## Conclusion
+I'm no frontend guy and have no significant experience of developing with Angular/React/VueJs, so I'm not very qualified to make a comparison between these tools.
+However I must say Blazor is very to fast to learn, especially if you have a background in previous or other MS techs. I would also say that for SPA applications, Blazor can be an interesting competitor. The main problems I see are:
+- very little free/opensource ecosystem compared to javascript competitors
+- demographics of developers. Young developers tend to favor javascript as it is all the rage these days. Aging developers have been using javascript for years now, they might not be so tempted to learn yet another tool (unless they really dislike javascript).
+
+On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate. 
+All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with PHP + Twig.
+The javascript/jquery attempt was a complete failure up to the point I abandoned it in a very early stage. It had bugs scattered all around and was bloated from the very start.
+Basically doing such a thing requires a non-trivial knowdledge of javascript far beyond my level. Also the fact that I'm not aware of an existing such a library makes me think it is not a good idea. The PHP+Twig was much more successful, in the sense that I re-used it in many projects. The main problem of that solution was that once the serverside was executed, I was left alone yet again with a lot of AJAX setup and DOM manipulation.
+In Blazor you just forget about AJAX setup and DOM manipulation, as they are run under the covers. This is another good point for Blazor. 
+The aspect of inter-mixed html and code is a very handy but reminds me a bit of old style Wordpress, which I don't like very much. I still have to make a decision about 
+shifting towards code-behind file + template file style or mix both. The impression is at some point I will use the former as it favours more consistency even if is a lot more verbose. 
+Another good point of Blazor components is their declarative style (just like Webforms, Coldfusion or defunct Struct etc etc)
+In fact, if you have a very predictable page structure (like my Datatable List + Edit form) building a code generator to automatise the skeleton of many pages becomes a lot easier.
+
+
 ## Related links
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 
@@ -348,7 +372,14 @@ Let's see how....
 - [ezzylearning](https://www.ezzylearning.net/tutorials/blazor): (lot of "inspiration" from following links)
     - [Beginner's guide to Components](https://www.ezzylearning.net/tutorial/a-beginners-guide-to-blazor-components)
     - [Templated Component](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-templated-components)
-    - [Developing a Comp Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
+    - [Developing a Component Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)
 
 - [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0) Bible definition
   - [ezzylearning tutorial on forms and validation](https://www.ezzylearning.net/tutorial/a-guide-to-blazor-forms-and-validation)
+
+### Commercial Components libraries
+As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries:
+- [Telerik](https://demos.telerik.com/blazor-ui)
+- [Syncfusion](https://www.syncfusion.com/blazor-components)
+- [Blazorise](https://blazorise.com/)
+- (..more to come..)
