@@ -114,6 +114,10 @@ function runBikeWs{
     Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
     dotnet run
 }
+#since we are here, we also add a command which will be useful later
+function debugBikeWs{
+    grpcui localhost:5001
+}
 ```
 close and re-open Powershell ISE.
 Now when I want to compile, start and let BikeShopWS run, I simply issue:
