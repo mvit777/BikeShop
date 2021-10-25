@@ -29,5 +29,10 @@ message GetBikesResponse {
 }
 
 message EntityBike {
-  
+ 
+        string Id=1;
+        int32 TotalPrice=2;
+        bool IsStandard =3;
+        
+
 }

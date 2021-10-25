@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BikeDistributor.Domain.Entities;
 using BikeDistributor.Infrastructure.services;
 using BikeShopWS.Infrastructure;
@@ -38,9 +39,21 @@ namespace GrpcBike
 
         public override async Task<GetBikesResponse> GetBikes(Empty request, ServerCallContext context)
         {
-            var mebs = await _bikeService.Get();
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MongoEntityBike, EntityBike>();
+            });
+            var mapper = configuration.CreateMapper();
+            List<MongoEntityBike> mebs = await _bikeService.Get();
             var response = new GetBikesResponse();
-            response.BikeEntities.AddRange((IEnumerable<EntityBike>)mebs.AsEnumerable());
+            foreach (MongoEntityBike meb in mebs)
+            {
+                var eb = mapper.Map<EntityBike>(meb);
+                Console.WriteLine(eb.Id);
+                response.BikeEntities.Add(eb);
+            }
+            
+            
             //return Task.FromResult(response);
             return response;
         }
