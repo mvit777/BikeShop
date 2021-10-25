@@ -381,4 +381,5 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries:
 - [Telerik](https://demos.telerik.com/blazor-ui)
 - [Syncfusion](https://www.syncfusion.com/blazor-components)
+- [Blazorise](https://blazorise.com/)
 - (..more to come..)
