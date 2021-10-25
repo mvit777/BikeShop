@@ -104,7 +104,11 @@ PS C:\Windows\System32> $profile
 C:\Users\<YOUR_USER>\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShellISE_profile.ps1
 
 ```
-create the above file and add this custom command
+create the above file 
+```
+New-Item -Path $PROFILE.CurrentUserCurrentHost -Type file -Force
+```
+and add this custom command
 ```powershell
 function runBikeWs{
     Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
