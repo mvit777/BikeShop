@@ -236,7 +236,70 @@ namespace GrpcBike
 }
 ```
 the step of mapping a "complex" object caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
+
+The last step is enabling gRPC in ```Startup.cs``` 
+
+```csharp
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using MongoDB.Bson.Serialization;
+using MV.Framework.providers;
+using BikeDistributor.Domain.Models;
+using BikeShopWS.Infrastructure;
+using GrpcBike;
+
+namespace BikeShopWS
+{
+    public class Startup
+    {
+        (...code omitted...)
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });//it has to be here before everything
+            (...code omitted ..)
+            services.AddGrpc(options =>
+            {
+                options.EnableDetailedErrors = true;
+                options.MaxReceiveMessageSize = 2 * 1024 * 1024; // 2 MB
+                options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
+            });
+            services.AddGrpcReflection();
+            
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+           (..code omitted..)
+            app.UseEndpoints(endpoints =>
+            {
+                // Communication with gRPC endpoints must be made through a gRPC client.
+                // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
+                endpoints.MapGrpcService<BikesService>();
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();
+                }
+            });
+           
+        }
+    }
+}
+```
+
+
 (...more to come..)
+
 TODO: add screenshot for gRPCUI debugging tool
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
