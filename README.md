@@ -153,23 +153,48 @@ option csharp_namespace = "BikeShopWS.Protos";
 
 package bike;
 
-// service definition.
+// The greeting service definition.
 service Bikes {
+  // Sends a greeting
+  rpc SayHello (BikesHelloRequest) returns (BikesHelloReply);
   rpc GetBikes (google.protobuf.Empty) returns (GetBikesResponse); 
 }
 
-// response message
-message GetBikesResponse {
-  repeated EntityBike bikeEntities = 1;
+// The request message containing the user's name.
+message BikesHelloRequest {
+  string name = 1;
 }
 
-//definition of the single entity
-message EntityBike {
- 
+// The response message containing the greetings.
+message BikesHelloReply {
+  string message = 1;
+}
+
+message GetBikesResponse {
+  repeated EntityMongoBike bikeEntities = 1;
+}
+
+message EntityBikeOption{
+    string Name=1;
+    string Description=2;
+    int32 Price=3;
+}
+
+message EntityBike{
+        string Brand=1;
+        string Model=2;
+        int32 Price=3;
+        int32 BasePrice=4;
+        bool isStandard=5;
+        string Description=6;
+}
+
+message EntityMongoBike {
         string Id=1;
         int32 TotalPrice=2;
-        bool IsStandard =3;
-        
+        bool IsStandard=3;
+        repeated EntityBikeOption SelectedOptions=4;
+        EntityBike Bike =5;
 }
 
 ```
