@@ -279,7 +279,7 @@ namespace BikeShopWS
                 endpoints.MapGrpcService<BikesService>();
                 if (env.IsDevelopment())
                 {
-                    endpoints.MapGrpcReflectionService();
+                    endpoints.MapGrpcReflectionService();// this is an extra nuGet package to facilitate service auto-discover for gRPCUI
                 }
             });
            
@@ -301,6 +301,7 @@ and in the second tab we start gRPCUI
 ```
 debugBikeWS
 ```
+the latter command opens up a browser at http://127.0.0.1:59137/ where our web tester shows up auto-discovering our gRPC service
 (...more to come..)
 
 TODO: add screenshot for gRPCUI debugging tool
