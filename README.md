@@ -243,15 +243,9 @@ namespace GrpcBike
             var mapper = configuration.CreateMapper();
             List<MongoEntityBike> mebs = await _bikeService.Get();
             var response = new GetBikesResponse();
-            foreach (MongoEntityBike meb in mebs)
-            {
-                var eb = mapper.Map<EntityBike>(meb);
-                Console.WriteLine(eb.Id);
-                response.BikeEntities.Add(eb);
-            }
+            List<EntityMongoBike> bikes = _mapper.Map<List<EntityMongoBike>>(mebs);
+            response.BikeEntities.AddRange(bikes);
             
-            
-            //return Task.FromResult(response);
             return response;
         }
     }
