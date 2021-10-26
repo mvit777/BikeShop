@@ -180,7 +180,7 @@ then I registered the new proto file in ```BikeShowWs.csproj```
 </ItemGroup>
 ```
 and finally I created a ```Services/``` folder with a ```BikeService.cs``` inside.
-```
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -235,6 +235,7 @@ namespace GrpcBike
     #endregion
 }
 ```
+the step of mapping a "complex" object caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
 (...more to come..)
 TODO: add screenshot for gRPCUI debugging tool
 
