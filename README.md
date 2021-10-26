@@ -140,7 +140,39 @@ info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\Users\Marcello\source\repos\Blazor\BikeShopWS
 
 ```
-I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```. Next step is adding a gRPC service. I want to replicate the **/bikes** GET url which returns the list of bikes from MongoDB.
+I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```.
+
+Next step is adding a gRPC service. I want to replicate the ```/bikes** GET url``` which returns the list of bikes from MongoDB. To do so I created a ```Protos/``` at root folder level and a ```bike.proto``` file inside the folder.
+```
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "BikeShopWS.Protos";
+
+package bike;
+
+// service definition.
+service Bikes {
+  rpc GetBikes (google.protobuf.Empty) returns (GetBikesResponse); 
+}
+
+// response message
+message GetBikesResponse {
+  repeated EntityBike bikeEntities = 1;
+}
+
+//definition of the single entity
+message EntityBike {
+ 
+        string Id=1;
+        int32 TotalPrice=2;
+        bool IsStandard =3;
+        
+}
+
+```
 
 (...more to come..)
 TODO: add screenshot for gRPCUI debugging tool
