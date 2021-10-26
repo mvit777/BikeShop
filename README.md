@@ -236,11 +236,6 @@ namespace GrpcBike
 
         public override async Task<GetBikesResponse> GetBikes(Empty request, ServerCallContext context)
         {
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<MongoEntityBike, EntityBike>();
-            });
-            var mapper = configuration.CreateMapper();
             List<MongoEntityBike> mebs = await _bikeService.Get();
             var response = new GetBikesResponse();
             List<EntityMongoBike> bikes = _mapper.Map<List<EntityMongoBike>>(mebs);
