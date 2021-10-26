@@ -240,14 +240,14 @@ the step of mapping a "complex" object caught me a bit unprepared and I'm not fu
 The last step is enabling gRPC in ```Startup.cs``` 
 
 ```csharp
-(..code omitted..)
+//(..code omitted..)
 using GrpcBike;
 
 namespace BikeShopWS
 {
     public class Startup
     {
-        (...code omitted...)
+        //(...code omitted...)
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -257,7 +257,7 @@ namespace BikeShopWS
             {
                 options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });//it has to be here before everything
-            (...code omitted ..)
+           // (...code omitted ..)
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
@@ -271,7 +271,7 @@ namespace BikeShopWS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           (..code omitted..)
+          // (..code omitted..)
             app.UseEndpoints(endpoints =>
             {
                 // Communication with gRPC endpoints must be made through a gRPC client.
