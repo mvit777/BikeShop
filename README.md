@@ -240,16 +240,7 @@ the step of mapping a "complex" object caught me a bit unprepared and I'm not fu
 The last step is enabling gRPC in ```Startup.cs``` 
 
 ```csharp
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using MongoDB.Bson.Serialization;
-using MV.Framework.providers;
-using BikeDistributor.Domain.Models;
-using BikeShopWS.Infrastructure;
+(..code omitted..)
 using GrpcBike;
 
 namespace BikeShopWS
@@ -261,7 +252,7 @@ namespace BikeShopWS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //I already enabled CORS for the rest API. Should work fine. In production you might want a less liberal policy
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
