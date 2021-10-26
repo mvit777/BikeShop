@@ -307,13 +307,10 @@ go install github.com/fullstorydev/grpcui/cmd/grpcui@latest
 ```
 Now we open another tab in powershell ISE. In the first tab we start our service with those commands we have sticked in our powershell profile
 
-```
-runBikeWS
-```
+![Start the WS](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/ps1.png)
 and in the second tab we start gRPCUI
-```
-debugBikeWS
-```
+![Start the debugger](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/ps1.png)
+
 the latter command opens up a browser at http://127.0.0.1:59137/ where our web tester shows up auto-discovering our gRPC service
 
 ![Service Discovered](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_1.png)
