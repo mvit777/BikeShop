@@ -327,7 +327,7 @@ the latter command opens up a browser at http://127.0.0.1:59137/ where our web t
 
 ![Service Discovered](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_1.png)
 
-request sent..
+request sent..(don't be fooled by the response json format, it is there for readability. The real format is binary)
 
 ![request sent](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_2.png)
 
