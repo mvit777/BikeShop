@@ -96,7 +96,7 @@ Armed with my first set of components, before implementing the full CRUD operati
 
 ## Shift from Rest to gRPC
 since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
-My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on Window Insider shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS. The quickest way I found to swap from IIS to Kestrel is the following:
+My aging Laptop is on Windows 10 build 19043 and not fully ready to upgrade to Windows 11. The only channel selectable on [Window Insider](https://blogs.windows.com/windows-insider/2021/10/19/releasing-windows-10-build-19044-1319-21h2-to-release-preview-channel/) shows the most recent build is currently 19044. So for the moment I'm out of lack with IIS. The quickest way I found to swap from IIS to Kestrel is the following:
 
 Fire up PowerShell ISE (Powershell ISE is handy because it allows to open a multi-tab terminal), issue the command ```$profile``` to find out where the profile file is supposed to go.
 ```powershell
@@ -140,9 +140,170 @@ info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\Users\Marcello\source\repos\Blazor\BikeShopWS
 
 ```
-I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```. Next step is adding a gRPC service. I want to replicate the **/bikes** GET url which returns the list of bikes from MongoDB.
+I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```.
 
+Next step is adding a gRPC service. I want to replicate the ```/bikes** GET url``` which returns the list of bikes from MongoDB. To do so I created a ```Protos/``` folder at project's root level and a ```bike.proto``` file inside the folder.
+```proto
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "BikeShopWS.Protos";
+
+package bike;
+
+// service definition.
+service Bikes {
+  rpc GetBikes (google.protobuf.Empty) returns (GetBikesResponse); 
+}
+
+// response message
+message GetBikesResponse {
+  repeated EntityBike bikeEntities = 1;
+}
+
+//definition of the single entity
+message EntityBike {
+ 
+        string Id=1;
+        int32 TotalPrice=2;
+        bool IsStandard =3;
+        
+}
+
+```
+then I registered the new proto file in ```BikeShowWs.csproj```
+```xml
+<ItemGroup>
+    <Protobuf Include="Protos\bike.proto" GrpcServices="Server" />
+</ItemGroup>
+```
+and finally I created a ```Services/``` folder with a ```BikeService.cs``` inside.
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using BikeDistributor.Domain.Entities;
+using BikeDistributor.Infrastructure.services;
+using BikeShopWS.Infrastructure;
+using BikeShopWS.Protos;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using MV.Framework.providers;
+
+namespace GrpcBike
+{
+    #region snippet
+    public class BikesService : Bikes.BikesBase
+    {
+        private readonly ILogger<BikesService> _logger;
+        private MongoServiceInstanceRegister _register;
+        private readonly MongoBikeService _bikeService;
+        private WsConfig _config;
+        public BikesService(ILogger<BikesService> logger, MongoServiceInstanceRegister register,WsConfig config)
+        {
+            _logger = logger;
+            _register = register;
+            _config = config;
+            _bikeService = (MongoBikeService)_register.GetServiceInstance("MongoBikeService", _config.GetMongoServiceIdentity("MongoBikeService")); 
+        }
+
+        public override async Task<GetBikesResponse> GetBikes(Empty request, ServerCallContext context)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MongoEntityBike, EntityBike>();
+            });
+            var mapper = configuration.CreateMapper();
+            List<MongoEntityBike> mebs = await _bikeService.Get();
+            var response = new GetBikesResponse();
+            foreach (MongoEntityBike meb in mebs)
+            {
+                var eb = mapper.Map<EntityBike>(meb);
+                Console.WriteLine(eb.Id);
+                response.BikeEntities.Add(eb);
+            }
+            
+            
+            //return Task.FromResult(response);
+            return response;
+        }
+    }
+    #endregion
+}
+```
+the step of mapping a "complex" object caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
+
+The last step is enabling gRPC in ```Startup.cs``` 
+
+```csharp
+//(..code omitted..)
+using GrpcBike;
+
+namespace BikeShopWS
+{
+    public class Startup
+    {
+        //(...code omitted...)
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //I already enabled CORS for the rest API. Should work fine. In production you might want a less liberal policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });//it has to be here before everything
+           // (...code omitted ..)
+            services.AddGrpc(options =>
+            {
+                options.EnableDetailedErrors = true;
+                options.MaxReceiveMessageSize = 2 * 1024 * 1024; // 2 MB
+                options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
+            });
+            services.AddGrpcReflection();
+            
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+          // (..code omitted..)
+            app.UseEndpoints(endpoints =>
+            {
+                // Communication with gRPC endpoints must be made through a gRPC client.
+                // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
+                endpoints.MapGrpcService<BikesService>();
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();// this is an extra nuGet package to facilitate service auto-discover for gRPCUI
+                }
+            });
+           
+        }
+    }
+}
+```
+We can now test our gRPC BikeService. To do so, we are using a standalone tool called [gRPCUI](https://github.com/fullstorydev/grpcui), which is something like Postman for REST.
+This tool uses the go language. If you don't have golang installed on your box you can [download it here](https://golang.org/dl/). The installer should also create an entry in the Path env variable pointing to the golang bin/ folder. Open up powershell ISE and execute this command:
+```
+go install github.com/fullstorydev/grpcui/cmd/grpcui@latest
+```
+Now we open another tab in powershell ISE. In the first tab we start our service with those commands we have sticked in our powershell profile
+
+```
+runBikeWS
+```
+and in the second tab we start gRPCUI
+```
+debugBikeWS
+```
+the latter command opens up a browser at http://127.0.0.1:59137/ where our web tester shows up auto-discovering our gRPC service
 (...more to come..)
+
 TODO: add screenshot for gRPCUI debugging tool
 
 ## Last Paragraph: a quick note about the BikeShop WS ##
@@ -169,4 +330,6 @@ TODO: add screenshot for gRPCUI debugging tool
 - [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace REST Services with gRPC-Web
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
+## News
+[Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
 
