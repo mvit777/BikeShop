@@ -207,5 +207,5 @@ TODO: add screenshot for gRPCUI debugging tool
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
-[Microsoft Ignite](https://myignite.microsoft.com/home)
+[Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
 
