@@ -2,18 +2,12 @@ using System;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using MV.Framework.providers;
-using BikeDistributor.Infrastructure.core;
-using MV.Framework.interfaces;
-using BikeDistributor.Infrastructure.services;
-using System.IO;
 using BikeShop.Services;
-using Newtonsoft.Json;
+using Grpc.Net.Client.Web;
+using BikeShop.Protos;
 
 namespace BikeShop
 {
@@ -63,6 +57,14 @@ namespace BikeShop
             //var restClient = new BaseRestClient(restBaseUrl);
             //builder.Services.AddSingleton<BaseRestClient>(RC => restClient);
             //==========================================================
+
+            builder.Services
+            .AddGrpcClient<Bikes.BikesClient> (options =>
+                {
+                    options.Address = new Uri("https://localhost:5001");
+                }).ConfigurePrimaryHttpMessageHandler(
+                () => new GrpcWebHandler(new HttpClientHandler())
+            );
 
             await builder.Build().RunAsync();
         }

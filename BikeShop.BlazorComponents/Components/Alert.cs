@@ -20,19 +20,19 @@ namespace BikeShop.BlazorComponents.Components
         public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
         {
             Visible = visible;
-            if (executeStateHasChanged)
-            {
-                StateHasChanged();
-            }
+            //if (executeStateHasChanged)
+            //{
+            //    StateHasChanged();
+            //}
             
         }
         public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
         {
             HTMLCssClass = cssClass;
-            if (executeStateHasChanged)
-            {
-                StateHasChanged();
-            }
+            //if (executeStateHasChanged)
+            //{
+            //    StateHasChanged();
+            //}
         }
     }
 }
