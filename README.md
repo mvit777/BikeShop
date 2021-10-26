@@ -309,6 +309,8 @@ request sent..
 
 ![request sent](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_2.png)
 
+Time to go back into the Blazor app and add the gRPC client
+
 (...more to come..)
 
 
