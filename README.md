@@ -153,21 +153,9 @@ option csharp_namespace = "BikeShopWS.Protos";
 
 package bike;
 
-// The greeting service definition.
+// service definition.
 service Bikes {
-  // Sends a greeting
-  rpc SayHello (BikesHelloRequest) returns (BikesHelloReply);
   rpc GetBikes (google.protobuf.Empty) returns (GetBikesResponse); 
-}
-
-// The request message containing the user's name.
-message BikesHelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings.
-message BikesHelloReply {
-  string message = 1;
 }
 
 message GetBikesResponse {
