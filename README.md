@@ -174,10 +174,10 @@ message EntityBike {
 
 ```
 then I registered the new proto file in ```BikeShowWs.csproj```
-```
+```xml
 <ItemGroup>
     <Protobuf Include="Protos\bike.proto" GrpcServices="Server" />
-  </ItemGroup>
+</ItemGroup>
 ```
 (...more to come..)
 TODO: add screenshot for gRPCUI debugging tool
