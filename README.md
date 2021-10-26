@@ -287,8 +287,20 @@ namespace BikeShopWS
     }
 }
 ```
+We can now test our gRPC BikeService. To do so, we are using a standalone tool called [gRPCUI](https://github.com/fullstorydev/grpcui), which is something like Postman for REST.
+This tool uses the go language. If you don't have golang installed on your box you can [download it here](https://golang.org/dl/). The installer should also create an entry in the Path env variable pointing to the golang bin/ folder. Open up powershell ISE and execute this command:
+```
+go install github.com/fullstorydev/grpcui/cmd/grpcui@latest
+```
+Now we open another tab in powershell ISE. In the first tab we start our service with those commands we have sticked in our powershell profile
 
-
+```
+runBikeWS
+```
+and in the second tab we start gRPCUI
+```
+debugBikeWS
+```
 (...more to come..)
 
 TODO: add screenshot for gRPCUI debugging tool
