@@ -142,7 +142,7 @@ info: Microsoft.Hosting.Lifetime[0]
 ```
 I temporarily stop the service because is finally time to add gRPC support. Following [docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-5.0), the first step is to add the NuGet meta-package  ```Grpc.AspNetCore```.
 
-Next step is adding a gRPC service. I want to replicate the ```/bikes** GET url``` which returns the list of bikes from MongoDB. To do so I created a ```Protos/``` at root folder level and a ```bike.proto``` file inside the folder.
+Next step is adding a gRPC service. I want to replicate the ```/bikes** GET url``` which returns the list of bikes from MongoDB. To do so I created a ```Protos/``` folder at project's root level and a ```bike.proto``` file inside the folder.
 ```proto
 syntax = "proto3";
 
@@ -173,7 +173,12 @@ message EntityBike {
 }
 
 ```
-
+then I registered the new proto file in ```BikeShowWs.csproj```
+```
+<ItemGroup>
+    <Protobuf Include="Protos\bike.proto" GrpcServices="Server" />
+  </ItemGroup>
+```
 (...more to come..)
 TODO: add screenshot for gRPCUI debugging tool
 
