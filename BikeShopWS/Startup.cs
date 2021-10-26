@@ -1,26 +1,15 @@
-using BikeDistributor.Domain.Models;
-using BikeDistributor.Infrastructure.core;
-using BikeDistributor.Infrastructure.services;
-using BikeShopWS.Infrastructure;
-using GrpcBike;
-using GrpcGreeter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization;
-using MV.Framework.interfaces;
 using MV.Framework.providers;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BikeDistributor.Domain.Models;
+using BikeShopWS.Infrastructure;
+using GrpcBike;
+using GrpcGreeter;
 
 namespace BikeShopWS
 {

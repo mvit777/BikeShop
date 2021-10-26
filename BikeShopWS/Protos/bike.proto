@@ -34,5 +34,4 @@ message EntityBike {
         int32 TotalPrice=2;
         bool IsStandard =3;
         
-
 }
