@@ -216,12 +216,20 @@ namespace GrpcBike
         private MongoServiceInstanceRegister _register;
         private readonly MongoBikeService _bikeService;
         private WsConfig _config;
+        private IMapper _mapper;
         public BikesService(ILogger<BikesService> logger, MongoServiceInstanceRegister register,WsConfig config)
         {
             _logger = logger;
             _register = register;
             _config = config;
-            _bikeService = (MongoBikeService)_register.GetServiceInstance("MongoBikeService", _config.GetMongoServiceIdentity("MongoBikeService")); 
+            _bikeService = (MongoBikeService)_register.GetServiceInstance("MongoBikeService", _config.GetMongoServiceIdentity("MongoBikeService"));
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MongoEntityBike, EntityMongoBike>();
+                cfg.CreateMap<BikeOption, EntityBikeOption>();
+                cfg.CreateMap<IBike, EntityBike>();
+            });
+            _mapper = mapperConfiguration.CreateMapper();
         }
 
         public override async Task<GetBikesResponse> GetBikes(Empty request, ServerCallContext context)
