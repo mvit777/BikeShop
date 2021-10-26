@@ -302,9 +302,9 @@ and in the second tab we start gRPCUI
 debugBikeWS
 ```
 the latter command opens up a browser at http://127.0.0.1:59137/ where our web tester shows up auto-discovering our gRPC service
-![Service Discovered](https://github.com/mvit777/BikeShop/tree/master/BikeShop/wwwroot/images/docs/gRPCUI_1.png)
+![Service Discovered](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_1.png)
 request sent..
-![request sent](https://github.com/mvit777/BikeShop/tree/master/BikeShop/wwwroot/images/docs/gRPCUI_2.png)
+![request sent](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/gRPCUI_2.png)
 
 (...more to come..)
 
