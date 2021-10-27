@@ -112,16 +112,16 @@ New-Item -Path $PROFILE.CurrentUserCurrentHost -Type file -Force
 ```
 and add a few custom commands
 ```powershell
-//start kestrel 
+#start kestrel 
 function runBikeWs{
     Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
     dotnet run
 }
-//start gRPCUI
+#start gRPCUI
 function debugBikeWs{
     grpcui localhost:5001
 }
-//recompile protos for BikeShop wasm
+#recompile protos for BikeShop wasm
 function compileProtos{
     Set-Location "C:\Users\Marcello\source\repos\Blazor\BikeShop\"
     dotnet run
