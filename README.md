@@ -112,16 +112,16 @@ New-Item -Path $PROFILE.CurrentUserCurrentHost -Type file -Force
 ```
 and add a few custom commands
 ```powershell
-#start kestrel 
+# start kestrel 
 function runBikeWs{
     Set-Location "C:\<YOUR_PATH_TO>\BikeShopWS\"
     dotnet run
 }
-#start gRPCUI
+# start gRPCUI
 function debugBikeWs{
     grpcui localhost:5001
 }
-#recompile protos for BikeShop wasm
+# compile protos for BikeShop wasm
 function compileProtos{
     Set-Location "C:\Users\Marcello\source\repos\Blazor\BikeShop\"
     dotnet run
@@ -253,7 +253,7 @@ namespace GrpcBike
     #endregion
 }
 ```
-the step of mapping a "complex" object caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
+the step of mapping "complex" objects caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
 
 The last step is enabling gRPC in ```Startup.cs``` 
 
