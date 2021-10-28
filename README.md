@@ -95,6 +95,8 @@ My aim here is to create a [small lib of components](https://github.com/mvit777/
 Armed with my first set of components, before implementing the full CRUD operations I want to...
 
 ## Shift from Rest to gRPC
+(TODO: Add list of required grpc packages for both client and server)
+
 since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. 
 
 According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS gRPC support requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
