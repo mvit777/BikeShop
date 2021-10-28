@@ -205,7 +205,6 @@ then I registered the new proto file in ```BikeShowWs.csproj```
 </ItemGroup>
 ```
 and finally I created a ```Services/``` folder with a ```BikeService.cs``` inside.
-(TODO: this code while working does not use the right grpc pacakge. FIX IT with the actual code)
 ```csharp
 using System;
 using System.Collections.Generic;
@@ -261,7 +260,7 @@ namespace GrpcBike
 the step of mapping "complex" objects caught me a bit unprepared and I'm not fully satisfied with the solution I found so far. I'll soon have a look at C# tooling to automatise the process and check if I'm on the right track. Anyway it seems to work.
 
 The last step is enabling gRPC in ```Startup.cs``` 
-
+(TODO: this code while working does not use the right grpc pacakge. FIX IT with the actual code)
 ```csharp
 //(..code omitted..)
 using GrpcBike;
