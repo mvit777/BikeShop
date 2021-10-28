@@ -205,6 +205,7 @@ then I registered the new proto file in ```BikeShowWs.csproj```
 </ItemGroup>
 ```
 and finally I created a ```Services/``` folder with a ```BikeService.cs``` inside.
+(TODO: this code while working does not use the right grpc pacakge. FIX IT with the actual code)
 ```csharp
 using System;
 using System.Collections.Generic;
