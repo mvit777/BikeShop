@@ -123,8 +123,12 @@ function debugBikeWs{
 }
 # compile protos for BikeShop wasm
 function compileProtos{
+    stopBikeWs
     Set-Location "C:\Users\Marcello\source\repos\Blazor\BikeShop\"
     dotnet run
+}
+function stopBikeWs{
+    Get-Process -Name *dotnet* | Stop-Process
 }
 ```
 close and re-open Powershell ISE.
