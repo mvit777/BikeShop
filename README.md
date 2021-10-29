@@ -116,6 +116,6 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
-[Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
-[The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
+- [Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
+- [The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
 
