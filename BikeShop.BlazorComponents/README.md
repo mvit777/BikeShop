@@ -377,6 +377,8 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 - [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0) Bible definition
   - [ezzylearning tutorial on forms and validation](https://www.ezzylearning.net/tutorial/a-guide-to-blazor-forms-and-validation)
 
+- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article
+
 ### Commercial Components libraries
 As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries:
 - [Telerik](https://demos.telerik.com/blazor-ui)
