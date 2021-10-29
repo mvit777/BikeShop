@@ -117,4 +117,5 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 
 ## News
 [Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
+[The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
 
