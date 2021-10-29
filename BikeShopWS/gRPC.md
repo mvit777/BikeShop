@@ -1,7 +1,14 @@
 ﻿## Shift from Rest to gRPC
  
  (TODO: Add list of required grpc packages for both client and server)
+ 
+ ### (UPDATE) the temporarily aborted shift from Rest to gRPC
+After a week of protobuff-fever I decided, not without regret, to step back to REST. While the server part was quite easy to implement, and I'll keep it for a later stage, the client part implementation showed up some not-so-easy-solvable problems that weren't fixed by the othewise excellent [AutoMapper](https://automapper.org/) package. 
+In particular, handling of null values and mapping of "grpc entities" (don't know if this term makes sense) and some missing types made me think twice. 
+While [Code first project](https://docs.microsoft.com/en-us/aspnet/core/grpc/code-first?view=aspnetcore-5.0) might come to rescue it has some drawbacks on its own.
+Moreover, I suspect the naive implementation of my domain models and Mongo entities played a role in the above problems. Definetly time for a refactor and more study/planning before a second attempt. However, I'm definetly not giving up. I'll soon branch the project and keep trying. In the meanwhile, I moved the documentation of first attempt here and I'll keep updating it. At least the server part will co-exist without problems.
 
+## The project
 since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. 
 
 According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS gRPC support requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
