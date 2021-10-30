@@ -9,7 +9,6 @@ using MV.Framework.providers;
 using BikeDistributor.Domain.Models;
 using BikeShopWS.Infrastructure;
 using GrpcBike;
-using GrpcGreeter;
 
 namespace BikeShopWS
 {
@@ -58,10 +57,7 @@ namespace BikeShopWS
                 options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
             });
             services.AddGrpcReflection();
-            //foreach(string bsontype in mongoContext.MongoSettings.BsonTypes)
-            //{
-
-            //}
+            
         }
 
         private MongoDBContext GetMongoContext(WsConfig config)
@@ -85,7 +81,8 @@ namespace BikeShopWS
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseGrpcWeb(); // Must be added between UseRouting and UseEndpoints
+            
             app.UseCors("AllowAll"); //it has to be here between routing and auth
 
             app.UseAuthorization();
@@ -98,8 +95,8 @@ namespace BikeShopWS
             {
                 // Communication with gRPC endpoints must be made through a gRPC client.
                 // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
-                endpoints.MapGrpcService<GreeterService>();
-                endpoints.MapGrpcService<BikesService>();
+                //endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<BikesService>().EnableGrpcWeb();
                 if (env.IsDevelopment())
                 {
                     endpoints.MapGrpcReflectionService();

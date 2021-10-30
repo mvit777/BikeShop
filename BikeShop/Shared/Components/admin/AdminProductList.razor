@@ -5,10 +5,15 @@
 @using AKSoftware.Blazor.Utilities;
 @using BikeShop.Helpers;
 @using BikeShop.Services;
+@*@using BikeShop.Protos;
+@using Google.Protobuf.WellKnownTypes;
+@using AutoMapper;*@
 
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
 @inject BikeShopUserService UserService;
+@*@inject Bikes.BikesClient bc;
+@inject IMapper m;*@
 
 <div aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -198,12 +203,11 @@ else
         {
             var jsonResponse = await RestClient.GetStringAsync("/bike");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
-            SubscribeToEditItemClick();
-            SubscribeToDeleteItemClick();
-            SubscribeToOnDeleteConfirmed();
-
+            //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+            ////scrivere test
+            //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
             CurrentUser = UserService.GetCurrentUser();
-
+            SubscribeToEditItemClick();
         }
         catch (Exception ex)
         {

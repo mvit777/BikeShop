@@ -1,7 +1,11 @@
+using AutoMapper;
 using BikeDistributor.Domain.Entities;
 using BikeDistributor.Domain.Models;
 using BikeDistributor.Infrastructure.core;
+using BikeDistributor.Infrastructure.factories;
+using BikeDistributor.Infrastructure.interfaces;
 using BikeDistributor.Infrastructure.services;
+using BikeShop.Protos;
 using BikeShop.Services;
 using BikeShopWS.Infrastructure;
 using FluentAssertions;
@@ -10,8 +14,10 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MV.Framework.providers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -98,10 +104,11 @@ namespace BikeShop.Test
             //var configuration = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
             var configuration = new ConfigurationBuilder().AddJsonFile(file).AddInMemoryCollection().Build();
             var url = configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl");
-            url.Should().Be("http://localhost:8021");
+            //url.Should().Be("http://localhost:8021");
+            url.Should().Be("https://localhost:5001");
             var users = configuration.GetSection("Users").GetChildren();
             //users.Should().Be("caz");
-            users.Count().Should().BeOneOf(new int[] { 2 });
+            users.Count().Should().BeOneOf(new int[] { 4 });
             var userInfos = new List<BikeShopUserInfo>();
             foreach(var user in users)
             {
@@ -111,21 +118,53 @@ namespace BikeShop.Test
             }
             var admin = userInfos.Where(x => x.Username == "admin").SingleOrDefault();
             admin.Role.Should().Be("Admin");
-            //var admin = new BikeShopUserInfo()
-            //{
-            //    Username = "admin",
-            //    Email = "marcello.vitali@yahoo.it"
-            //};
-            ////admin.Username= configuration.GetValue<string>(dict["Username"]);
-            ////admin.Email = configuration.GetValue<string>(dict["Email"]);
-            ////var users = new List<BikeShopUserInfo>();
-            //users.Add(admin);
-            //var us = new BikeShopUserService(users);
-            
-            //us.LogIn(admin.Username, admin.Email);
-            //var currentUser = us.GetCurrentUser();
-            //currentUser.Email.Should().Be("marcello.vitali@yahoo.it");
+           
+        }
+
+        private Mapper GetMapper()
+        {
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MongoEntityBike, EntityMongoBike>();
+
+                cfg.CreateMap<BikeOption, EntityBikeOption>().ReverseMap();
+                cfg.CreateMap<IBike, EntityBike>();
+                //cfg.CreateMap<EntityBike, IBike>().As<BikeVariant>();
+                //cfg.CreateMap<EntityMongoBike, MongoEntityBike>()
+                //.ConstructUsing(d => new MongoEntityBike(
+                //                        BikeFactory.Create(d.Bike.Brand, d.Bike.Model, d.Bike.Price, d.IsStandard, (List<BikeOption>)d.SelectedOptions.AsEnumerable())
+                //                                    .GetBike())
+                //                );
+
+
+            });
+            var mapper = mapperConfiguration.CreateMapper();
+
+            return (Mapper)mapper;
+        }
+
+        [Fact]
+        public void TestProtos()
+        {
+            var mapper = GetMapper();
+
+            var jibike = new JObject
+            {
+                {"Brand", "Giant" },
+                {"Model","Defy 1" },
+                {"Price",Bike.OneThousand },
+                {"Description","some description" },
+                {"isStandard",true },
+                {"options", "" }
+            };
+            var IBike = BikeFactory.Create(jibike).GetBike();
+            var _MongoBikeEntity = new MongoEntityBike(IBike);
+            _MongoBikeEntity.Bike.Brand.Should().Be("Giant");
+            var gprcMongoEntity = new EntityMongoBike();
+            gprcMongoEntity = mapper.Map<EntityMongoBike>(_MongoBikeEntity);
+            gprcMongoEntity.Bike.Brand.Should().Be("Giant");
 
         }
+
     }
 }

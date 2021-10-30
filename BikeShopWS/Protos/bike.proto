@@ -41,6 +41,7 @@ message EntityBike{
         int32 BasePrice=4;
         bool isStandard=5;
         string Description=6;
+        repeated EntityBikeOption SelectedOptions =7;
 }
 
 message EntityMongoBike {

@@ -31,8 +31,8 @@ namespace GrpcBike
             _bikeService = (MongoBikeService)_register.GetServiceInstance("MongoBikeService", _config.GetMongoServiceIdentity("MongoBikeService"));
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MongoEntityBike, EntityMongoBike>();
-                cfg.CreateMap<BikeOption, EntityBikeOption>();
+                cfg.CreateMap<MongoEntityBike, EntityMongoBike>().ReverseMap();
+                cfg.CreateMap<BikeOption, EntityBikeOption>().ReverseMap();
                 cfg.CreateMap<IBike, EntityBike>();
             });
             _mapper = mapperConfiguration.CreateMapper();

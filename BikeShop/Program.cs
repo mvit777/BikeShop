@@ -8,6 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using BikeShop.Services;
 using Grpc.Net.Client.Web;
 using BikeShop.Protos;
+using AutoMapper;
+using BikeDistributor.Domain.Entities;
+using BikeDistributor.Domain.Models;
+using BikeDistributor.Infrastructure.interfaces;
+using BikeShop.Helpers;
+using BikeDistributor.Infrastructure.factories;
+using System.Linq;
 
 namespace BikeShop
 {
@@ -33,8 +40,8 @@ namespace BikeShop
             //var BS = new MongoBikeService(mongoContext);
             //builder.Services.AddSingleton<IMongoService>(bs=>BS);
             ////=======================
-            var restBaseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl", "");
-            var restClient = new HttpClient { BaseAddress = new Uri(restBaseUrl) };
+            var baseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl", "");
+            var restClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
             builder.Services.AddScoped(RestClient => restClient);
 
             /****************just some shit to pretend we have a login system in place*******/
@@ -61,10 +68,28 @@ namespace BikeShop
             builder.Services
             .AddGrpcClient<Bikes.BikesClient> (options =>
                 {
-                    options.Address = new Uri("https://localhost:5001");
+                    options.Address = new Uri(baseUrl);
                 }).ConfigurePrimaryHttpMessageHandler(
                 () => new GrpcWebHandler(new HttpClientHandler())
             );
+
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<MongoEntityBike, EntityMongoBike>();
+                
+                cfg.CreateMap<BikeOption, EntityBikeOption>().ReverseMap();
+                cfg.CreateMap<IBike, EntityBike>();
+                //cfg.CreateMap<EntityBike, IBike>().As<BikeVariant>();
+                cfg.CreateMap<EntityMongoBike, MongoEntityBike>()
+                .ConstructUsing(d=>new MongoEntityBike(
+                                        BikeFactory.Create(d.Bike.Brand,d.Bike.Model, d.Bike.Price, d.IsStandard, (List<BikeOption>)d.SelectedOptions.AsEnumerable())
+                                                    .GetBike())
+                                );
+
+
+            });
+            var mapper = mapperConfiguration.CreateMapper();
+            builder.Services.AddSingleton(m=>mapper);
 
             await builder.Build().RunAsync();
         }
