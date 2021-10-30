@@ -6,14 +6,14 @@
 @using BikeShop.Helpers;
 @using BikeShop.Services;
 @*@using BikeShop.Protos;
-@using Google.Protobuf.WellKnownTypes;
-@using AutoMapper;*@
+    @using Google.Protobuf.WellKnownTypes;
+    @using AutoMapper;*@
 
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
 @inject BikeShopUserService UserService;
 @*@inject Bikes.BikesClient bc;
-@inject IMapper m;*@
+    @inject IMapper m;*@
 
 <div aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -39,7 +39,8 @@ else
     <br />
     <Alert HTMLId="MainAlert" @ref="MainAlert">
         @message
-        @if (showConfirmButton) {
+        @if (showConfirmButton)
+        {
             <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary float-right" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
             <br />
         }
@@ -192,6 +193,20 @@ else
             StateHasChanged();
         });
     }
+
+    public void SubscribeToNewItemClick()
+    {
+        //BikeList_addBikeIemClick
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addBikeIemClick", (sender, value) =>
+        {
+            ProductModel = new GenericBike();
+            EditContext = new EditContext(ProductModel);
+
+
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+            StateHasChanged();
+        });
+    }
     #endregion
     #region "Page handlers"
     protected override async Task OnInitializedAsync()
@@ -208,6 +223,8 @@ else
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
             CurrentUser = UserService.GetCurrentUser();
             SubscribeToEditItemClick();
+            SubscribeToDeleteItemClick();
+            SubscribeToNewItemClick();
         }
         catch (Exception ex)
         {
