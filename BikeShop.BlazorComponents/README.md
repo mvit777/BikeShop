@@ -355,9 +355,13 @@ However I must say Blazor is very to fast to learn, especially if you have a bac
 - demographics of developers. Young developers tend to favor javascript as it is all the rage these days. Aging developers have been using javascript for years now, they might not be so tempted to learn yet another tool (unless they really dislike javascript).
 
 On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate. 
-All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with PHP + Twig.
+All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with [PHP + Twig](https://twig.symfony.com/).
+
 The javascript/jquery attempt was a complete failure up to the point I abandoned it in a very early stage. It had bugs scattered all around and was bloated from the very start.
-Basically doing such a thing requires a non-trivial knowdledge of javascript far beyond my level. Also the fact that I'm not aware of an existing such a library makes me think it is not a good idea. The PHP+Twig was much more successful, in the sense that I re-used it in many projects. The main problem of that solution was that once the serverside was executed, I was left alone yet again with a lot of AJAX setup and DOM manipulation.
+Basically doing such a thing requires a non-trivial knowdledge of javascript far beyond my level. Also the fact that I'm not aware of an existing such a library makes me think it is not a good idea. 
+
+The PHP+Twig was much more successful, in the sense that I re-used it in many projects. The main problem of that solution was that once the serverside was executed, I was left alone yet again with a lot of AJAX setup and DOM manipulation.
+
 In Blazor you just forget about AJAX setup and DOM manipulation, as they are run under the covers. This is another good point for Blazor. 
 The aspect of inter-mixed html and code is a very handy but reminds me a bit of old style Wordpress, which I don't like very much. I still have to make a decision about 
 shifting towards code-behind file + template file style or mix both. The impression is at some point I will use the former as it favours more consistency even if is a lot more verbose. 
@@ -377,9 +381,12 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 - [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0) Bible definition
   - [ezzylearning tutorial on forms and validation](https://www.ezzylearning.net/tutorial/a-guide-to-blazor-forms-and-validation)
 
+- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article. When people take things at heart is a good sign.
+
 ### Commercial Components libraries
-As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries:
+As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries (in no particular order):
 - [Telerik](https://demos.telerik.com/blazor-ui)
 - [Syncfusion](https://www.syncfusion.com/blazor-components)
 - [Blazorise](https://blazorise.com/)
+- [DevExpress](https://www.devexpress.com/blazor/)
 - (..more to come..)
