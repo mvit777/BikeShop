@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Cors;
 using MV.Framework.providers;
 using BikeDistributor.Infrastructure.core;
 using BikeShopWS.Infrastructure;
+using BikeDistributor.Infrastructure.interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using BikeDistributor.Infrastructure.factories;
 
 namespace BikeShopWS.Controllers
 {
@@ -36,6 +40,7 @@ namespace BikeShopWS.Controllers
         [HttpGet]
         public async Task<List<MongoEntityBike>> Get()
         {
+           
             try
             {
                 return await _bikeService.Get();
@@ -46,6 +51,25 @@ namespace BikeShopWS.Controllers
                 return null;
             }
             
+        }
+
+        [HttpPost]
+        public async Task<MongoEntityBike> Create(string bike)
+        {
+            //JObject o = JObject.Parse(bike);
+            //IBike b = null;
+            //if (o.Value<bool>("isStandard") == true)
+            //{
+            //    b = (Bike)BikeFactory.Create(o).GetBike();
+            //}
+            //else
+            //{
+            //    b =(BikeVariant)BikeFactory.Create(o).GetBike();
+            //}
+            var b = JsonUtils.DeserializeIBikeModel(bike);
+            MongoEntityBike meb = await _bikeService.AddBikeAsync(b);
+
+            return meb;
         }
     }
 }

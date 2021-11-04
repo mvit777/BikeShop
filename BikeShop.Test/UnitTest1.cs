@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -79,7 +80,7 @@ namespace BikeShop.Test
         public void TestBikeWS()
         {
             string baseurl = _baseUrl;
-            string action = "/bike";
+            string action = "/bikes";
             var restClient = new RestClient(baseurl);
             var request = new RestRequest(action, DataFormat.Json);
             var response = restClient.Get(request);
@@ -119,6 +120,24 @@ namespace BikeShop.Test
             var admin = userInfos.Where(x => x.Username == "admin").SingleOrDefault();
             admin.Role.Should().Be("Admin");
            
+        }
+        [Fact]
+        public async Task TestAddBikeWsAsync()
+        {
+            var file = @"C:\Users\Marcello\source\repos\Blazor\BikeShop\wwwroot\appsettings.json";
+            
+            var configuration = new ConfigurationBuilder().AddJsonFile(file).AddInMemoryCollection().Build();
+            var url = configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl");      
+            url.Should().Be(_baseUrl);
+
+            var bike = JsonConvert.SerializeObject((IBike)BikeFactory.Create("Bianchi", "X25", 1000, true).GetBike());
+            var data = new StringContent(bike, Encoding.UTF8, "application/json");
+
+            var httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
+            var response = httpClient.PostAsync("/bikes/create", data);
+            var result = await response.Result.Content.ReadAsStringAsync();
+            var meb = JsonConvert.DeserializeObject<MongoEntityBike>(result);
+            meb.Bike.Model.Should().Be("X25");
         }
 
         private Mapper GetMapper()
