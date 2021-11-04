@@ -19,14 +19,14 @@ namespace BikeShopWS.Controllers
     [EnableCors("AllowAll")]
     [ApiController]
     [Route("[controller]")]
-    public class BikeController : ControllerBase
+    public class BikesController : ControllerBase
     {
 
-        private readonly ILogger<BikeController> _logger;
+        private readonly ILogger<BikesController> _logger;
         private MongoServiceInstanceRegister _register;
         private readonly MongoBikeService _bikeService;
         private WsConfig _config;
-        public BikeController(ILogger<BikeController> logger, MongoServiceInstanceRegister register, WsConfig config)
+        public BikesController(ILogger<BikesController> logger, MongoServiceInstanceRegister register, WsConfig config)
         {
             _logger = logger;
             _register = register;

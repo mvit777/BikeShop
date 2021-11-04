@@ -216,7 +216,7 @@ else
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
-            var jsonResponse = await RestClient.GetStringAsync("/bike");
+            var jsonResponse = await RestClient.GetStringAsync("/bikes");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
             ////scrivere test
