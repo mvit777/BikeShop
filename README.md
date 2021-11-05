@@ -31,7 +31,7 @@ Next time I'll make sure to better read the docs
 
 ## a nice findout: the HttpClient ##
 Being forced to add a (bit redundant) Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
-That was only to realise that also the RestSharp package unexpectedly relies on System.Net and therefore is also `not supported by the platform`.
+That was only to realise that also the RestSharp package unexpectedly relies on System.Net and therefore is also `not supported by the platform`. (this seems to have changed)
 After a brief search on the internet and a look at Program.cs I spotted the solution:
 In fact the Program.cs bootstrap of an wasm app has this code by default:
 
@@ -94,8 +94,8 @@ My aim here is to create a [small lib of components](https://github.com/mvit777/
 
 Armed with my first set of components, before implementing the full CRUD operations I want to talk about...
 
-## the temporarily aborted shift from Rest to gRPC
-After a week of protobuff-fever I decided, not without regret, to step back to REST. While the server part was quite easy to implement, and I'll keep it for a later stage, the client part implementation showed up some not-so-easy-solvable problems that weren't fixed by the othewise excellent [AutoMapper](https://automapper.org/) package. 
+## the temporarily aborted shift [from Rest to gRPC](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md)
+After a [week of protobuff-fever](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md) I decided, not without regret, to step back to REST. While the server part was quite easy to implement, and I'll keep it for a later stage, the client part implementation showed up some not-so-easy-solvable problems that weren't fixed by the othewise excellent [AutoMapper](https://automapper.org/) package. 
 In particular, handling of null values and mapping of "grpc entities" (don't know if this term makes sense) and some missing types made me think twice. 
 While [Code first project](https://docs.microsoft.com/en-us/aspnet/core/grpc/code-first?view=aspnetcore-5.0) might come to rescue it has some drawbacks on its own.
 Moreover, I suspect the naive implementation of my domain models and Mongo entities played a role in the above problems. Definetly time for a refactor and more study/planning before a second attempt. However, I'm definetly not giving up. I'll soon branch the project and keep trying. In the meanwhile, I moved the documentation of first attempt [here](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md) and I'll keep updating it. At least the server part will co-exist without problems.
