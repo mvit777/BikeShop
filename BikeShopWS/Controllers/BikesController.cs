@@ -56,19 +56,16 @@ namespace BikeShopWS.Controllers
         [HttpPost]
         public async Task<MongoEntityBike> Create(string bike)
         {
-            //JObject o = JObject.Parse(bike);
-            //IBike b = null;
-            //if (o.Value<bool>("isStandard") == true)
-            //{
-            //    b = (Bike)BikeFactory.Create(o).GetBike();
-            //}
-            //else
-            //{
-            //    b =(BikeVariant)BikeFactory.Create(o).GetBike();
-            //}
-            var b = JsonUtils.DeserializeIBikeModel(bike);
-            MongoEntityBike meb = await _bikeService.AddBikeAsync(b);
-
+            MongoEntityBike meb;
+            try
+            {
+                var b = JsonUtils.DeserializeIBikeModel(bike);
+               meb = await _bikeService.AddBikeAsync(b);    
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message + " " + ex.InnerException);
+            }
             return meb;
         }
     }

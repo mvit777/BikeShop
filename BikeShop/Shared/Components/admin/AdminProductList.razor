@@ -1,10 +1,14 @@
 ﻿@using BikeDistributor.Domain.Models;
 @using BikeDistributor.Domain.Entities;
 @using BikeDistributor.Infrastructure.core;
+@using BikeDistributor.Infrastructure.interfaces;
 @using BikeShop.BlazorComponents.Components;
 @using AKSoftware.Blazor.Utilities;
 @using BikeShop.Helpers;
 @using BikeShop.Services;
+@using System.Text;
+@using Newtonsoft.Json;
+
 @*@using BikeShop.Protos;
     @using Google.Protobuf.WellKnownTypes;
     @using AutoMapper;*@
@@ -23,6 +27,8 @@
 </div>
 <div>
 
+
+
     <!--ecce homo <span>@url</span>-->@*<span>@Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "")</span>*@
     <span>@responseContent</span>
 </div>
@@ -34,7 +40,7 @@
 }
 else
 {
-    <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeIemClick" />
+    <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeItemClick" />
     <div style="clear:both;"></div>
     <br />
     <Alert HTMLId="MainAlert" @ref="MainAlert">
@@ -66,7 +72,7 @@ else
             </td>
             <td>@EntityBike.TotalPrice</td>
             <td>
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editIemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editItemClick" />
                 <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Icon="oi oi-trash" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
 
             </td>
@@ -84,7 +90,9 @@ else
             </span>
         </HeaderTemplate>
         <ChildContent>
-            <EditForm EditContext="@EditContext" class="row p-3">
+            <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit" class="row p-3">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
                 <div class="col-md-6 mb-3">
                     <label for="Model">Model</label>
                     <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
@@ -129,7 +137,31 @@ else
     private string deletableObjId;
 
     #region "Form handlers"
+    private void HandleSubmit()
+    {
+        //Console.WriteLine("HandleSubmit Called...");
 
+        if (EditContext.Validate())
+        {
+            //Console.WriteLine("Form is Valid...");
+            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+            if (MongoEntity != null)
+            {
+
+            }
+            else
+            {
+                var bike = JsonConvert.SerializeObject(ProductModel);
+                var data = new StringContent(bike, Encoding.UTF8, "application/json");
+                RestClient.PostAsync("/bikes", data);
+            }
+            selectedId = "";
+        }
+        //else
+        //{
+        //    Console.WriteLine("Form is Invalid...");
+        //}
+    }
     #endregion
     #region "Components handlers"
     public void CloseEditBikeModal()
@@ -142,8 +174,8 @@ else
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
         {
             message = $"I deleted item {deletableObjId}";
-            //MainAlert.ChangeVisible(false);
-            MainAlert.ChangeCssClass("alert-success");
+        //MainAlert.ChangeVisible(false);
+        MainAlert.ChangeCssClass("alert-success");
             showConfirmButton = false;
             deletableObjId = null;
             StateHasChanged();
@@ -155,9 +187,9 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"Please confirm you want to delete item {value}";
+        // Do actions against the value
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
             showConfirmButton = true;
             MainAlert.ChangeVisible(true);
@@ -169,12 +201,12 @@ else
 
     public void SubscribeToEditItemClick()
     {
-        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editIemClick", (sender, value) =>
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {selectedId}";
+        // Do actions against the value
+        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -197,7 +229,7 @@ else
     public void SubscribeToNewItemClick()
     {
         //BikeList_addBikeIemClick
-        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addBikeIemClick", (sender, value) =>
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addBikeItemClick", (sender, value) =>
         {
             ProductModel = new GenericBike();
             EditContext = new EditContext(ProductModel);

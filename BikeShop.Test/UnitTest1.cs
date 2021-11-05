@@ -130,14 +130,14 @@ namespace BikeShop.Test
             var url = configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl");      
             url.Should().Be(_baseUrl);
 
-            var bike = JsonConvert.SerializeObject((IBike)BikeFactory.Create("Bianchi", "X25", 1000, true).GetBike());
+            var bike = JsonConvert.SerializeObject((IBike)BikeFactory.Create("Bianchi", "X900", 3000, true).GetBike());
             var data = new StringContent(bike, Encoding.UTF8, "application/json");
 
             var httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
-            var response = httpClient.PostAsync("/bikes/create", data);
+            var response = httpClient.PostAsync("/bikes?bike=" + bike, data);
             var result = await response.Result.Content.ReadAsStringAsync();
             var meb = JsonConvert.DeserializeObject<MongoEntityBike>(result);
-            meb.Bike.Model.Should().Be("X25");
+            meb.Bike.Model.Should().Be("X900");
         }
 
         private Mapper GetMapper()
