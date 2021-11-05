@@ -94,7 +94,7 @@ My aim here is to create a [small lib of components](https://github.com/mvit777/
 
 Armed with my first set of components, before implementing the full CRUD operations I want to talk about...
 
-## the temporarily aborted shift from Rest to gRPC
+## the temporarily aborted shift [from Rest to gRPC](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md)
 After a [week of protobuff-fever](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md) I decided, not without regret, to step back to REST. While the server part was quite easy to implement, and I'll keep it for a later stage, the client part implementation showed up some not-so-easy-solvable problems that weren't fixed by the othewise excellent [AutoMapper](https://automapper.org/) package. 
 In particular, handling of null values and mapping of "grpc entities" (don't know if this term makes sense) and some missing types made me think twice. 
 While [Code first project](https://docs.microsoft.com/en-us/aspnet/core/grpc/code-first?view=aspnetcore-5.0) might come to rescue it has some drawbacks on its own.
