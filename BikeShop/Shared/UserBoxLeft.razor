@@ -1,0 +1,75 @@
+﻿@using AKSoftware.Blazor.Utilities;
+@using BikeShop.Services;
+@inject IJSRuntime JSRuntime;
+@inject BikeShopUserService UserService;
+@inject NavigationManager NavigationManager;
+    <div class="card w-100">
+        <div class="card-body">
+
+            <img src="@("./images/" + currentUser.Image)" width="75" height="75" class="rounded-circle border border-dark" />
+
+            <div class="card-text font-italic">
+                @currentUser.Role
+                @if (currentUser.Role != "Admin")
+                {
+                    <span class="text-monospace">: @currentUser.Username</span> 
+                }
+            </div>
+            <blockquote class="blockquote">
+                <footer class="blockquote-footer"><cite style="font-size: smaller" title="Source Title">@currentUser.AboutMe</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+@code {
+    private BikeShopUserInfo currentUser;
+    private List<BikeShopUserInfo> Users;
+    private string roleAdmin = "Admin";
+
+    
+    protected async Task OnBtnImpersonateMenuClicked()
+    {
+        //placed in MainLayout
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
+    }
+
+    protected void SubScribeToUserChanged()
+    {
+        MessagingCenter.Subscribe<BikeShopUserService, string>(this, "OnUserChanged", (sender, value) =>
+        {
+
+            currentUser = UserService.GetCurrentUser();
+
+            if (currentUser.Role != roleAdmin)
+            {
+            //var Uri = NavigationManager.ToAbsoluteUri("cart");
+            NavigationManager.NavigateTo("/cart");
+            }
+            StateHasChanged();
+        });
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        currentUser = UserService.GetCurrentUser();
+        Users = UserService.GetUsers();
+
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+
+                SubScribeToUserChanged();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + " " + ex.Source);
+            }
+
+        }
+    }
+}

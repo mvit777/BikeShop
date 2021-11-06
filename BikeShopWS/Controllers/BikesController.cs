@@ -17,6 +17,9 @@ using BikeDistributor.Infrastructure.interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using BikeDistributor.Infrastructure.factories;
+using System.IO;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace BikeShopWS.Controllers
 {
@@ -53,20 +56,51 @@ namespace BikeShopWS.Controllers
             
         }
 
+        
         [HttpPost]
+        [Route("/Bikes/create")]
         public async Task<MongoEntityBike> Create(string bike)
         {
-            MongoEntityBike meb;
+            MongoEntityBike meb = null;
             try
             {
                 var b = JsonUtils.DeserializeIBikeModel(bike);
-               meb = await _bikeService.AddBikeAsync(b);    
+                meb = await _bikeService.AddBikeAsync(b);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message + " " + ex.InnerException);
             }
             return meb;
         }
+       
+        [HttpPost]
+        [Route("/Bikes/update")]
+        public MongoEntityBike Update(string entity)
+        {
+            var meb = JsonUtils.DeserializeIBikeEntity(entity);
+            meb = _bikeService.Update(meb);
+            return meb;
+        }
+        //[HttpPost]
+        //public async Task<MongoEntityBike> Create(HttpContext context)
+        //{
+        //    string bike = "";
+        //    using (StreamReader reader = new StreamReader(context.Request.Body, Encoding.UTF8))
+        //    {
+        //        bike = await reader.ReadToEndAsync();
+        //    }
+        //    MongoEntityBike meb = null;
+        //    try
+        //    {
+        //        var b = JsonUtils.DeserializeIBikeModel(bike);
+        //        meb = await _bikeService.AddBikeAsync(b);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message + " " + ex.InnerException);
+        //    }
+        //    return meb;
+        //}
     }
 }

@@ -10,7 +10,7 @@
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="@("./images/" + currentUser.Image)" width="35" height="35" class="rounded-circle border border-dark" /> @currentUser.Username
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-right shadow">
             <div class="dropdown-item"><span class="text-muted">@currentUser.Role</span></div>
             <hr style="margin-top:-5px;" />
             <Button HTMLId="btnSettings" Icon="oi oi-cog" HTMLCssClass="dropdown-item" Label="Settings" ClickEventName="btnSettingsClicked" />

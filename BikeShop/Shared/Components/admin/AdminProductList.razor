@@ -101,6 +101,10 @@ else
                     <label for="BasePrice">Price</label>
                     <InputNumber id="BasePrice" @bind-Value="ProductModel.BasePrice" class="form-control" />
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label for="Brand">Brand</label>
+                    <InputText id="Brand" @bind-Value="ProductModel.Brand" class="form-control" />
+                </div>
                 <div class="col-md-12 mb-3">
                     <label for="Description">Description</label>
                     <InputTextArea id="Description" @bind-Value="ProductModel.Description" class="form-control" />
@@ -130,7 +134,7 @@ else
     private string message;
     //private ElementReference MainAlert;
     private Alert MainAlert;
-    private GenericBike ProductModel = new GenericBike();
+    private GenericBike ProductModel;
     private EditContext EditContext;
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
@@ -152,8 +156,11 @@ else
             else
             {
                 var bike = JsonConvert.SerializeObject(ProductModel);
-                var data = new StringContent(bike, Encoding.UTF8, "application/json");
-                RestClient.PostAsync("/bikes", data);
+                //var data = new StringContent(bike, Encoding.UTF8, "application/json");
+                RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
+                CloseEditBikeModal();
+                MessagingCenter.Send(this, "BikeList_DataChanged");
+                StateHasChanged();
             }
             selectedId = "";
         }
@@ -174,8 +181,8 @@ else
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
         {
             message = $"I deleted item {deletableObjId}";
-        //MainAlert.ChangeVisible(false);
-        MainAlert.ChangeCssClass("alert-success");
+            //MainAlert.ChangeVisible(false);
+            MainAlert.ChangeCssClass("alert-success");
             showConfirmButton = false;
             deletableObjId = null;
             StateHasChanged();
@@ -187,9 +194,9 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"Please confirm you want to delete item {value}";
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
             showConfirmButton = true;
             MainAlert.ChangeVisible(true);
@@ -203,10 +210,10 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -240,28 +247,46 @@ else
         });
     }
     #endregion
-    #region "Page handlers"
-    protected override async Task OnInitializedAsync()
+    #region "Data Handlers"
+    private void SubScribeToDataChanged()
     {
-
+        MessagingCenter.Subscribe<HtmlTable<List<MongoEntityBike>>, string>(this, "BikeList_DataChanged", async (sender, value) =>
+        {
+            await GetBikesAsync();
+            StateHasChanged();
+        });
+    }
+    private async Task GetBikesAsync()
+    {
+        ProductModel = new GenericBike();
         EditContext = new EditContext(ProductModel);
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
-            var jsonResponse = await RestClient.GetStringAsync("/bikes");
+            var jsonResponse = await RestClient.GetStringAsync("/Bikes");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
             ////scrivere test
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
-            CurrentUser = UserService.GetCurrentUser();
-            SubscribeToEditItemClick();
-            SubscribeToDeleteItemClick();
-            SubscribeToNewItemClick();
+
         }
         catch (Exception ex)
         {
             responseContent = ex.Message + " " + ex.InnerException + ex.StackTrace;
         }
+
+    }
+    #endregion
+    #region "Page handlers"
+    protected override async Task OnInitializedAsync()
+    {
+
+        await GetBikesAsync();
+        CurrentUser = UserService.GetCurrentUser();
+        SubscribeToEditItemClick();
+        SubscribeToDeleteItemClick();
+        SubscribeToNewItemClick();
+        SubScribeToDataChanged();
 
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
