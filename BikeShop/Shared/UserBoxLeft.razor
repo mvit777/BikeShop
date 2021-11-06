@@ -25,12 +25,6 @@
     private List<BikeShopUserInfo> Users;
     private string roleAdmin = "Admin";
 
-    
-    protected async Task OnBtnImpersonateMenuClicked()
-    {
-        //placed in MainLayout
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
-    }
 
     protected void SubScribeToUserChanged()
     {
@@ -39,11 +33,7 @@
 
             currentUser = UserService.GetCurrentUser();
 
-            if (currentUser.Role != roleAdmin)
-            {
-            //var Uri = NavigationManager.ToAbsoluteUri("cart");
-            NavigationManager.NavigateTo("/cart");
-            }
+            
             StateHasChanged();
         });
     }
