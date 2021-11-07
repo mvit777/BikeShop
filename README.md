@@ -114,7 +114,6 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 - [DataTable.Blazor](https://github.com/JustinWilkinson/DataTables.Blazor) A very valuable effort to port JQuery DataTables entirely in C#
 - [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace 
 - [Jon Hilton- Making sense of .NET](https://jonhilton.net/post/) A recent discover for me. It has a lot of material about Blazor. The articles treat the topic with a very original approach. Definetly worth checking it frequently.
-REST Services with gRPC-Web
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
