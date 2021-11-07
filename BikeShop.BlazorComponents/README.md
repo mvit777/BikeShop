@@ -381,6 +381,18 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 - [EditForm](https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0) Bible definition
   - [ezzylearning tutorial on forms and validation](https://www.ezzylearning.net/tutorial/a-guide-to-blazor-forms-and-validation)
 
+- [Jon Hilton- Making sense of .NET](https://jonhilton.net/post/) A recent discover for me this site has a lot of material about Blazor. It features a lot of short but inspiring articles on Blazor and .NET. Defintely worth reading
+  - [With so many Blazor Component Libraries, which one is best for you?](https://jonhilton.net/choosing-a-blazor-component-library/)
+  - [How I organise my Blazor components](https://jonhilton.net/blazor-component-folder-structure/)
+  - [Sure, you could write all those Blazor HTTP calls yourself...](https://jonhilton.net/blazor-refit/)
+  - [Will .NET 6 fix Blazor Prerendering?](https://jonhilton.net/blazor-prerendering-net6/)
+  - [Razor Pages has Components too don't you know!](https://jonhilton.net/razor-pages-components/)
+  - [Go faster with your own re-usable Blazor components](https://jonhilton.net/build-your-own-re-usable-blazor-components/)
+
+- [Cold Elm Coders](https://shauncurtis.github.io/articles/) Very different style of writing with regard to the preceding author but equally a must read
+  - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
+  - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Some as above but this time CSS is the topic
+
 - [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article. When people take things at heart is a good sign.
 
 ### Commercial Components libraries
@@ -389,4 +401,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 - [Syncfusion](https://www.syncfusion.com/blazor-components)
 - [Blazorise](https://blazorise.com/)
 - [DevExpress](https://www.devexpress.com/blazor/)
+- [Start Blazoring](https://startblazoring.com/) 
 - (..more to come..)
