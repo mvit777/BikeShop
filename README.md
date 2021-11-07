@@ -122,7 +122,9 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
   - [Razor Pages has Components too don't you know!](https://jonhilton.net/razor-pages-components/)
   - [Go faster with your own re-usable Blazor components](https://jonhilton.net/build-your-own-re-usable-blazor-components/)
 
-- [Cold Elm Coders](https://shauncurtis.github.io/articles/) I don't remember actually how I landed on this site, but just like the preceding author you won't find average or trivial articles. Another worth the time reading
+- [Cold Elm Coders](https://shauncurtis.github.io/articles/) Very different style of writing with regard to the preceding author but equally a must read
+  - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
+  - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Some as above but this time CSS is the topic
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
