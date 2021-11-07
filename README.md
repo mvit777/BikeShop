@@ -114,6 +114,12 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 - [DataTable.Blazor](https://github.com/JustinWilkinson/DataTables.Blazor) A very valuable effort to port JQuery DataTables entirely in C#
 - [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace 
 - [Jon Hilton- Making sense of .NET](https://jonhilton.net/post/) A recent discover for me this site has a lot of material about Blazor. The articles treat the topic with a very original approach. Definetly worth reading them all.
+  - [With so many Blazor Component Libraries, which one is best for you?](https://jonhilton.net/choosing-a-blazor-component-library/)
+  - [How I organise my Blazor components](https://jonhilton.net/blazor-component-folder-structure/)
+  - [Sure, you could write all those Blazor HTTP calls yourself...](https://jonhilton.net/blazor-refit/)
+  - [Will .NET 6 fix Blazor Prerendering?](https://jonhilton.net/blazor-prerendering-net6/)
+  - [Razor Pages has Components too don't you know!](https://jonhilton.net/razor-pages-components/)
+  - [Go faster with your own re-usable Blazor components](https://jonhilton.net/build-your-own-re-usable-blazor-components/)
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
