@@ -114,17 +114,7 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 - [Messaging Center](https://github.com/aksoftware98/blazor-utilities) Messaging between unrelated components made it easy. A must-have nuget package. The author is also a very active member of the MS community and features a lot of learning material on his own site at https://ahmadmozaffar.net/Blog and at https://www.youtube.com/channel/UCRs-PO48PbbS0l7bBhbu5CA
 - [DataTable.Blazor](https://github.com/JustinWilkinson/DataTables.Blazor) A very valuable effort to port JQuery DataTables entirely in C#
 - [Implementing MVVM](https://www.syncfusion.com/blogs/post/mvvm-pattern-in-blazor-for-state-management.aspx) A must-read article from the same author of 10 Steps to Replace 
-- [Jon Hilton- Making sense of .NET](https://jonhilton.net/post/) A recent discover for me this site has a lot of material about Blazor. It features a lot of short but inspiring articles on Blazor and .NET. Defintely worth reading
-  - [With so many Blazor Component Libraries, which one is best for you?](https://jonhilton.net/choosing-a-blazor-component-library/)
-  - [How I organise my Blazor components](https://jonhilton.net/blazor-component-folder-structure/)
-  - [Sure, you could write all those Blazor HTTP calls yourself...](https://jonhilton.net/blazor-refit/)
-  - [Will .NET 6 fix Blazor Prerendering?](https://jonhilton.net/blazor-prerendering-net6/)
-  - [Razor Pages has Components too don't you know!](https://jonhilton.net/razor-pages-components/)
-  - [Go faster with your own re-usable Blazor components](https://jonhilton.net/build-your-own-re-usable-blazor-components/)
 
-- [Cold Elm Coders](https://shauncurtis.github.io/articles/) Very different style of writing with regard to the preceding author but equally a must read
-  - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
-  - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Some as above but this time CSS is the topic
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
