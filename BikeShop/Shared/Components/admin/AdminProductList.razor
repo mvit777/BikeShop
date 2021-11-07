@@ -139,9 +139,15 @@ else
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
     private string deletableObjId;
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
 
     #region "Form handlers"
-    private void HandleSubmit()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private async Task HandleSubmit()
     {
         //Console.WriteLine("HandleSubmit Called...");
 
@@ -157,25 +163,29 @@ else
             {
                 var bike = JsonConvert.SerializeObject(ProductModel);
                 //var data = new StringContent(bike, Encoding.UTF8, "application/json");
-                RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
+                await RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
                 CloseEditBikeModal();
+                await Layout.PopulateMainToastAsync("Operation result", "bike inserted!");
                 MessagingCenter.Send(this, "BikeList_DataChanged");
                 StateHasChanged();
             }
             selectedId = "";
         }
-        //else
-        //{
-        //    Console.WriteLine("Form is Invalid...");
-        //}
+      
     }
     #endregion
     #region "Components handlers"
+    /// <summary>
+    /// 
+    /// </summary>
     public void CloseEditBikeModal()
     {
         JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");
         MainAlert.ChangeVisible(false);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void SubscribeToOnDeleteConfirmed()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
@@ -189,7 +199,9 @@ else
         });
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void SubscribeToDeleteItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
@@ -205,7 +217,9 @@ else
             StateHasChanged();
         });
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void SubscribeToEditItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
@@ -232,7 +246,9 @@ else
             StateHasChanged();
         });
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void SubscribeToNewItemClick()
     {
         //BikeList_addBikeIemClick
@@ -250,7 +266,7 @@ else
     #region "Data Handlers"
     private void SubScribeToDataChanged()
     {
-        MessagingCenter.Subscribe<HtmlTable<List<MongoEntityBike>>, string>(this, "BikeList_DataChanged", async (sender, value) =>
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_DataChanged", async (sender, value) =>
         {
             await GetBikesAsync();
             StateHasChanged();

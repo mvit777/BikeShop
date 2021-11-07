@@ -1,74 +1,102 @@
 @inherits LayoutComponentBase
 @using BikeShop.Services;
-@using Newtonsoft.Json;
+@using AKSoftware.Blazor.Utilities;
+
 @inject BikeShopUserService UserService;
 @inject IJSRuntime JSRuntime;
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <!--<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>-->
-            <UserBox />
+<CascadingValue Value="this">
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <div class="content px-4">
-            @Body
+        <div class="main">
+            <div class="top-row px-4">
+                <!--<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>-->
+                <UserBox />
+            </div>
+            <div style="position: absolute; width: 500px; height: 250px; top:120px; right: 250px;"><Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /></div>
+            <div class="content px-4">
+                @Body
+            </div>
         </div>
-    </div>
-    <!-- hidden modal -->
-    <Modal HTMLId="UsersModal" HeaderTitle="Users" HTMLCssClass="modal-sm" ShowFooter="false">
-        <HeaderTemplate>
-            <h5 class="modal-title" id="UserModalH5"><span class="oi oi-people"></span> Pick a User</h5>
-            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
-                <button type="button" class="close" @onclick="CloseUsersModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </span>
-        </HeaderTemplate>
-        <ChildContent>
-            @if (Users != null)
-            {
-                @foreach (BikeShopUserInfo user in Users)
+        <!-- hidden modal -->
+        <Modal HTMLId="UsersModal" HeaderTitle="Users" HTMLCssClass="modal-sm" ShowFooter="false">
+            <HeaderTemplate>
+                <h5 class="modal-title" id="UserModalH5"><span class="oi oi-people"></span> Pick a User</h5>
+                <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                    <button type="button" class="close" @onclick="CloseUsersModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
+                @if (Users != null)
                 {
-                    <div class="card" style="width: 16.5rem;">
-                        <div class="card-body text-right">
-                            <div class="float-left">
-                                <img src="@("./images/" + user.Image)" class="rounded-circle border border-dark" width="70" height="70" alt="...">
-                                @if (user.Role != "Admin")
-                                {
-                                    <br />
-                                    <a class="badge badge-primary badge-pill" href="#">details</a>
-                                }
+                    @foreach (BikeShopUserInfo user in Users)
+                    {
+                        <div class="card" style="width: 16.5rem;">
+                            <div class="card-body text-right">
+                                <div class="float-left">
+                                    <img src="@("./images/" + user.Image)" class="rounded-circle border border-dark" width="70" height="70" alt="...">
+                                    @if (user.Role != "Admin")
+                                    {
+                                        <br />
+                                        <a class="badge badge-primary badge-pill" href="#">details</a>
+                                    }
+                                </div>
+                                <div class="card-text text-dark text-wrap">
+                                    <strong>@user.Username</strong><br />
+                                    <em>"@user.AboutMe"</em>
+                                    <div class="text-sm-right text-muted">@user.Role</div>
+                                </div>
+                                <button class="btn btn-primary" @onclick="@(e => Impersonate(e, user.Username))">Impersonate</button>
                             </div>
-                            <div class="card-text text-dark text-wrap">
-                                <strong>@user.Username</strong><br />
-                                <em>"@user.AboutMe"</em>
-                                <div class="text-sm-right text-muted">@user.Role</div>
-                            </div>
-                            <button class="btn btn-primary" @onclick="@(e => Impersonate(e, user.Username))">Impersonate</button>
                         </div>
-                    </div>
+                    }
                 }
-            }
-        </ChildContent>
-    </Modal>
-</div>
+            </ChildContent>
+        </Modal>
+    </div>
+</CascadingValue>
 @code {
     private List<BikeShopUserInfo> Users;
+    private Toast MainToast;
+    /// <summary>
+    /// https://stackoverflow.com/questions/64299530/how-to-get-reference-to-the-blazor-mainlayout-from-a-child-component
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="message"></param>
+    /// <param name="icon"></param>
+    public async Task PopulateMainToastAsync(string title, string message, string icon = "oi oi-circle-check")
+    {
+        MainToast.SetTitle(title);
+        MainToast.SetMessage(message);
+        MainToast.SetIcon(icon);
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "show");
+    }
+    private void SubscribeToCloseToast()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "closeToast", (sender, value) =>
+        {
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "hide");
+            StateHasChanged();
+        });
+    }
 
     protected async Task CloseUsersModal()
     {
         await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "hide");
     }
+
     private async Task Impersonate(MouseEventArgs e, string username)
     {
         UserService.LogIn(username, "");
         await CloseUsersModal();
         StateHasChanged();
     }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -77,23 +105,13 @@
 
             UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
             Users = UserService.GetUsers();
+            SubscribeToCloseToast();
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message + " " + ex.Source);
         }
     }
-    protected override void OnAfterRender(bool firstRender)
-    {
-        //if (firstRender)
-        //    UserService.LogIn("admin", "somepassword");//will emit the NotifyChangedUser event
-    }
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
-    //{
-    //    if (firstRender)
-    //    {
-    //        //await JSRuntime.InvokeAsync<IJSObjectReference>("import", "/assets/plugins/jquery/jquery.min.js");
-    //    }
-    //}
+
 }
 
