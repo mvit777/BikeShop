@@ -52,7 +52,7 @@ else
         }
     </Alert>
     <div style="clear:both"></div>
-    <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
+    <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList" @ref="BikeList">
         <HeaderTemplate>
             <th>Model</th>
             <th>Brand</th>
@@ -139,12 +139,13 @@ else
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
     private string deletableObjId;
+    private HtmlTable<MongoEntityBike> BikeList;
     [CascadingParameter]
     public MainLayout Layout { get; set; }
 
     #region "Form handlers"
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <returns></returns>
     private async Task HandleSubmit()
@@ -165,18 +166,19 @@ else
                 //var data = new StringContent(bike, Encoding.UTF8, "application/json");
                 await RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
                 CloseEditBikeModal();
-                await Layout.PopulateMainToastAsync("Operation result", "bike inserted!");
-                MessagingCenter.Send(this, "BikeList_DataChanged");
-                StateHasChanged();
+                await Layout.PopulateMainToastAsync("Operation result", "bike inserted!", "alert-success", "oi oi-circle-check");
+                //responseContent = " HandleSubmit called";
+                await GetBikesAsync(true);
+                //StateHasChanged();
             }
             selectedId = "";
         }
-      
+
     }
     #endregion
     #region "Components handlers"
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public void CloseEditBikeModal()
     {
@@ -184,7 +186,7 @@ else
         MainAlert.ChangeVisible(false);
     }
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public void SubscribeToOnDeleteConfirmed()
     {
@@ -200,7 +202,7 @@ else
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public void SubscribeToDeleteItemClick()
     {
@@ -218,7 +220,7 @@ else
         });
     }
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public void SubscribeToEditItemClick()
     {
@@ -247,7 +249,7 @@ else
         });
     }
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public void SubscribeToNewItemClick()
     {
@@ -264,15 +266,7 @@ else
     }
     #endregion
     #region "Data Handlers"
-    private void SubScribeToDataChanged()
-    {
-        MessagingCenter.Subscribe<Button, string>(this, "BikeList_DataChanged", async (sender, value) =>
-        {
-            await GetBikesAsync();
-            StateHasChanged();
-        });
-    }
-    private async Task GetBikesAsync()
+    private async Task GetBikesAsync(bool refreshTable = false)
     {
         ProductModel = new GenericBike();
         EditContext = new EditContext(ProductModel);
@@ -284,6 +278,12 @@ else
             //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
             ////scrivere test
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
+            if (refreshTable)
+            {
+                //responseContent += " bikes found " + EntityBikes.Count.ToString();
+                BikeList.RefreshComponent(EntityBikes);
+                StateHasChanged();
+            }
 
         }
         catch (Exception ex)
@@ -302,8 +302,6 @@ else
         SubscribeToEditItemClick();
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();
-        SubScribeToDataChanged();
-
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {

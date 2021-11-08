@@ -1,15 +1,14 @@
 ﻿@using AKSoftware.Blazor.Utilities;
 @if (Visible)
 {
-    <div class="toast" id="@HTMLId" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast @HTMLCss" id="@HTMLId" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             @*<img src="@Icon" class="rounded mr-2" alt="...">*@
-            <span class="@Icon"></span>
-            <strong class="mr-auto">@Title</strong>
+            <span class="@Icon"></span>&nbsp;<strong class="mr-auto @HTMLCss">@Title</strong>
             <small class="text-muted">just now</small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @onclick="Hide">
+            @*<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" @onclick="Hide">
                 <span aria-hidden="true">&times;</span>
-            </button>
+            </button>*@
         </div>
         <div class="toast-body">
             @Message
@@ -17,8 +16,9 @@
     </div>
 }
 @code {
-    private void Hide()
-    {
-        MessagingCenter.Send(this, "closeToast");
-    }
+    //private void Hide()
+    //{
+    //    MessagingCenter.Send(this, "closeToast");
+    //}
+
 }

@@ -3,7 +3,7 @@ var bootstrapNS = {};
 //register js namespace for bootstrap components
 (function () {
     this.version = "component 1.0";//just a reminder on how to use scoped ns variables
-    this.JSDataTables = {};
+    //this.JSDataTables = {};
 
     this.initComponent = function (name) {
         //SayHello(name);//call to outside function SayHello
@@ -21,8 +21,13 @@ var bootstrapNS = {};
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {
             table = $(table).DataTable(options);
-            this.JSDataTables[table] = table;
+            //this.JSDataTables[table] = table;
         }
+    }
+    this.RefreshJSDataTable = function (table, options) {
+        var oTable = $(table);
+        oTable.dataTable().fnDestroy();// dataTable != DataTable 
+        
     }
 }).apply(bootstrapNS);
 
@@ -36,5 +41,5 @@ $(document).ready(function () {
 $(window).on("load", function () {
     /*bootstrapNS.MakeTabs("adminTabs a");*/
     //SayHello();
-    //bootstrapNS.MakeRichTables(); does do a shit unless a table is on the initial screen
+    //bootstrapNS.MakeRichTables(); does not do a shit unless a table is on the initial screen
 });

@@ -4,7 +4,9 @@
 
 @inject BikeShopUserService UserService;
 @inject IJSRuntime JSRuntime;
-
+<div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
+    <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" />
+</div>
 <CascadingValue Value="this">
     <div class="page">
         <div class="sidebar">
@@ -16,7 +18,6 @@
                 <!--<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>-->
                 <UserBox />
             </div>
-            <div style="position: absolute; width: 500px; height: 250px; top:120px; right: 250px;"><Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /></div>
             <div class="content px-4">
                 @Body
             </div>
@@ -69,12 +70,11 @@
     /// <param name="title"></param>
     /// <param name="message"></param>
     /// <param name="icon"></param>
-    public async Task PopulateMainToastAsync(string title, string message, string icon = "oi oi-circle-check")
+    public async Task PopulateMainToastAsync(string title, string message, string cssClass, string icon = "oi oi-info")
     {
-        MainToast.SetTitle(title);
-        MainToast.SetMessage(message);
-        MainToast.SetIcon(icon);
+        MainToast.RefreshComponent(title, message, icon, cssClass);
         await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "show");
+        StateHasChanged();
     }
     private void SubscribeToCloseToast()
     {

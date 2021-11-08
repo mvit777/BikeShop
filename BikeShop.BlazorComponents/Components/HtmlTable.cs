@@ -24,6 +24,11 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public IReadOnlyList<TItem> Items { get; set; }
 
+        public void RefreshComponent(IReadOnlyList<TItem> items)
+        {
+            Items = items;
+            StateHasChanged();
+        }
         //public void Dispose()
         //{
         //    GC.SuppressFinalize(this);

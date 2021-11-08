@@ -13,6 +13,9 @@ namespace BikeShop.BlazorComponents.Components
         public string HTMLId { get; set; }
 
         [Parameter]
+        public string HTMLCss { get; set; }
+
+        [Parameter]
         public string Title { get; set; }
 
         [Parameter]
@@ -32,6 +35,10 @@ namespace BikeShop.BlazorComponents.Components
         {
             Message = message;
         }
+        public void SetCssClass(string cssClass)
+        {
+            HTMLCss = cssClass;
+        }
         public void ChangeVisible(bool visible)
         {
             Visible = visible;
@@ -42,6 +49,13 @@ namespace BikeShop.BlazorComponents.Components
             Icon = icon;
         }
 
-
+        public void RefreshComponent(string title, string message, string icon, string cssClass)
+        {
+            SetTitle(title);
+            SetMessage(message);
+            SetIcon(icon);
+            SetCssClass(cssClass);
+            StateHasChanged();
+        }
     }
 }
