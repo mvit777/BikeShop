@@ -353,6 +353,7 @@ I'm no frontend guy and have no significant experience of developing with Angula
 However I must say Blazor is very to fast to learn, especially if you have a background in previous or other MS techs. I would also say that for SPA applications, Blazor can be an interesting competitor. The main problems I see are:
 - very little free/opensource ecosystem compared to javascript competitors
 - demographics of developers. Young developers tend to favor javascript as it is all the rage these days. Aging developers have been using javascript for years now, they might not be so tempted to learn yet another tool (unless they really dislike javascript).
+- first load is too slow. The problem is supposed to be mitigated in next release. Check bottom links for more details
 
 On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate. 
 All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with [PHP + Twig](https://twig.symfony.com/).
