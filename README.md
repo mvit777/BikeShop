@@ -120,5 +120,5 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 ## News
 - [Windows Office Hours](https://techcommunity.microsoft.com/t5/windows-events/windows-office-hours-november-18-2021/ev-p/2870707) November 18, 8-9a.m.
 - [The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
-- [Microsoft Ignite](https://myignite.microsoft.com/home) November 2–4, 2021
+- [NET Conf 2021](https://www.dotnetconf.net/)
 
