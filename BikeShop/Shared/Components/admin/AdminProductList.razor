@@ -126,6 +126,22 @@ else
                 here save and close buttons
             </FooterTemplate>*@
     </Modal>
+    <Modal HTMLId="EditOptionsModal" HTMLCssClass="modal-xl" HeaderTitle="Bike Options" >
+        <HeaderTemplate>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <span class="rounded-circle  light-purple-bg" style="background-color: white;">
+                <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            qui edit options
+        </ChildContent>
+        <FooterTemplate>
+                here save and close buttons
+            </FooterTemplate>
+    </Modal>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
@@ -180,12 +196,20 @@ else
     /// <summary>
     ///
     /// </summary>
+    public void SubscribeToAddOption()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addOptionsIemClick", (sender, value) =>
+        {
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditOptionsModal", "show");
+            StateHasChanged();
+        });
+    }
     public void CloseEditBikeModal()
     {
-        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");//make 2nd params dynamic
         MainAlert.ChangeVisible(false);
     }
-    /// <summary>
+    /// <summary>   
     ///
     /// </summary>
     public void SubscribeToOnDeleteConfirmed()
@@ -208,9 +232,9 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"Please confirm you want to delete item {value}";
+        // Do actions against the value
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
             showConfirmButton = true;
             MainAlert.ChangeVisible(true);
@@ -302,6 +326,7 @@ else
         SubscribeToEditItemClick();
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();
+        SubscribeToAddOption();
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
