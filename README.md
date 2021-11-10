@@ -100,6 +100,20 @@ In particular, handling of null values and mapping of "grpc entities" (don't kno
 While [Code first project](https://docs.microsoft.com/en-us/aspnet/core/grpc/code-first?view=aspnetcore-5.0) might come to rescue it has some drawbacks on its own.
 Moreover, I suspect the naive implementation of my domain models and Mongo entities played a role in the above problems. Definetly time for a refactor and more study/planning before a second attempt. However, I'm definetly not giving up. I'll soon branch the project and keep trying. In the meanwhile, I moved the documentation of first attempt [here](https://github.com/mvit777/BikeShop/blob/master/BikeShopWS/gRPC.md) and I'll keep updating it. At least the server part will co-exist without problems.
 
+## Backend
+- Product Catalog builder
+- Stats
+- Order management and basic invoice
+- Customers data
+- Stock and Shipping
+- Impersonation and accounts
+- Customer behaviors lab
+(...more to come..)
+
+## Frontend
+- Shopping cart
+(...more to come..)
+
 ## Last Paragraph: a quick note about the BikeShop WS ##
 (...more to come...)
 
