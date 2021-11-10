@@ -136,7 +136,7 @@ else
             </span>
         </HeaderTemplate>
         <ChildContent>
-            qui edit options
+            qui edit options manager
         </ChildContent>
         <FooterTemplate>
                 here save and close buttons
@@ -146,6 +146,7 @@ else
 @code {
     private List<MongoEntityBike> EntityBikes;
     private string selectedId = "";
+    private string deletableObjId;
     private string responseContent;
     private string message;
     //private ElementReference MainAlert;
@@ -154,14 +155,14 @@ else
     private EditContext EditContext;
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
-    private string deletableObjId;
     private HtmlTable<MongoEntityBike> BikeList;
+    private string currentModal = "";
     [CascadingParameter]
     public MainLayout Layout { get; set; }
 
     #region "Form handlers"
     /// <summary>
-    ///
+    /// Save Item
     /// </summary>
     /// <returns></returns>
     private async Task HandleSubmit()
@@ -174,7 +175,7 @@ else
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
             if (MongoEntity != null)
             {
-
+                //insert
             }
             else
             {
@@ -196,18 +197,21 @@ else
     /// <summary>
     ///
     /// </summary>
-    public void SubscribeToAddOption()
+    public void SubscribeToEditOptionPanel()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_addOptionsIemClick", (sender, value) =>
         {
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditOptionsModal", "show");
+            selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
+            currentModal = "#EditOptionsModal";
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
             StateHasChanged();
         });
     }
     public void CloseEditBikeModal()
     {
-        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "hide");//make 2nd params dynamic
+        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
         MainAlert.ChangeVisible(false);
+        currentModal = "";
     }
     /// <summary>   
     ///
@@ -217,8 +221,8 @@ else
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
         {
             message = $"I deleted item {deletableObjId}";
-            //MainAlert.ChangeVisible(false);
-            MainAlert.ChangeCssClass("alert-success");
+        //MainAlert.ChangeVisible(false);
+        MainAlert.ChangeCssClass("alert-success");
             showConfirmButton = false;
             deletableObjId = null;
             StateHasChanged();
@@ -232,9 +236,9 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"Please confirm you want to delete item {value}";
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
             showConfirmButton = true;
             MainAlert.ChangeVisible(true);
@@ -244,7 +248,7 @@ else
         });
     }
     /// <summary>
-    ///
+    /// Opens edit item modal passing selected item
     /// </summary>
     public void SubscribeToEditItemClick()
     {
@@ -268,12 +272,14 @@ else
                 ProductModel = JsonUtils.Convert<BikeVariant, GenericBike>(bike);
             }
 
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+            currentModal = "#EditBikeModal";
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+
             StateHasChanged();
         });
     }
     /// <summary>
-    ///
+    /// Opens Add item Modal
     /// </summary>
     public void SubscribeToNewItemClick()
     {
@@ -283,8 +289,9 @@ else
             ProductModel = new GenericBike();
             EditContext = new EditContext(ProductModel);
 
-
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#EditBikeModal", "show");
+            currentModal = "#EditBikeModal";
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            selectedId = "";
             StateHasChanged();
         });
     }
@@ -300,11 +307,10 @@ else
             var jsonResponse = await RestClient.GetStringAsync("/Bikes");
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
-            ////scrivere test
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
             if (refreshTable)
             {
-                //responseContent += " bikes found " + EntityBikes.Count.ToString();
+                responseContent += " bikes found " + EntityBikes.Count.ToString();
                 BikeList.RefreshComponent(EntityBikes);
                 StateHasChanged();
             }
@@ -326,7 +332,7 @@ else
         SubscribeToEditItemClick();
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();
-        SubscribeToAddOption();
+        SubscribeToEditOptionPanel();
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
