@@ -392,7 +392,7 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 
 - [Cold Elm Coders](https://shauncurtis.github.io/articles/) Very different style of writing with regard to the preceding author but equally a must read
   - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
-  - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Some as above but this time CSS is the topic
+  - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Same as above but this time CSS is the topic
 
 - [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article. When people take things at heart is a good sign.
 
