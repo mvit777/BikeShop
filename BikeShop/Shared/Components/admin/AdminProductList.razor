@@ -241,7 +241,7 @@ else
             showConfirmButton = true;
             message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger");
-            MainAlert.SetAutoFade(0);
+            MainAlert.SetAutoFade(10000);
             MainAlert.ChangeVisible(true);
             deletableObjId = value;
 
