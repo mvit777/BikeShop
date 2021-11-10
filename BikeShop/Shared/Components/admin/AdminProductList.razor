@@ -173,14 +173,21 @@ else
         {
             //Console.WriteLine("Form is Valid...");
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+
             if (MongoEntity != null)
             {
-                //insert
+                //update
+                MongoEntity.Update(ProductModel);
+                var meb = JsonConvert.SerializeObject(MongoEntity);
+                await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);//fails: write test
+                CloseEditBikeModal();
+                await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+                await GetBikesAsync(true);
             }
             else
             {
-                var bike = JsonConvert.SerializeObject(ProductModel);
                 //var data = new StringContent(bike, Encoding.UTF8, "application/json");
+                var bike = JsonConvert.SerializeObject(ProductModel);
                 await RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
                 CloseEditBikeModal();
                 await Layout.PopulateMainToastAsync("Operation result", "bike inserted!", "alert-success", "oi oi-circle-check");
@@ -209,8 +216,15 @@ else
     }
     public void CloseEditBikeModal()
     {
-        JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
-        MainAlert.ChangeVisible(false);
+        try
+        {
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message + " " + ex.InnerException);
+        }
+        
+        //MainAlert.ChangeVisible(false);
         currentModal = "";
     }
     /// <summary>
@@ -274,6 +288,7 @@ else
                 ProductModel = JsonUtils.Convert<BikeVariant, GenericBike>(bike);
             }
 
+            EditContext = new EditContext(ProductModel);
             currentModal = "#EditBikeModal";
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
 

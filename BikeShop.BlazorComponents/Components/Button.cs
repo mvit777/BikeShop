@@ -32,8 +32,16 @@ namespace BikeShop.BlazorComponents.Components
 
         public virtual void SendMessage()
         {
-            string valueToSend = HTMLId;
-            MessagingCenter.Send(this, ClickEventName, valueToSend);
+            try
+            {
+                string valueToSend = HTMLId;
+                MessagingCenter.Send(this, ClickEventName, valueToSend);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + " " + ex.InnerException + " " + ex.StackTrace);
+            }
+            
         }
 
     }
