@@ -19,7 +19,6 @@ var bootstrapNS = {};
         $(toast).toast(options);
     }
     this.JSDataTable = function (table, options) {
-        console.log("plugin called");
         if (!$.fn.dataTable.isDataTable(table)) {
                $(table).DataTable(options);
             //this.JSDataTables[table] = table;

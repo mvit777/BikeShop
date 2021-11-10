@@ -27,7 +27,7 @@ namespace BikeShop.BlazorComponents.Components
         public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
         {
             Visible = visible;
-            if (visible)
+            if (Visible)
             {
                 if(AutoFade > 0)
                 {

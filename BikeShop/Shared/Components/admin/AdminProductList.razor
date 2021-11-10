@@ -43,11 +43,11 @@ else
     <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeItemClick" />
     <div style="clear:both;"></div>
     <br />
-    <Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=2000>
-        @message
+    <Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000>
+        @message<span>&nbsp;</span>
         @if (showConfirmButton)
         {
-            <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary float-right" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
+            <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
             <br />
         }
     </Alert>
@@ -67,17 +67,17 @@ else
                 @(EntityBike.Bike.isStandard ? "Standard" : "Custom")
                 @if (EntityBike.IsStandard == false)
                 {
-                    <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_addOptionsButton")" Icon="oi oi-plus" HTMLCssClass="btn-success btn-sm float-right" Label="ADD OPTIONS" ClickEventName="BikeList_addOptionsIemClick" />
+                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_addOptionsButton")" Icon="oi oi-plus" HTMLCssClass="btn-success btn-sm float-right" Label="ADD OPTIONS" ClickEventName="BikeList_addOptionsIemClick" />
                 }
-            </td>
-            <td>@EntityBike.TotalPrice</td>
-            <td>
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editItemClick" />
-                <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Icon="oi oi-trash" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
+        </td>
+        <td>@EntityBike.TotalPrice</td>
+        <td>
+            <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editItemClick" />
+            <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Icon="oi oi-trash" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
 
-            </td>
-        </RowTemplate>
-    </HtmlTable>
+        </td>
+    </RowTemplate>
+</HtmlTable>
     <!-- temp-->
     <!-- HIDDEN MODALS -->
     <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
@@ -123,10 +123,10 @@ else
             </EditForm>
         </ChildContent>
         @*<FooterTemplate>
-                here save and close buttons
+            here save and close buttons
             </FooterTemplate>*@
     </Modal>
-    <Modal HTMLId="EditOptionsModal" HTMLCssClass="modal-xl" HeaderTitle="Bike Options" >
+    <Modal HTMLId="EditOptionsModal" HTMLCssClass="modal-xl" HeaderTitle="Bike Options">
         <HeaderTemplate>
             <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-wrench"></span> Options for Bike... @selectedId</h5>
             <span class="rounded-circle  light-purple-bg" style="background-color: white;">
@@ -139,8 +139,8 @@ else
             qui edit options manager
         </ChildContent>
         <FooterTemplate>
-                here save and close buttons
-            </FooterTemplate>
+            here save and close buttons
+        </FooterTemplate>
     </Modal>
 }
 @code {
@@ -213,7 +213,7 @@ else
         MainAlert.ChangeVisible(false);
         currentModal = "";
     }
-    /// <summary>   
+    /// <summary>
     ///
     /// </summary>
     public void SubscribeToOnDeleteConfirmed()
@@ -221,8 +221,8 @@ else
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
         {
             message = $"I deleted item {deletableObjId}";
-        //MainAlert.ChangeVisible(false);
-        MainAlert.ChangeCssClass("alert-success");
+            //MainAlert.ChangeVisible(false);
+            MainAlert.ChangeCssClass("alert-success");
             showConfirmButton = false;
             deletableObjId = null;
             StateHasChanged();
@@ -236,11 +236,12 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"Please confirm you want to delete item {value}";
-            MainAlert.ChangeCssClass("alert-danger");
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
             showConfirmButton = true;
+            message = $"Please confirm you want to delete item {value}";
+            MainAlert.ChangeCssClass("alert-danger");
+            MainAlert.SetAutoFade(0);
             MainAlert.ChangeVisible(true);
             deletableObjId = value;
 
@@ -254,10 +255,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            showConfirmButton = false;
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -310,7 +312,7 @@ else
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
             if (refreshTable)
             {
-                responseContent = " bikes found " + EntityBikes.Count.ToString();
+                //responseContent = " bikes found " + EntityBikes.Count.ToString();
                 BikeList.RefreshComponent(EntityBikes);
                 await JSRuntime.InvokeVoidAsync("bootstrapNS.RefreshJSDataTable", "#BikeList", new object[] { });
                 StateHasChanged();
