@@ -77,6 +77,12 @@ An in-depth explanation of what it is and why it is good thing can be found in t
 to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
 In the meanwhile I want to move on the topic of templating and components.
 
+What I would like to reach at some point is the following...
+```chsarp
+var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
+```
+
 ## More Details on: Templating & Components ##
 Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
 All changes should be made in ```wwwroot/index.html```. 
