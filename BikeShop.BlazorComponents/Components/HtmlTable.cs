@@ -27,7 +27,7 @@ namespace BikeShop.BlazorComponents.Components
         public void RefreshComponent(IReadOnlyList<TItem> items)
         {
             Items = items;
-            StateHasChanged();
+            //StateHasChanged();
         }
         //public void Dispose()
         //{

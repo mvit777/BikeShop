@@ -19,15 +19,15 @@ var bootstrapNS = {};
         $(toast).toast(options);
     }
     this.JSDataTable = function (table, options) {
+        console.log("plugin called");
         if (!$.fn.dataTable.isDataTable(table)) {
-            table = $(table).DataTable(options);
+               $(table).DataTable(options);
             //this.JSDataTables[table] = table;
         }
     }
     this.RefreshJSDataTable = function (table, options) {
-        var oTable = $(table);
-        oTable.dataTable().fnDestroy();// dataTable != DataTable 
-        
+        $(table).dataTable().fnDestroy();
+        //var t = $(table).DataTable(options);
     }
 }).apply(bootstrapNS);
 
