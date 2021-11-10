@@ -80,7 +80,7 @@ In the meanwhile I want to move on the topic of templating and components.
 What I would like to reach at some point is the following...
 ```csharp
 var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
-EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
+EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities);
 ```
 
 ## More Details on: Templating & Components ##
