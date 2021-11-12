@@ -1,7 +1,7 @@
 # BikeShop
 A thrown away blazor wasm client for consuming the [BikeDistributor library](https://github.com/mvit777/BikeDistributor)
 
-(Note: the recent release of .NET6 brought a lot of new stuff for Blazor. As a consequence, some of the contents below is not entirely actual. In the next days I'll try to update what is relevant)
+**(Note: the recent release of .NET6 brought a lot of new stuff for Blazor. As a consequence, some of the contents below is not entirely actual. In the next days I'll try to update what is relevant)**
 
 This is actually my first try at building an [wasm blazor app](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0). 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
