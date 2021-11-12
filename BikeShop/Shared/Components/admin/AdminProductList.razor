@@ -276,7 +276,8 @@ else
             message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
-            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
+                                .Where(x => x.Id == selectedId).SingleOrDefault();
             if (MongoEntity.Bike.isStandard)
             {
                 var bike = (Bike)MongoEntity.Bike;

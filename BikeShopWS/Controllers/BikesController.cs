@@ -78,6 +78,7 @@ namespace BikeShopWS.Controllers
         [Route("/Bikes/update")]
         public MongoEntityBike Update(string entity)
         {
+            Console.WriteLine(entity);
             var meb = JsonUtils.DeserializeIBikeEntity(entity);
             meb = _bikeService.Update(meb);
             return meb;
