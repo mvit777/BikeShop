@@ -177,6 +177,8 @@ else
             if (MongoEntity != null)
             {
                 //update
+                ProductModel = JsonUtils.Convert<Object, GenericBike>(EditContext.Model);
+
                 MongoEntity.Update(ProductModel);
                 var meb = JsonConvert.SerializeObject(MongoEntity);
                 await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);//fails: write test
@@ -196,6 +198,7 @@ else
                 //StateHasChanged();
             }
             selectedId = "";
+            ProductModel = new GenericBike();
         }
 
     }
