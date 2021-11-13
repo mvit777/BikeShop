@@ -77,13 +77,14 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes")
 While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports [gRPC](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0) out-of-the-box (sort of).
 An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
 to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
-In the meanwhile I want to move on the topic of templating and components.
 
 What I would like to reach at some point is the following...
 ```csharp
 var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
 EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities);
 ```
+
+In the meanwhile I want to move on the topic of templating and components.
 
 ## More Details on: Templating & Components ##
 Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
