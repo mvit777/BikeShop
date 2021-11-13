@@ -258,4 +258,5 @@ Time to go back into the Blazor app and add the gRPC client
    - [gRPC for .NET configuration](https://docs.microsoft.com/en-us/aspnet/core/grpc/configuration?view=aspnetcore-5.0)
   - [All in One](https://docs.microsoft.com/en-us/aspnet/core/grpc/httpapi?view=aspnetcore-5.0) 
     >gRPC HTTP API is an experimental extension for ASP.NET Core that creates RESTful JSON APIs for gRPC services. Once configured, gRPC HTTP API allows apps to call gRPC    services with familiar HTTP concepts
+- [gRPC What's new in NET 6](https://channel9.msdn.com/Events/dotnetConf/2021/High-performance-services-with-gRPC-Whats-new-in-NET-6) Follow Newton's presentation at recent .NET6 conf
 
