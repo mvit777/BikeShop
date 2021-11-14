@@ -59,6 +59,9 @@ var bootstrapNS = {};
             $(table).DataTable(options);
         }
     }
+    this.RefreshJSDataTable = function (table, options) {
+        $(table).dataTable().fnDestroy();
+    }
 }).apply(bootstrapNS);
 ```
 So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
@@ -336,7 +339,144 @@ the modified Product to the BikeShopWS in order to store it in the database.
 
 In the case of the delete button we want the user to confirm the action before going on with the deletion. In this case the bootstrap Alert, wrapped into 
 the [Alert component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Alert.razor) might come handy.
-Let's see how....
+Bootstrap Alert is probably the most straight-forward component in terms of both html-markup and functionality, however we can easily add some interesting stuff:
+
+- ability to use the same component instance on the page for different purposes (Ex. show an info alert while editing, show a confirm alert before deleting)
+- optional auto-closing based on configurable duration
+- a button to dismiss it at any time
+
+the three points above imply that we change component properties after it is rendered. This technique is strongly discouraged by MS as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
+```csharp
+MainAlert.HtmlCssClass = "alert-secondary"; //will not compile
+```
+but you can change it via a method
+```csharp
+MainAlert.ChangeCssClass("alert-secondary"); //works
+```
+In my experience, with a little care and a ```StateHasChanged``` call nested in the component it will work smoothly.
+
+the component template looks like this
+```csharp
+@if (Visible)
+{
+    <div class="alert @HTMLCssClass" role="alert">
+        <button type="button" class="close" aria-label="Close" @onclick="onCloseClicked">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @ChildContent
+    </div>
+}
+@code {
+    private void onCloseClicked() => NotifyTimerElapsed(this, null);
+}
+```
+the code-behind is this:
+```csharp
+public partial class Alert
+    {
+        [Parameter]
+        public virtual string HTMLId {get; set;}
+        [Parameter]
+        public virtual string HTMLCssClass { get; set; } = "alert-primary";
+        [Parameter]
+        public virtual double AutoFade { get; set; } = 0;
+        [Parameter]
+        public virtual RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public virtual bool Visible { get; set; } = false;
+
+        private System.Timers.Timer _timer;
+        public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
+        {
+            Visible = visible;
+            if (Visible)
+            {
+                if(AutoFade > 0)
+                {
+                    _timer = new System.Timers.Timer(AutoFade);
+                    _timer.Elapsed += NotifyTimerElapsed;
+                    _timer.Enabled = true;
+                }
+            }
+            
+        }
+        public event Action OnElapsed;
+        private void NotifyTimerElapsed(Object source, ElapsedEventArgs e)
+        {
+            OnElapsed?.Invoke();
+            Visible = false;
+            _timer.Dispose();
+            StateHasChanged();
+        }
+        public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
+        {
+            HTMLCssClass = cssClass;
+        }
+        public void SetAutoFade(double autofade)
+        {
+            AutoFade = autofade;
+        }
+    }
+```
+from the perspective of the developer using the component on some page it looks like this:
+
+```csharp
+//(..code omitted..)
+<Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000><!-- will auto fade in 3 secs -->
+        @message<span>&nbsp;</span>
+        @if (showConfirmButton)
+        {
+            <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
+            <br />
+        }
+</Alert>
+//(..code omitted..)
+@code {
+    private List<MongoEntityBike> EntityBikes;
+    //(code omitted)
+    private Alert MainAlert;//notice the reference to the component @ref property
+    private bool showConfirmButton = false;
+    //(code omitted)
+    //this will show our alert as an alert-danger with a confirm button and will auto close in 10 secs
+    public void SubscribeToDeleteItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
+        {
+            showConfirmButton = true;
+            message = $"Please confirm you want to delete item {value}";
+            MainAlert.ChangeCssClass("alert-danger"); //here we change alert style at runtime
+            MainAlert.SetAutoFade(10000); //here we change duration. It will auto fade in 10 secs
+            MainAlert.ChangeVisible(true);//change visibility
+            deletableObjId = value;
+
+            StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
+        });
+    }
+    //this will show our alert as an alert-info and it will autoclose in 3 secs
+    public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
+        {
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            showConfirmButton = false;
+            message = $"You are editing {selectedId}";
+            MainAlert.ChangeCssClass("alert-primary");
+            MainAlert.ChangeVisible(true);
+           // ...code omitted....
+
+            StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
+        });
+    }
+```
+should we not need auto-closing we just omit the AutoFade property or just set its value to 0.
+### the Toast component
+(More to come)
+
+## Taking advantage of Blazor/.NET 6 new features
+** The double pane component
+** New ways of setting up js-interop and javascript initialisers
+
+
 (More to come)
 
 ## The Resulting Stuff (so far)
@@ -404,5 +544,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 - [Syncfusion](https://www.syncfusion.com/blazor-components)
 - [Blazorise](https://blazorise.com/)
 - [DevExpress](https://www.devexpress.com/blazor/)
-- [Start Blazoring](https://startblazoring.com/) 
+- [Start Blazoring](https://startblazoring.com/) This project is a bit different, in the sense that is not only a collection of components but it also provides a starter template with a lot of functionality built-in
 - (..more to come..)
