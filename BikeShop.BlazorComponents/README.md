@@ -59,6 +59,9 @@ var bootstrapNS = {};
             $(table).DataTable(options);
         }
     }
+    this.RefreshJSDataTable = function (table, options) {
+        $(table).dataTable().fnDestroy();
+    }
 }).apply(bootstrapNS);
 ```
 So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
