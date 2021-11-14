@@ -483,5 +483,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 - [Syncfusion](https://www.syncfusion.com/blazor-components)
 - [Blazorise](https://blazorise.com/)
 - [DevExpress](https://www.devexpress.com/blazor/)
-- [Start Blazoring](https://startblazoring.com/) 
+- [Start Blazoring](https://startblazoring.com/) This project is a bit different, in the sense that is not only a collection of components but it also provides a starter template with a lot of functionality built-in
 - (..more to come..)
