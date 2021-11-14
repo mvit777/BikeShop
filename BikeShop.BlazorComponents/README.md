@@ -342,12 +342,15 @@ Bootstrap Alert is probably the most straight-forward component in terms of both
 - optional auto-closing based on configurable duration
 - a button to dismiss it at any time
 
-the first two points imply that we change component properties after it is rendered. This technique is strongly discouraged by MS docs as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
+the first two points imply that we change component properties after it is rendered. This technique is strongly discouraged by MS as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
+```csharp
+MainAlert.HtmlCssClass = "alert-secondary"; //will not compile
 ```
-MainAlert.HtmlCssClass = "alert alert-secondary"; //will not compile
+but you can change it via a method
+```csharp
+MainAlert.SetCssClass("alert-secondary"); //works
 ```
-
-In my experience
+In my experience, with a little care and a ```StateHasChanged``` call it nested in the component it will work smoothly.
 
 the component template looks like this
 ```
