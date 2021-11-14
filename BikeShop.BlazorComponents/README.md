@@ -482,8 +482,11 @@ should we not need auto-closing we just omit the AutoFade property or just set i
 ## The Resulting Stuff (so far)
 >*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
->*A pop up for editing a product*
+>*A pop up for editing a product also featuring an info-alert on the background*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
+
+>*the above info-alert transformed into confirm panel*
+![Asking for confirmation](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/deleteConfirm.png)
 
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
