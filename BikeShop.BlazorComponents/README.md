@@ -419,7 +419,7 @@ from the perspective of the developer using the component on some page it looks 
 
 ```csharp
 //(..code omitted..)
-<Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000>
+<Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000><!-- will auto fade in 3 secs -->
         @message<span>&nbsp;</span>
         @if (showConfirmButton)
         {
@@ -441,7 +441,7 @@ from the perspective of the developer using the component on some page it looks 
             showConfirmButton = true;
             message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger"); //here we change alert style at runtime
-            MainAlert.SetAutoFade(10000); //here we set duration
+            MainAlert.SetAutoFade(10000); //here we change duration. It will auto fade in 10 secs
             MainAlert.ChangeVisible(true);//change visibility
             deletableObjId = value;
 
