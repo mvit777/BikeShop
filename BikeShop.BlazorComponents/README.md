@@ -485,7 +485,7 @@ should we not need auto-closing we just omit the AutoFade property or just set i
 >*A pop up for editing a product also featuring an info-alert on the background*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
 
->*the above info-alert transformed into confirm panel*
+>*the above info-alert instance transformed at runtime into a confirm panel*
 ![Asking for confirmation](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/deleteConfirm.png)
 
 >*Change user from user box*
