@@ -466,7 +466,10 @@ from the perspective of the developer using the component on some page it looks 
 ### the Toast component
 (More to come)
 
-## Taking advantage of .NET 6 new features: The double pane component
+## Taking advantage of Blazor/.NET 6 new features
+**New ways of setting up js-interop
+
+**The double pane component
 (More to come)
 
 ## The Resulting Stuff (so far)
