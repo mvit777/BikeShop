@@ -438,8 +438,6 @@ from the perspective of the developer using the component on some page it looks 
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            // If the value is updating the component make sure to call StateHasChanged
             showConfirmButton = true;
             message = $"Please confirm you want to delete item {value}";
             MainAlert.ChangeCssClass("alert-danger"); //here we change alert style at runtime
@@ -454,10 +452,8 @@ from the perspective of the developer using the component on some page it looks 
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
             selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-            // If the value is updating the component make sure to call StateHasChanged
             message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
