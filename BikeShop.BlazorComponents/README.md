@@ -437,6 +437,7 @@ from the perspective of the developer using the component on some page it looks 
     private Alert MainAlert;//notice the reference to the component @ref property
     private bool showConfirmButton = false;
     //(code omitted)
+    //this will show our alert as an alert-danger with a confirm button and will auto close in 10 secs
     public void SubscribeToDeleteItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
@@ -451,6 +452,7 @@ from the perspective of the developer using the component on some page it looks 
             StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
         });
     }
+    //this will show our alert as an alert-info and it will autoclose in 3 secs
     public void SubscribeToEditItemClick()
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
