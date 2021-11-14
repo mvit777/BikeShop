@@ -434,7 +434,38 @@ from the perspective of the developer using the component on some page it looks 
     private Alert MainAlert;//notice the reference to the component @ref properties
     private bool showConfirmButton = false;
     //(code omitted)
-    
+    public void SubscribeToDeleteItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
+        {
+            // Do actions against the value
+            // If the value is updating the component make sure to call StateHasChanged
+            showConfirmButton = true;
+            message = $"Please confirm you want to delete item {value}";
+            MainAlert.ChangeCssClass("alert-danger"); //here we change alert style at runtime
+            MainAlert.SetAutoFade(10000); //here we set duration
+            MainAlert.ChangeVisible(true);//change visibility
+            deletableObjId = value;
+
+            StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
+        });
+    }
+    public void SubscribeToEditItemClick()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
+        {
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            showConfirmButton = false;
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
+            MainAlert.ChangeCssClass("alert-primary");
+            MainAlert.ChangeVisible(true);
+           // ...code omitted....
+
+            StateHasChanged();
+        });
+    }
 ```
 
 (More to come)
