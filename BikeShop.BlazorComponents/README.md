@@ -336,7 +336,23 @@ the modified Product to the BikeShopWS in order to store it in the database.
 
 In the case of the delete button we want the user to confirm the action before going on with the deletion. In this case the bootstrap Alert, wrapped into 
 the [Alert component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Alert.razor) might come handy.
-Let's see how....
+Bootstrap Alert is probably the most straight-forward component in terms of both html-markup and functionality, however we can easily add some interesting stuff:
+
+- ability to use the same instance on the page for different purposes
+- optional auto-closing based on configurable duration
+- a button to dismiss it at any time
+
+the first two points imply that we change component properties after it is rendered. This technique is strongly discouraged by MS docs as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
+```
+MainAlert.HtmlCssClass = "alert alert-secondary"; //will not compile
+```
+
+In my experience
+
+the component template looks like this
+```
+
+```
 (More to come)
 
 ## The Resulting Stuff (so far)
