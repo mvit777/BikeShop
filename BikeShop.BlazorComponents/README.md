@@ -348,12 +348,12 @@ MainAlert.HtmlCssClass = "alert-secondary"; //will not compile
 ```
 but you can change it via a method
 ```csharp
-MainAlert.SetCssClass("alert-secondary"); //works
+MainAlert.ChangeCssClass("alert-secondary"); //works
 ```
 In my experience, with a little care and a ```StateHasChanged``` call nested in the component it will work smoothly.
 
 the component template looks like this
-```
+```csharp
 @if (Visible)
 {
     <div class="alert @HTMLCssClass" role="alert">
@@ -368,7 +368,7 @@ the component template looks like this
 }
 ```
 the code-behind is this:
-```
+```csharp
 public partial class Alert
     {
         [Parameter]
@@ -382,7 +382,6 @@ public partial class Alert
         [Parameter]
         public virtual bool Visible { get; set; } = false;
 
-        //see https://wellsb.com/csharp/aspnet/blazor-timer-navigate-programmatically/
         private System.Timers.Timer _timer;
         public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
         {
@@ -409,10 +408,6 @@ public partial class Alert
         public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
         {
             HTMLCssClass = cssClass;
-            //if (executeStateHasChanged)
-            //{
-            //    StateHasChanged();
-            //}
         }
         public void SetAutoFade(double autofade)
         {
