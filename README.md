@@ -26,14 +26,14 @@ After a a day of unsuccesful trying to connect to a MongoDb server I fully under
 `
 ...code is executing in the browser sandbox ....
 `
-this applies only to blazor wasm (not blazor server) but it means http is the only protocol that works which in turn means 
+(this only applies to blazor wasm not blazor server) but it means http is the only protocol supported, which in turn means 
 the whole System.Net namespace (with the exception of System.Net.Http) is not supported which in turn means no direct connection to Databases or sending mails unless I 
-put up a webservice backend. That makes wasm not exactly the perfect candidate for testing the portability of my library...
-Next time I'll make sure to better read the docs
+put up a webservice backend. 
+Next time I'll make sure to better read the [docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-6.0)
 
 ## a nice findout: the HttpClient ##
-Being forced to add a (bit redundant) Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
-That was only to realise that also the RestSharp package unexpectedly relies on System.Net and therefore is also `not supported by the platform`. (this seems to have changed)
+Being forced to add a Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
+That was only to realise that also the RestSharp package unexpectedly relies on System.Net and therefore is also `not supported by the platform`. (this seems to have changed lately)
 After a brief search on the internet and a look at Program.cs I spotted the solution:
 In fact the Program.cs bootstrap of an wasm app has this code by default:
 
@@ -77,13 +77,14 @@ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>("/bikes")
 While resolving a few minor but annoying issues with serialization/deserialization of my objects, I realised that Blazor supports [gRPC](https://docs.microsoft.com/en-us/aspnet/core/grpc/browser?view=aspnetcore-5.0) out-of-the-box (sort of).
 An in-depth explanation of what it is and why it is good thing can be found in the links section at the bottom of this page. Apparently it is also possible 
 to add support for gRPC to an existing Rest-WS api. I'll detail all the process required in a later paragraph as soon as I implement all the steps. 
-In the meanwhile I want to move on the topic of templating and components.
 
 What I would like to reach at some point is the following...
 ```csharp
 var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
 EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities);
 ```
+
+In the meanwhile I want to move on the topic of templating and components.
 
 ## More Details on: Templating & Components ##
 Blazor comes bundled with the Bootstrap css (in my case I found 4.3.1). It is not in the latest version but it is obviously trivial to point to the latest version or change the css framework or remove any css framework and start from scratch.
@@ -142,5 +143,5 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 ## News
 - [Windows Office Hours](https://techcommunity.microsoft.com/t5/windows-events/windows-office-hours-november-18-2021/ev-p/2870707) November 18, 8-9a.m.
 - [The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
-- [NET Conf 2021](https://www.dotnetconf.net/) November 9, 2021 (Tomorrow, if you are like me)
+- [NET Conf 2021](https://www.dotnetconf.net/) November 9, 2021
 
