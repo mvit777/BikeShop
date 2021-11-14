@@ -338,7 +338,7 @@ In the case of the delete button we want the user to confirm the action before g
 the [Alert component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Alert.razor) might come handy.
 Bootstrap Alert is probably the most straight-forward component in terms of both html-markup and functionality, however we can easily add some interesting stuff:
 
-- ability to use the same instance on the page for different purposes
+- ability to use the same component instance on the page for different purposes (Ex. show an info alert while editing, show a confirm alert before deleting)
 - optional auto-closing based on configurable duration
 - a button to dismiss it at any time
 
@@ -414,6 +414,27 @@ public partial class Alert
             AutoFade = autofade;
         }
     }
+```
+from the perspective of the developer using the component on some page it looks like this:
+
+```csharp
+//(..code omitted..)
+<Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000>
+        @message<span>&nbsp;</span>
+        @if (showConfirmButton)
+        {
+            <Button HTMLId="btnConfirmDelete" HTMLCssClass="btn-primary" Icon="oi oi-thumb-up" Label="Delete It!" ClickEventName="BikeList_OnDeleteConfirmed" />
+            <br />
+        }
+</Alert>
+//(..code omitted..)
+@code {
+    private List<MongoEntityBike> EntityBikes;
+    //(code omitted)
+    private Alert MainAlert;//notice the reference to the component @ref properties
+    private bool showConfirmButton = false;
+    //(code omitted)
+    
 ```
 
 (More to come)
