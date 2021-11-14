@@ -342,7 +342,7 @@ Bootstrap Alert is probably the most straight-forward component in terms of both
 - optional auto-closing based on configurable duration
 - a button to dismiss it at any time
 
-the first two points imply that we change component properties after it is rendered. This technique is strongly discouraged by MS as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
+the three points above imply that we change component properties after it is rendered. This technique is strongly discouraged by MS as it can introduce inconsistencies in the render tree. In fact you CANNOT do something like this:
 ```csharp
 MainAlert.HtmlCssClass = "alert-secondary"; //will not compile
 ```
@@ -350,12 +350,77 @@ but you can change it via a method
 ```csharp
 MainAlert.SetCssClass("alert-secondary"); //works
 ```
-In my experience, with a little care and a ```StateHasChanged``` call it nested in the component it will work smoothly.
+In my experience, with a little care and a ```StateHasChanged``` call nested in the component it will work smoothly.
 
 the component template looks like this
 ```
-
+@if (Visible)
+{
+    <div class="alert @HTMLCssClass" role="alert">
+        <button type="button" class="close" aria-label="Close" @onclick="onCloseClicked">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @ChildContent
+    </div>
+}
+@code {
+    private void onCloseClicked() => NotifyTimerElapsed(this, null);
+}
 ```
+the code-behind is this:
+```
+public partial class Alert
+    {
+        [Parameter]
+        public virtual string HTMLId {get; set;}
+        [Parameter]
+        public virtual string HTMLCssClass { get; set; } = "alert-primary";
+        [Parameter]
+        public virtual double AutoFade { get; set; } = 0;
+        [Parameter]
+        public virtual RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public virtual bool Visible { get; set; } = false;
+
+        //see https://wellsb.com/csharp/aspnet/blazor-timer-navigate-programmatically/
+        private System.Timers.Timer _timer;
+        public void ChangeVisible(bool visible, bool executeStateHasChanged = false)
+        {
+            Visible = visible;
+            if (Visible)
+            {
+                if(AutoFade > 0)
+                {
+                    _timer = new System.Timers.Timer(AutoFade);
+                    _timer.Elapsed += NotifyTimerElapsed;
+                    _timer.Enabled = true;
+                }
+            }
+            
+        }
+        public event Action OnElapsed;
+        private void NotifyTimerElapsed(Object source, ElapsedEventArgs e)
+        {
+            OnElapsed?.Invoke();
+            Visible = false;
+            _timer.Dispose();
+            StateHasChanged();
+        }
+        public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
+        {
+            HTMLCssClass = cssClass;
+            //if (executeStateHasChanged)
+            //{
+            //    StateHasChanged();
+            //}
+        }
+        public void SetAutoFade(double autofade)
+        {
+            AutoFade = autofade;
+        }
+    }
+```
+
 (More to come)
 
 ## The Resulting Stuff (so far)
