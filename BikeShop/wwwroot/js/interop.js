@@ -26,7 +26,6 @@ var bootstrapNS = {};
     }
     this.RefreshJSDataTable = function (table, options) {
         $(table).dataTable().fnDestroy();
-        //var t = $(table).DataTable(options);
     }
 }).apply(bootstrapNS);
 

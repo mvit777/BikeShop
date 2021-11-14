@@ -136,10 +136,10 @@ else
             </span>
         </HeaderTemplate>
         <ChildContent>
-            qui edit options manager
+            <MultiSelect />
         </ChildContent>
         <FooterTemplate>
-            here save and close buttons
+            <button type="submit" class="btn btn-primary">Save Options</button>
         </FooterTemplate>
     </Modal>
 }
@@ -256,7 +256,7 @@ else
             // Do actions against the value
             // If the value is updating the component make sure to call StateHasChanged
             showConfirmButton = true;
-            message = $"Please confirm you want to delete item {value}";
+            message = $"Please confirm you want to delete item {StringHelper.NormaliseStringId(value, "_deleteButton")}";
             MainAlert.ChangeCssClass("alert-danger");
             MainAlert.SetAutoFade(10000);
             MainAlert.ChangeVisible(true);
