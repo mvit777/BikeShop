@@ -431,7 +431,7 @@ from the perspective of the developer using the component on some page it looks 
 @code {
     private List<MongoEntityBike> EntityBikes;
     //(code omitted)
-    private Alert MainAlert;//notice the reference to the component @ref properties
+    private Alert MainAlert;//notice the reference to the component @ref property
     private bool showConfirmButton = false;
     //(code omitted)
     public void SubscribeToDeleteItemClick()
@@ -459,7 +459,7 @@ from the perspective of the developer using the component on some page it looks 
             MainAlert.ChangeVisible(true);
            // ...code omitted....
 
-            StateHasChanged();
+            StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
         });
     }
 ```
