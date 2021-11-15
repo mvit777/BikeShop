@@ -53,6 +53,9 @@ var bootstrapNS = {};
     this.ToggleModal = function (modal, mode) {
         $(modal).modal(mode);
     }
+    this.ToggleToast = function (toast, options) {
+        $(toast).toast(options);
+    }
     this.JSDataTable = function (table, options) {
         //this will take care we not recreate the table
         if (!$.fn.dataTable.isDataTable(table)) {
