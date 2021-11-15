@@ -500,7 +500,7 @@ However I must say Blazor is very to fast to learn, especially if you have a bac
 - demographics of developers. Young developers tend to favor javascript as it is all the rage these days. Aging developers have been using javascript for years now, they might not be so tempted to learn yet another tool (unless they really dislike javascript).
 - first load is too slow. The problem is supposed to be mitigated in next release. Check bottom links for more details
 
-On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate. 
+On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate as Bootstrap it is by far still the most popular css-framework around. 
 All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with [PHP + Twig](https://twig.symfony.com/).
 
 The javascript/jquery attempt was a complete failure up to the point I abandoned it in a very early stage. It had bugs scattered all around and was bloated from the very start.
