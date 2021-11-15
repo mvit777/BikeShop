@@ -478,8 +478,30 @@ After submitting a newly created bike or updating an existing one we want to giv
 As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs). 
 
 Since I'm sure this component is gonna be used by almost any "page" through out the app, I want to make it globally available. The most straight-forward way I found to do so is putting it somewhere in the ```MainLayout.razor``` and give it an absolute positioning (todo: refine positioning). 
-```
+```razor
+@inherits LayoutComponentBase
+(...code omitted...)
+<div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
+    <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" />
+</div>
+<CascadingValue Value="this">
+    <div class="page">
+        <div class="sidebar shadow">
+            <NavMenu />
+        </div>
 
+        <div class="main">
+            <div class="top-row px-4">
+                <!--<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>-->
+                <UserBox />
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+      (..code omitted..)
+    </div>
+</CascadingValue>
 ```
 
 ## Taking advantage of Blazor/.NET 6 new features
