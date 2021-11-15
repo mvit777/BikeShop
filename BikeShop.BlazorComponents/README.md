@@ -487,6 +487,7 @@ Since I'm sure this component is gonna be used by almost any "page" through out 
 (More to come)
 
 ## The Resulting Stuff (so far)
+[Summary of implemented components](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents/Components)
 >*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 >*A pop up for editing a product also featuring an info-alert on the background*
