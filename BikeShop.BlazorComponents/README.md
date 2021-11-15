@@ -469,8 +469,10 @@ from the perspective of the developer using the component on some page it looks 
     }
 ```
 should we not need auto-closing we just omit the AutoFade property or just set its value to 0.
+
 ### the Toast component
-(More to come)
+After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this what you are going to use.
+As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs).
 
 ## Taking advantage of Blazor/.NET 6 new features
 ** The double pane component
@@ -482,8 +484,11 @@ should we not need auto-closing we just omit the AutoFade property or just set i
 ## The Resulting Stuff (so far)
 >*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
->*A pop up for editing a product*
+>*A pop up for editing a product also featuring an info-alert on the background*
 ![Prodcut Edit](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeEditPopUp.png)
+
+>*the above info-alert instance transformed at runtime into a confirm panel*
+![Asking for confirmation](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/deleteConfirm.png)
 
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
@@ -497,7 +502,7 @@ However I must say Blazor is very to fast to learn, especially if you have a bac
 - demographics of developers. Young developers tend to favor javascript as it is all the rage these days. Aging developers have been using javascript for years now, they might not be so tempted to learn yet another tool (unless they really dislike javascript).
 - first load is too slow. The problem is supposed to be mitigated in next release. Check bottom links for more details
 
-On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate. 
+On the positive side, Blazor integrates really smoothly with Bootstrap unlike the three other tools mentioned above. This is a feature not to understimate as Bootstrap it is by far still the most popular css-framework around. 
 All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with [PHP + Twig](https://twig.symfony.com/).
 
 The javascript/jquery attempt was a complete failure up to the point I abandoned it in a very early stage. It had bugs scattered all around and was bloated from the very start.
