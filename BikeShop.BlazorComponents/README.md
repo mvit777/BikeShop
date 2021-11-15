@@ -471,8 +471,10 @@ from the perspective of the developer using the component on some page it looks 
 should we not need auto-closing we just omit the AutoFade property or just set its value to 0.
 
 ### the Toast component
-After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this what you are going to use.
-As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs).
+After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this is what you are going to use.
+As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs). 
+
+Since I'm sure this component is gonna be used by almost any "page" through out the app, I want to make it globally available..
 
 ## Taking advantage of Blazor/.NET 6 new features
 ** The double pane component
