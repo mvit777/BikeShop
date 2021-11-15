@@ -490,6 +490,9 @@ As usual we begin wrapping Bootstrap Toast component in our [own component](http
 >*the above info-alert instance transformed at runtime into a confirm panel*
 ![Asking for confirmation](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/deleteConfirm.png)
 
+>*A toast message pops-up to inform some operation succesfully ended*
+![Update success](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/toast.png)
+
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
 >*List users*
