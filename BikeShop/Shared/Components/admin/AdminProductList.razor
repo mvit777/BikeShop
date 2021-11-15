@@ -226,7 +226,7 @@ else
         {
             Console.WriteLine(ex.Message + " " + ex.InnerException);
         }
-        
+
         //MainAlert.ChangeVisible(false);
         currentModal = "";
     }
@@ -235,13 +235,18 @@ else
     /// </summary>
     public void SubscribeToOnDeleteConfirmed()
     {
-        MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", (sender, value) =>
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_OnDeleteConfirmed", async (sender, value) =>
         {
-            message = $"I deleted item {deletableObjId}";
-            //MainAlert.ChangeVisible(false);
-            MainAlert.ChangeCssClass("alert-success");
+            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == deletableObjId).SingleOrDefault();
+            if (MongoEntity == null)
+            {
+                throw new Exception($"Entity  with id {deletableObjId} not found");//TODO: handle situation a bit less drastically
+            }
+            await RestClient.PostAsync("/Bikes/delete?entity=" + JsonConvert.SerializeObject(MongoEntity), null);
+            MainAlert.ChangeVisible(false);
             showConfirmButton = false;
             deletableObjId = null;
+            await Layout.PopulateMainToastAsync("Operation result", $"bike {deletableObjId} deleted!", "alert-success", "oi oi-circle-check");
             StateHasChanged();
         });
     }
@@ -253,9 +258,9 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            // If the value is updating the component make sure to call StateHasChanged
-            showConfirmButton = true;
+        // Do actions against the value
+        // If the value is updating the component make sure to call StateHasChanged
+        showConfirmButton = true;
             message = $"Please confirm you want to delete item {StringHelper.NormaliseStringId(value, "_deleteButton")}";
             MainAlert.ChangeCssClass("alert-danger");
             MainAlert.SetAutoFade(10000);
@@ -272,11 +277,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+        // Do actions against the value
+        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {selectedId}";
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
@@ -355,6 +360,7 @@ else
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();
         SubscribeToEditOptionPanel();
+        SubscribeToOnDeleteConfirmed();
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {

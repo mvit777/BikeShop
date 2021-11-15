@@ -83,6 +83,16 @@ namespace BikeShopWS.Controllers
             meb = _bikeService.Update(meb);
             return meb;
         }
+
+        [HttpPost]
+        [Route("/Bikes/delete")]
+        public string Delete(string entity)
+        {
+            var jtoken = JToken.Parse(entity);
+            var meb = JsonUtils.DeserializeIBikeEntity(jtoken);
+            _bikeService.Delete(meb.Id);
+            return $"item {meb.Id} was deleted";
+        }
         //[HttpPost]
         //public async Task<MongoEntityBike> Create(HttpContext context)
         //{
