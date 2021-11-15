@@ -53,6 +53,9 @@ var bootstrapNS = {};
     this.ToggleModal = function (modal, mode) {
         $(modal).modal(mode);
     }
+    this.ToggleToast = function (toast, options) {
+        $(toast).toast(options);
+    }
     this.JSDataTable = function (table, options) {
         //this will take care we not recreate the table
         if (!$.fn.dataTable.isDataTable(table)) {
@@ -471,8 +474,57 @@ from the perspective of the developer using the component on some page it looks 
 should we not need auto-closing we just omit the AutoFade property or just set its value to 0.
 
 ### the Toast component
-After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this what you are going to use.
-As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs).
+After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this is what you are going to use.
+As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs). 
+
+Since I'm sure this component is gonna be used by almost any "page" through out the app, I want to make it globally available. The most straight-forward way I found to do so is putting it somewhere in the ```MainLayout.razor``` and give it an absolute positioning (todo: refine positioning). Note the addition of the ```CascadingValue``` tag that automatically injects a reference to the ```MainLayout``` in any component/page
+```razor
+@inherits LayoutComponentBase
+(...code omitted...)
+<div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
+    <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /><!-- also note the @ref property here -->
+</div>
+<CascadingValue Value="this">
+    <div class="page">
+        <div class="sidebar shadow">
+            <NavMenu />
+        </div>
+
+        <div class="main">
+            <div class="top-row px-4">
+                <UserBox />
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+      (..code omitted..)
+    </div>
+</CascadingValue>
+@code{
+ //(omitted...)
+ public async Task PopulateMainToastAsync(string title, string message, string cssClass, string icon = "oi oi-info")
+    {
+        MainToast.RefreshComponent(title, message, icon, cssClass);
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "show");
+        StateHasChanged();
+    }
+}
+```
+now in the ```AdminProductList``` we can get the reference by doing this
+
+```razor
+@code{
+    //code omitted
+    private async Task HandleSubmit()
+    {
+      //code omitted
+      await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+    }
+    //code omitted
+}
+```
+As soon I discover a simple method to inject a component into another component dymically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
 
 ## Taking advantage of Blazor/.NET 6 new features
 ** The double pane component
@@ -482,6 +534,7 @@ As usual we begin wrapping Bootstrap Toast component in our [own component](http
 (More to come)
 
 ## The Resulting Stuff (so far)
+[Summary of implemented components](https://github.com/mvit777/BikeShop/tree/master/BikeShop.BlazorComponents/Components)
 >*The list of products* [(actual source code)](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor)
 ![List](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BikeListComplete.png)
 >*A pop up for editing a product also featuring an info-alert on the background*
@@ -489,6 +542,9 @@ As usual we begin wrapping Bootstrap Toast component in our [own component](http
 
 >*the above info-alert instance transformed at runtime into a confirm panel*
 ![Asking for confirmation](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/deleteConfirm.png)
+
+>*A toast message pops-up to inform some operation succesfully ended*
+![Update success](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/toast.png)
 
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
