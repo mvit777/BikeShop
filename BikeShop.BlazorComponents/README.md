@@ -477,12 +477,12 @@ should we not need auto-closing we just omit the AutoFade property or just set i
 After submitting a newly created bike or updating an existing one we want to give the user a visual feedback that something happened. For the purpose we could once again use our alert giving it the alert-success class turning it into a toast-like message. But since recent releases of Bootstrap ship with a proper Toast component this is what you are going to use.
 As usual we begin wrapping Bootstrap Toast component in our [own component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.razor) and [code behind](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Toast.cs). 
 
-Since I'm sure this component is gonna be used by almost any "page" through out the app, I want to make it globally available. The most straight-forward way I found to do so is putting it somewhere in the ```MainLayout.razor``` and give it an absolute positioning (todo: refine positioning). 
+Since I'm sure this component is gonna be used by almost any "page" through out the app, I want to make it globally available. The most straight-forward way I found to do so is putting it somewhere in the ```MainLayout.razor``` and give it an absolute positioning (todo: refine positioning). Note the addition of the ```CascadingValue``` tag that automatically injects a reference to the ```MainLayout``` in any component/page
 ```razor
 @inherits LayoutComponentBase
 (...code omitted...)
 <div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
-    <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" />
+    <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /><!-- also note the @ref property here -->
 </div>
 <CascadingValue Value="this">
     <div class="page">
@@ -502,6 +502,28 @@ Since I'm sure this component is gonna be used by almost any "page" through out 
       (..code omitted..)
     </div>
 </CascadingValue>
+@code{
+ //(omitted...)
+ public async Task PopulateMainToastAsync(string title, string message, string cssClass, string icon = "oi oi-info")
+    {
+        MainToast.RefreshComponent(title, message, icon, cssClass);
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "show");
+        StateHasChanged();
+    }
+}
+```
+now in the ```AdminProductList``` we can get the reference by doing this
+
+```razor
+@code{
+    //code omitted
+    private async Task HandleSubmit()
+    {
+      //code omitted
+      await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+    }
+    //code omitted
+}
 ```
 
 ## Taking advantage of Blazor/.NET 6 new features
