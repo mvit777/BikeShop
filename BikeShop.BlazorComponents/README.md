@@ -527,7 +527,7 @@ now in the ```AdminProductList``` we can get the reference by doing this
 As soon I discover a simple method to inject a component into another component dymically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
 
 ## Taking advantage of Blazor/.NET 6 new features
-** The double pane component
+** The multi-select double pane component
 ** New ways of setting up js-interop and javascript initialisers
 
 
