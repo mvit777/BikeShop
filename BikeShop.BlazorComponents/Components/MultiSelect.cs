@@ -18,11 +18,11 @@ namespace BikeShop.BlazorComponents.Components
         //}
         public async ValueTask DisposeAsync()
         {
-            if (moduleMultiSelect.IsValueCreated)
-            {
-                var module = await moduleMultiSelect.Value;
-                await module.DisposeAsync();
-            }
+            //if (moduleMultiSelect.IsValueCreated)
+            //{
+            //    var module = await moduleMultiSelect.Value;
+            //    await module.DisposeAsync();
+            //}
         }
 
     }
