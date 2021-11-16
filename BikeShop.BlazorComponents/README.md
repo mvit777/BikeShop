@@ -516,6 +516,9 @@ now in the ```AdminProductList``` we can get the reference by doing this
 ```razor
 @code{
     //code omitted
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+    
     private async Task HandleSubmit()
     {
       //code omitted
