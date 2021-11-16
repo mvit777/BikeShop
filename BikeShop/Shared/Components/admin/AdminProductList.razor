@@ -354,7 +354,7 @@ else
     {
 
         await GetBikesAsync();
-        CurrentUser = UserService.GetCurrentUser();
+        CurrentUser = UserService.GetCurrentUser();//not in use. REMOVE
         SubscribeToEditItemClick();
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();
