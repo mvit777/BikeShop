@@ -484,7 +484,7 @@ Since I'm sure this component is gonna be used by almost any "page" through out 
 <div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
     <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /><!-- also note the @ref property here -->
 </div>
-<CascadingValue Value="this">
+<CascadingValue Value="this"><!-- here the "magic" CascadingValue tag -->
     <div class="page">
         <div class="sidebar shadow">
             <NavMenu />
@@ -516,6 +516,9 @@ now in the ```AdminProductList``` we can get the reference by doing this
 ```razor
 @code{
     //code omitted
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+    
     private async Task HandleSubmit()
     {
       //code omitted
@@ -527,7 +530,7 @@ now in the ```AdminProductList``` we can get the reference by doing this
 As soon I discover a simple method to inject a component into another component dymically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
 
 ## Taking advantage of Blazor/.NET 6 new features
-** The double pane component
+** The multi-select double pane component
 ** New ways of setting up js-interop and javascript initialisers
 
 
