@@ -11,11 +11,11 @@ namespace BikeShop.BlazorComponents.Components
     {
         private readonly Lazy<Task<IJSObjectReference>> moduleMultiSelect;
 
-        public MultiSelect(IJSRuntime jsRuntime)
-        {
-            moduleMultiSelect = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-               "import", "./_content/BikeShop.BlazorComponents/Components/multiselect.min.js").AsTask());
-        }
+        //public MultiSelect(IJSRuntime jsRuntime)
+        //{
+        //    moduleMultiSelect = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
+        //       "import", "./_content/BikeShop.BlazorComponents/Components/multiselect.min.js").AsTask());
+        //}
         public async ValueTask DisposeAsync()
         {
             if (moduleMultiSelect.IsValueCreated)
