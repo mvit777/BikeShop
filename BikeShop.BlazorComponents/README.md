@@ -484,7 +484,7 @@ Since I'm sure this component is gonna be used by almost any "page" through out 
 <div style="position: absolute; width: 350px; height: 90px; top:60px; right: 0;">
     <Toast HTMLId="MainToast" Title="Toast" Message="Message" @ref="MainToast" /><!-- also note the @ref property here -->
 </div>
-<CascadingValue Value="this">
+<CascadingValue Value="this"><!-- here the "magic" CascadingValue tag -->
     <div class="page">
         <div class="sidebar shadow">
             <NavMenu />
