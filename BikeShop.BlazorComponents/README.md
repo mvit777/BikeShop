@@ -1,6 +1,6 @@
 ﻿# BikeShop.BlazorComponents
 TODO: clean of unused files and ...still work in progress
-**(Note: the recent release of .NET6 brought a lot of new stuff for Blazor. As a consequence, some of the contents below is not entirely actual. In the next days I'll try to update what is relevant)**
+**(Note: the [recent release of .NET6](https://devblogs.microsoft.com/dotnet/announcing-net-6/) brought a lot of new stuff for Blazor. As a consequence, some of the contents below is not entirely actual. In the next days I'll try to update what is relevant)**
 
 ## Install
 Make sure to install the excellent nuget-package [Messaging Center](https://github.com/aksoftware98/blazor-utilities) at solution level
