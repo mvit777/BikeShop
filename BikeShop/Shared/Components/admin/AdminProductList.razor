@@ -136,7 +136,7 @@ else
             </span>
         </HeaderTemplate>
         <ChildContent>
-            <MultiSelect />
+            <div style="margin: 10px;"><MultiSelect HTMLId="multiselect" /></div>
         </ChildContent>
         <FooterTemplate>
             <button type="submit" class="btn btn-primary">Save Options</button>
@@ -214,6 +214,7 @@ else
             selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
             currentModal = "#EditOptionsModal";
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            
             StateHasChanged();
         });
     }

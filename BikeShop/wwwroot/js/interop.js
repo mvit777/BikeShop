@@ -18,6 +18,9 @@ var bootstrapNS = {};
     this.ToggleToast = function (toast, options) {
         $(toast).toast(options);
     }
+    this.MultiSelect = function (multiselect, options) {
+        $(multiselect).multiselect(options);
+    }
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {
                $(table).DataTable(options);

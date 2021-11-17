@@ -1,4 +1,5 @@
 ﻿using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,27 @@ using System.Threading.Tasks;
 
 namespace BikeShop.BlazorComponents.Components
 {
-    public partial class MultiSelect : IAsyncDisposable
+    
+    public partial class MultiSelect : ComponentBase
     {
-        private readonly Lazy<Task<IJSObjectReference>> moduleMultiSelect;
+        [Parameter]
+        public string HTMLId { get; set; }
 
-        //public MultiSelect(IJSRuntime jsRuntime)
-        //{
-        //    moduleMultiSelect = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-        //       "import", "./_content/BikeShop.BlazorComponents/Components/multiselect.min.js").AsTask());
-        //}
-        public async ValueTask DisposeAsync()
+        private IJSObjectReference module;
+        [Inject]
+        IJSRuntime JS { get; set; }
+
+        
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            //if (moduleMultiSelect.IsValueCreated)
-            //{
-            //    var module = await moduleMultiSelect.Value;
-            //    await module.DisposeAsync();
-            //}
+            if (firstRender)
+            {
+                module = await JS.InvokeAsync<IJSObjectReference>(
+                  "import", "./_content/BikeShop.BlazorComponents/multiselect.min.js");
+            }
+            await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
         }
+        
 
     }
 }
