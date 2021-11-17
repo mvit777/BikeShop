@@ -525,7 +525,7 @@ now in the ```AdminProductList``` we can get the reference by doing this
         //code omitted
         await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
       }catch(Exception ex){
-        await Layout.PopulateMainToastAsync("Operation result", ex.Message, "alert-danger", "oi oi-circle-check");
+        await Layout.PopulateMainToastAsync("Operation result", ex.Message, "alert-danger", "oi oi-circle-x");
       }
       
     }
