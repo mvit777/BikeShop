@@ -36,7 +36,6 @@ namespace BikeShop.BlazorComponents.Components
                     _timer.Enabled = true;
                 }
             }
-            
         }
         public event Action OnElapsed;
         private void NotifyTimerElapsed(Object source, ElapsedEventArgs e)
@@ -44,6 +43,7 @@ namespace BikeShop.BlazorComponents.Components
             OnElapsed?.Invoke();
             Visible = false;
             _timer.Dispose();
+            AutoFade = 0;
             StateHasChanged();
         }
         public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
@@ -56,6 +56,8 @@ namespace BikeShop.BlazorComponents.Components
         }
         public void SetAutoFade(double autofade)
         {
+            if(_timer!=null)
+                NotifyTimerElapsed(this, null);//reset the timer
             AutoFade = autofade;
         }
     }

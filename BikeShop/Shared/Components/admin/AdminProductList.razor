@@ -43,7 +43,7 @@ else
     <Button HTMLId="btnNewBike" HTMLCssClass="btn-primary float-right" Icon="oi oi-plus" Label="ADD NEW" ClickEventName="BikeList_addBikeItemClick" />
     <div style="clear:both;"></div>
     <br />
-    <Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=3000>
+    <Alert HTMLId="MainAlert" @ref="MainAlert" AutoFade=0>
         @message<span>&nbsp;</span>
         @if (showConfirmButton)
         {
@@ -257,8 +257,6 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_deleteItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            // If the value is updating the component make sure to call StateHasChanged
             showConfirmButton = true;
             message = $"Please confirm you want to delete item {StringHelper.NormaliseStringId(value, "_deleteButton")}";
             MainAlert.ChangeCssClass("alert-danger");
@@ -282,6 +280,7 @@ else
             // If the value is updating the component make sure to call StateHasChanged
             message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
+            MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
                                 .Where(x => x.Id == selectedId).SingleOrDefault();
