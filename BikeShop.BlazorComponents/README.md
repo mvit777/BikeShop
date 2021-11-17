@@ -521,8 +521,13 @@ now in the ```AdminProductList``` we can get the reference by doing this
     
     private async Task HandleSubmit()
     {
-      //code omitted
-      await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+      try{
+        //code omitted
+        await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+      }catch(Exception ex){
+        await Layout.PopulateMainToastAsync("Operation result", ex.Message, "alert-danger", "oi oi-circle-check");
+      }
+      
     }
     //code omitted
 }
