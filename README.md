@@ -142,6 +142,8 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 
 ## News
 - [Uno Conf 2021](https://unoconf.com/) November 30, 2021
+>The Uno Platform is a UI Platform for building single-codebase applications for Windows, Web/WebAssembly, iOS, macOS, Android and Linux.
+>It allows C# and Windows XAML code to run on all target platforms, while allowing you control of every pixel.
 - [Women in tech 2021](https://womenintechfestivalglobal.com/womenintechfestivalglobal2021/en/page/home) November 22-23, 2021
 - [Windows Office Hours](https://techcommunity.microsoft.com/t5/windows-events/windows-office-hours-november-18-2021/ev-p/2870707) November 18, 8-9a.m.
 - [The Future of .NET](https://www.telerik.com/campaigns/wb-the-future-of-dotnet-webinar) Monday, November 15, 2021
