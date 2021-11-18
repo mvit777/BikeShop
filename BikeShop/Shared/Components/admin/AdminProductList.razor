@@ -139,7 +139,18 @@ else
             <div class="row">
                 <div class="col col-1">&nbsp;</div>
                 <div class="col col-6">
-                    <MultiSelect HTMLId="multiselect" @ref="BikeOptionList"  SelectableItems=@SelectableBikeOptions SelectedItems=@ProductModel.SelectedOptions />
+                    <MultiSelect HTMLId="multiselect" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@ProductModel.SelectedOptions">
+                        <SelectableItemsTemplate>
+                            @foreach(MongoEntityBikeOption mbo in SelectableBikeOptions){
+                            <option value="@mbo.BikeOption.Name"  @onclick="OnOptionClicked">@(mbo.BikeOption.Name)</option>
+                            }
+                        </SelectableItemsTemplate>
+                        <SelectedItemsTemplate>
+                            @foreach(BikeOption bo in ProductModel.SelectedOptions){
+                            <option value="@bo.Name">@bo.Name</option>
+                            }
+                        </SelectedItemsTemplate>
+                    </MultiSelect>
                 </div>
                 <div class="col col-5">
                     here goes fake card component
@@ -221,6 +232,10 @@ else
     }
     #endregion
     #region "Components handlers"
+    public void OnOptionClicked()
+    {
+        
+    }
     /// <summary>
     ///
     /// </summary>

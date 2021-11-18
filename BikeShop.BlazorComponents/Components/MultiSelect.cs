@@ -18,6 +18,10 @@ namespace BikeShop.BlazorComponents.Components
         public IList<TItem> SelectableItems { get; set; } = new List<TItem>();
         [Parameter]
         public IList<TItem2> SelectedItems { get; set; } = new List<TItem2>();
+        [Parameter]
+        public RenderFragment SelectedItemsTemplate { get; set; }
+        [Parameter]
+        public RenderFragment SelectableItemsTemplate { get; set; }
 
         private IJSObjectReference module;
         [Inject]
