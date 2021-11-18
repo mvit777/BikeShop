@@ -19,7 +19,16 @@ var bootstrapNS = {};
         $(toast).toast(options);
     }
     this.MultiSelect = function (multiselect, options) {
-        $(multiselect).multiselect(options);
+        var opt = {
+            search: {
+                left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+            },
+            fireSearch: function (value) {
+                return value.length > 3;
+            }
+        }
+        $(multiselect).multiselect(opt);
     }
     this.JSDataTable = function (table, options) {
         if (!$.fn.dataTable.isDataTable(table)) {

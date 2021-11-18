@@ -82,7 +82,7 @@ else
     <!-- HIDDEN MODALS -->
     <Modal HTMLId="EditBikeModal" HeaderTitle="EDIT" HTMLCssClass="modal-md" ShowFooter="false">
         <HeaderTemplate>
-            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> Editing Bike... @selectedId</h5>
+            <h5 class="modal-title" id="editBikeModalH5"><span class="oi oi-pencil"></span> @(selectedId !="" ? "Editing bike " + @selectedId : "Add new bike")</h5>
             <span class="rounded-circle  light-purple-bg" style="background-color: white;">
                 <button type="button" class="close" @onclick="CloseEditBikeModal" data-dismiss="modal" aria-label="Close" style="margin-right: -2px;">
                     <span aria-hidden="true">&times;</span>
@@ -136,7 +136,22 @@ else
             </span>
         </HeaderTemplate>
         <ChildContent>
-            <div style="margin: 10px;"><MultiSelect HTMLId="multiselect" /></div>
+            <div class="row">
+                <div class="col col-1">&nbsp;</div>
+                <div class="col col-6">
+                    <MultiSelect HTMLId="multiselect" @ref="BikeOptionList"  SelectableItems=@SelectableBikeOptions SelectedItems=@ProductModel.SelectedOptions />
+                </div>
+                <div class="col col-5">
+                    here goes fake card component
+                </div>        
+            </div>
+            <div class="row">
+                <div class="col col-1">&nbsp;</div>
+                <div class="col col-6">
+                    here goes upsert form
+                </div>
+                <div class="col col-5"></div>
+            </div>
         </ChildContent>
         <FooterTemplate>
             <button type="submit" class="btn btn-primary">Save Options</button>
@@ -152,10 +167,12 @@ else
     //private ElementReference MainAlert;
     private Alert MainAlert;
     private GenericBike ProductModel;
+    private List<MongoEntityBikeOption> SelectableBikeOptions;
     private EditContext EditContext;
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
     private HtmlTable<MongoEntityBike> BikeList;
+    private MultiSelect<MongoEntityBikeOption, BikeOption> BikeOptionList;
     private string currentModal = "";
     [CascadingParameter]
     public MainLayout Layout { get; set; }
@@ -214,7 +231,7 @@ else
             selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
             currentModal = "#EditOptionsModal";
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
-            
+
             StateHasChanged();
         });
     }
@@ -240,7 +257,7 @@ else
         {
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
                               .Where(x => x.Id == deletableObjId).SingleOrDefault();
-            
+
             await RestClient.PostAsync("/Bikes/delete?entity=" + JsonConvert.SerializeObject(MongoEntity), null);
             MainAlert.ChangeVisible(false);
             showConfirmButton = false;
@@ -275,11 +292,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+        // Do actions against the value
+        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {selectedId}";
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);
@@ -348,13 +365,19 @@ else
         }
 
     }
+    private async Task GetSelectableOptionsAsync()
+    {
+        var jsonResponse = await RestClient.GetStringAsync("/BikeOption");
+        SelectableBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
+    }
     #endregion
     #region "Page handlers"
     protected override async Task OnInitializedAsync()
     {
 
         await GetBikesAsync();
-        CurrentUser = UserService.GetCurrentUser();//not in use. REMOVE
+        await GetSelectableOptionsAsync();
+        CurrentUser = UserService.GetCurrentUser();
         SubscribeToEditItemClick();
         SubscribeToDeleteItemClick();
         SubscribeToNewItemClick();

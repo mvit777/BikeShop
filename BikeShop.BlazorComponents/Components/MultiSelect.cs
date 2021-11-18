@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 namespace BikeShop.BlazorComponents.Components
 {
     
-    public partial class MultiSelect : ComponentBase
+    //public partial class MultiSelect<TItem> : ComponentBase
+    public partial class MultiSelect<TItem, TItem2> //: ComponentBase
     {
         [Parameter]
         public string HTMLId { get; set; }
+        [Parameter]
+        public IList<TItem> SelectableItems { get; set; } = new List<TItem>();
+        [Parameter]
+        public IList<TItem2> SelectedItems { get; set; } = new List<TItem2>();
 
         private IJSObjectReference module;
         [Inject]
