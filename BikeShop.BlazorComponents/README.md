@@ -567,7 +567,7 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it is stable
 - it does not force additional css (great plus)
 - it has no-dependecies beside jquery
-- it does not require any questionable packmanager to be built (other great plus)
+- it does not require any questionable packagemanager to be built (other great plus)
 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
 (TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
