@@ -76,7 +76,7 @@ Imagine we want to build the classic product list table with links for creating/
 The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source and some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
 Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
 
-###The HTMLTable component
+### The HTMLTable component
 
 *Parental Warning: A lot of code stolen from [Developing a Component Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
 ```razor
@@ -126,7 +126,7 @@ protected override async Task OnInitializedAsync()
     }
 }
 ```
-###The Button component
+### The Button component
 
 Next we want to add an edit button for every row. Here comes in play the [Button component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.razor) and yet again [his associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs)
 So we add it in our table definition on somepage:
@@ -211,7 +211,7 @@ protected override async Task OnInitializedAsync()
 ```
 Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
 
-###The Modal component
+### The Modal component
 
 The last step is adding the [Modal Component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Modal.cs) to the page.
 ```razor
@@ -344,7 +344,7 @@ the modified Product to the BikeShopWS in order to store it in the database.
 
 (More to come)
 
-###The multipurpose Alert component
+### The multipurpose Alert component
 
 **What about asking for confirmation? AKA the delete button**
 
