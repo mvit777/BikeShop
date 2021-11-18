@@ -542,12 +542,13 @@ Something that might look like the picture below.
 
 (TODO: Put picture)
 
-Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I apreciated are these:
+Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I appreciated are these:
 - it has many options but very simple to setup
 - it is well documented
 - it is stable
 - it does not force additional css (great plus)
 - it has no-dependecies beside jquery
+- it does not require any questionable packmanager to be built (other great plus)
 
 ** New ways of setting up js-interop and javascript initialisers
 
