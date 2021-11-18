@@ -535,13 +535,14 @@ now in the ```AdminProductList``` we can get the reference by doing this
 As soon I discover a simple method to inject a component into another component dymically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
 
 ## Taking advantage of Blazor/.NET 6 new features
-** The multi-select double pane component
+**The multi-select double pane component**
+
 The last functionality I need for the admin bikes page is a component to build 1-to-many relations between a bike and the optionals. 
 Something that might look like the picture below.
 
 (TODO: Put picture)
 
-Bootstrap does not come shipped with such a component (surely there are tons of plugins), so after a quick search on the internet I decided to use this [jQuery multiselect pluging](https://crlcu.github.io/multiselect/). It has many options but very simple to setup, it is well documented, it is stable, it does not force additional css (great plus) and it has no-dependecies beside jquery.
+Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). It has many options but very simple to setup, it is well documented, it is stable, it does not force additional css (great plus) and it has no-dependecies beside jquery.
 
 ** New ways of setting up js-interop and javascript initialisers
 
