@@ -542,6 +542,7 @@ Something that might look like the picture below.
 
 (TODO: Put picture)
 
+This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is javascript-interop here we go.
 Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I appreciated are these:
 - it has many options but very simple to setup
 - it is well documented
@@ -549,8 +550,9 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it does not force additional css (great plus)
 - it has no-dependecies beside jquery
 - it does not require any questionable packmanager to be built (other great plus)
+It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
+(TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
 
-** New ways of setting up js-interop and javascript initialisers
 
 
 (More to come)
