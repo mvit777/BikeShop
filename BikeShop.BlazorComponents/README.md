@@ -424,6 +424,7 @@ public partial class Alert
             OnElapsed?.Invoke();
             Visible = false;
             _timer.Dispose();
+            AutoFade = 0;
             StateHasChanged();
         }
         public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
@@ -432,6 +433,8 @@ public partial class Alert
         }
         public void SetAutoFade(double autofade)
         {
+            if(_timer!=null)
+                NotifyTimerElapsed(this, null);//reset the timer
             AutoFade = autofade;
         }
     }
