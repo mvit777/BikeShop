@@ -77,7 +77,7 @@ The first component we need is a simple [HTMLTable](https://github.com/mvit777/B
 Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
 
 ### The HTMLTable component
-(also featuring the [obligatory spinning stuff](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Spinner.razor))
+(also featuring the [obbligatory spinning stuff](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Spinner.razor))
 
 *Parental Warning: A lot of code stolen from [Developing a Component Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
 ```razor
