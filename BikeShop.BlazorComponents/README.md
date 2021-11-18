@@ -536,6 +536,13 @@ As soon I discover a simple method to inject a component into another component 
 
 ## Taking advantage of Blazor/.NET 6 new features
 ** The multi-select double pane component
+The last functionality I need for the admin bikes page is a component to build 1-to-many relations between a bike and the optionals. 
+Something that might look like the picture below.
+
+(TODO: Put picture)
+
+Bootstrap does not come shipped with such a component (surely there are tons of plugins), so after a quick search on the internet I decided to use this [jQuery multiselect pluging](https://crlcu.github.io/multiselect/). It has many options but very simple to setup, it is well documented, it is stable, it does not force additional css (great plus) and it has no-dependecies beside jquery.
+
 ** New ways of setting up js-interop and javascript initialisers
 
 
