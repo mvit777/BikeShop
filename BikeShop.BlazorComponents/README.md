@@ -84,7 +84,13 @@ Since at the start I was not very familiar with components I decided to always h
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
+@if (EntityBikes == null)
+{
+    <Spinner /> <!-- the obligatory spinning shit -->
 
+}
+else
+{
 <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
@@ -101,7 +107,7 @@ Since at the start I was not very familiar with components I decided to always h
             <td>@EntityBike.TotalPrice</td>
         </RowTemplate>
     </HtmlTable>
-
+}
 @code{
 private List<MongoEntityBike> EntityBikes;
 protected override async Task OnInitializedAsync()
