@@ -560,7 +560,7 @@ Something that might look like the picture below.
 
 ![doublepane simple](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/doublepane-simple.png)
 
-This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is javascript-interop here we go.
+This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is backpiggin javascript-interop here we go.
 Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I appreciated are these:
 - it has many options but very simple to setup
 - it is well documented
