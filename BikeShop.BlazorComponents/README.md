@@ -616,7 +616,7 @@ The PHP+Twig was much more successful, in the sense that I re-used it in many pr
 In Blazor you just forget about AJAX setup and DOM manipulation, as they are run under the covers. This is another good point for Blazor. 
 The aspect of inter-mixed html and code is a very handy but reminds me a bit of old style Wordpress, which I don't like very much. I still have to make a decision about 
 shifting towards code-behind file + template file style or mix both. The impression is at some point I will use the former as it favours more consistency even if is a lot more verbose. 
-Another good point of Blazor components is their declarative style (just like Webforms, Coldfusion or defunct Struct etc etc)
+Another good point of Blazor components is their declarative style (just like Webforms, Coldfusion or defunct Structs etc etc)
 In fact, if you have a very predictable page structure (like my Datatable List + Edit form) building a code generator to automatise the skeleton of many pages becomes a lot easier.
 
 
@@ -644,7 +644,7 @@ In fact, if you have a very predictable page structure (like my Datatable List +
   - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
   - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Same as above but this time CSS is the topic
 
-- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article. When people take things at heart is a good sign.
+- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at this VisualStudio magazine article. When people take things at heart is a good sign.
 - [Telerik Blazor REPL](https://www.telerik.com/blazor-ui/repl) A read–eval–print loop sandbox kindly offered online by Telerik
 
 ### Commercial Components libraries
