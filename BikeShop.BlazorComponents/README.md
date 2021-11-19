@@ -276,6 +276,8 @@ EditForm is a very useful **built-in component of Blazor** which alleviates the 
         </HeaderTemplate>
         <ChildContent>
            <EditForm EditContext="@EditContext" class="row p-3">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
                 <div class="col-md-6 mb-3">
                     <label for="Model">Model</label>
                     <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
@@ -304,9 +306,10 @@ EditForm is a very useful **built-in component of Blazor** which alleviates the 
     </Modal>
     (...omitted...)
 ```
-The interesting parts of the EditForm component are 
+The interesting parts of the built-in EditForm component are 
 - the opening tag property ```EditContext="@EditContext"```
 - the ```@bind-Value="ProductModel.XXX"``` property of every field
+- the basic data validation applied directly on model class via data annotations
 - the final handler ```@onclick="SaveProduct"``` on the submit button. 
 
 The rest is just a regular form.
