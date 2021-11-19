@@ -73,8 +73,11 @@ Let's have a closer look...
 
 ## Brief description of the components
 Imagine we want to build the classic product list table with links for creating/editing/deleting items..
-The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source an some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
+The first component we need is a simple [HTMLTable](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.cs) that accept a data source and some properties (like id o css class) and its companion [template file](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/HtmlTable.razor).
 Since at the start I was not very familiar with components I decided to always have two separate files which makes code a lot cleaner. Right now I regret a bit this choice because stuffing all in the xxxx.razor file in the end is quicker a more compact. Anyway here how it looks externally on some page's code.
+
+### The HTMLTable component
+(also featuring the [obbligatory spinning stuff](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Spinner.razor))
 
 *Parental Warning: A lot of code stolen from [Developing a Component Library](https://www.ezzylearning.net/tutorial/a-developers-guide-to-blazor-component-libraries)*
 ```razor
@@ -82,7 +85,13 @@ Since at the start I was not very familiar with components I decided to always h
 @inject IConfiguration Configuration;
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
+@if (EntityBikes == null)
+{
+    <Spinner /> <!-- some spinning stuff -->
 
+}
+else
+{
 <HtmlTable Items="EntityBikes" Context="EntityBike" HTMLId="BikeList">
         <HeaderTemplate>
             <th>Model</th>
@@ -99,7 +108,7 @@ Since at the start I was not very familiar with components I decided to always h
             <td>@EntityBike.TotalPrice</td>
         </RowTemplate>
     </HtmlTable>
-
+}
 @code{
 private List<MongoEntityBike> EntityBikes;
 protected override async Task OnInitializedAsync()
@@ -124,6 +133,8 @@ protected override async Task OnInitializedAsync()
     }
 }
 ```
+### The Button component
+
 Next we want to add an edit button for every row. Here comes in play the [Button component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.razor) and yet again [his associated class](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Button.cs)
 So we add it in our table definition on somepage:
 ```razor
@@ -206,6 +217,8 @@ protected override async Task OnInitializedAsync()
  (...omitted...)
 ```
 Note that I call the ```SubscribeToEditItemClick``` at the end of the ```OnInitializedAsync()``` routine, I have not ye investigated the topic but it seems trying to register the same event more than once is smoothly managed by Messaging Center itself, no checks seem to be required.
+
+### The Modal component
 
 The last step is adding the [Modal Component](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/Modal.cs) to the page.
 ```razor
@@ -338,6 +351,8 @@ the modified Product to the BikeShopWS in order to store it in the database.
 
 (More to come)
 
+### The multipurpose Alert component
+
 **What about asking for confirmation? AKA the delete button**
 
 In the case of the delete button we want the user to confirm the action before going on with the deletion. In this case the bootstrap Alert, wrapped into 
@@ -409,6 +424,7 @@ public partial class Alert
             OnElapsed?.Invoke();
             Visible = false;
             _timer.Dispose();
+            AutoFade = 0;
             StateHasChanged();
         }
         public void ChangeCssClass(string cssClass, bool executeStateHasChanged = false)
@@ -417,6 +433,8 @@ public partial class Alert
         }
         public void SetAutoFade(double autofade)
         {
+            if(_timer!=null)
+                NotifyTimerElapsed(this, null);//reset the timer
             AutoFade = autofade;
         }
     }
@@ -532,11 +550,28 @@ now in the ```AdminProductList``` we can get the reference by doing this
     //code omitted
 }
 ```
-As soon I discover a simple method to inject a component into another component dymically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
+As soon I discover a simple method to inject a component into another component dynamically, I'm gonna extend this approach to the 4 different Modals I currently have nested into different components, so that I will piggyback on only one Modal instance as well (Think I spotted something like that during latest .NETConf, but unluckily I can't remember what session it was).
 
 ## Taking advantage of Blazor/.NET 6 new features
-** The multi-select double pane component
-** New ways of setting up js-interop and javascript initialisers
+
+### The Multi select Double Pane component
+The last functionality I need for the admin bikes page is a component to build 1-to-many relations between a bike and the optionals. 
+Something that might look like the picture below.
+
+(TODO: Put picture)
+
+This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is javascript-interop here we go.
+Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I appreciated are these:
+- it has many options but very simple to setup
+- it is well documented
+- it is stable
+- it does not force additional css (great plus)
+- it has no-dependecies beside jquery
+- it does not require any questionable packagemanager to be built (other great plus)
+
+It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
+(TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
+
 
 
 (More to come)
