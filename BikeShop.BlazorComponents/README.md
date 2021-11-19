@@ -276,6 +276,8 @@ EditForm is a very useful **built-in component of Blazor** which alleviates the 
         </HeaderTemplate>
         <ChildContent>
            <EditForm EditContext="@EditContext" class="row p-3">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
                 <div class="col-md-6 mb-3">
                     <label for="Model">Model</label>
                     <InputText id="Model" @bind-Value="ProductModel.Model" class="form-control" />
@@ -304,9 +306,10 @@ EditForm is a very useful **built-in component of Blazor** which alleviates the 
     </Modal>
     (...omitted...)
 ```
-The interesting parts of the EditForm component are 
+The interesting parts of the built-in EditForm component are 
 - the opening tag property ```EditContext="@EditContext"```
 - the ```@bind-Value="ProductModel.XXX"``` property of every field
+- the basic data validation applied directly on model class via data annotations
 - the final handler ```@onclick="SaveProduct"``` on the submit button. 
 
 The rest is just a regular form.
@@ -558,9 +561,9 @@ As soon I discover a simple method to inject a component into another component 
 The last functionality I need for the admin bikes page is a component to build 1-to-many relations between a bike and the optionals. 
 Something that might look like the picture below.
 
-(TODO: Put picture)
+![doublepane simple](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/doublepane-simple.png)
 
-This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is javascript-interop here we go.
+This particular component, in its basic form, is probably not too hard to code in pure C#, but since the focus of this library is piggybacking javascript-interop here we go.
 Bootstrap does not come shipped with such a component (surely there are tons of plugins), however after a quick search on the internet I decided to use this [jQuery multiselect plugin](https://crlcu.github.io/multiselect/). The features I appreciated are these:
 - it has many options but very simple to setup
 - it is well documented
@@ -605,14 +608,15 @@ On the positive side, Blazor integrates really smoothly with Bootstrap unlike th
 All in all, I'm satisfied so far with my little library. It is nothing more than a light wrapper around Bootstrap components to automatise some HTML but it seems to work well and was very quick to develop. In the past I once tried to develop such a library in pure javascript and another time with [PHP + Twig](https://twig.symfony.com/).
 
 The javascript/jquery attempt was a complete failure up to the point I abandoned it in a very early stage. It had bugs scattered all around and was bloated from the very start.
-Basically doing such a thing requires a non-trivial knowdledge of javascript far beyond my level. Also the fact that I'm not aware of an existing such a library makes me think it is not a good idea. 
+Basically doing such a thing requires a non-trivial knowdledge of javascript far beyond my level and my interest in the language itself (javascript is non-existent in the ML field). 
+Also the fact that I'm not aware of an existing such a library makes me think it is not a good idea. 
 
 The PHP+Twig was much more successful, in the sense that I re-used it in many projects. The main problem of that solution was that once the serverside was executed, I was left alone yet again with a lot of AJAX setup and DOM manipulation.
 
 In Blazor you just forget about AJAX setup and DOM manipulation, as they are run under the covers. This is another good point for Blazor. 
 The aspect of inter-mixed html and code is a very handy but reminds me a bit of old style Wordpress, which I don't like very much. I still have to make a decision about 
 shifting towards code-behind file + template file style or mix both. The impression is at some point I will use the former as it favours more consistency even if is a lot more verbose. 
-Another good point of Blazor components is their declarative style (just like Webforms, Coldfusion or defunct Struct etc etc)
+Another good point of Blazor components is their declarative style (just like Webforms, Coldfusion or defunct Structs etc etc)
 In fact, if you have a very predictable page structure (like my Datatable List + Edit form) building a code generator to automatise the skeleton of many pages becomes a lot easier.
 
 
@@ -640,7 +644,8 @@ In fact, if you have a very predictable page structure (like my Datatable List +
   - [A Deep Dive into Blazor Components](https://shauncurtis.github.io/articles/Blazor-Components.html#componentbase) The most in-depth article I found so far about components
   - [Working with CSS in Blazor](https://shauncurtis.github.io/articles/Blazor-CSS.html#getting-started) Same as above but this time CSS is the topic
 
-- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at the article. When people take things at heart is a good sign.
+- [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at this VisualStudio magazine article. When people take things at heart is a good sign.
+- [Telerik Blazor REPL](https://www.telerik.com/blazor-ui/repl) A read–eval–print loop sandbox kindly offered online by Telerik
 
 ### Commercial Components libraries
 As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries (in no particular order):
