@@ -141,37 +141,52 @@ else
                 <div class="col col-6">
                     <MultiSelect HTMLId="multiselect" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@ProductModel.SelectedOptions">
                         <SelectableItemsTemplate>
-                            @*@foreach(MongoEntityBikeOption mbo in SelectableBikeOptions){
-                            <option value="@mbo.BikeOption.Name"  @onclick="OnOptionClicked">@(mbo.BikeOption.Name)</option>
-                            }*@
-                            <option value="1">Item 1</option>
-			                <option value="3">Item 3</option>
-			                <option value="2">Item 2</option>
-                        </SelectableItemsTemplate>
-                        <SelectedItemsTemplate>
-                            @*@foreach(BikeOption bo in ProductModel.SelectedOptions){
+                            @foreach (MongoEntityBikeOption mbo in SelectableBikeOptions)
+                        {
+                            <option value="@mbo.BikeOption.Name" @onclick="@(e=>OnOptionClicked(mbo.BikeOption.Name))">@(mbo.BikeOption.Name)</option>
+                        }
+
+                    </SelectableItemsTemplate>
+                    <SelectedItemsTemplate>
+                        @foreach (BikeOption bo in ProductModel.SelectedOptions)
+                            {
                             <option value="@bo.Name">@bo.Name</option>
-                            }*@
-                            <option value="5">Item 5</option>
-                        </SelectedItemsTemplate>
-                    </MultiSelect>
-                </div>
-                <div class="col col-5">
-                    here goes fake card component
-                </div>        
+                            }
+
+                    </SelectedItemsTemplate>
+                </MultiSelect>
+                <hr />
+                <BikeOptionCard @ref="BikeOptionCard" />
             </div>
-            <div class="row">
-                <div class="col col-1">&nbsp;</div>
-                <div class="col col-6">
-                    here goes upsert form
+            <div class="col col-5">
+                
+               
+                <h5>Add new Bike option</h5>
+                <EditForm EditContext="@BikeOptionEditContext">
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="OptionName">Name</label>
+                        <InputText id="OptionName" @bind-Value="OptionModel.Name" class="form-control" />
+                    </div>
+                     <div class="col-md-6 mb-3">
+                        <label for="OptionPrice">Price</label>
+                        <InputNumber id="OptionPrice" @bind-Value="OptionModel.Price" class="form-control" />
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="OptionDescription">Description</label>
+                        <InputTextArea id="OptionDescription" @bind-Value="OptionModel.Description" class="form-control" />
+                    </div>
+                   <div class="col-12 mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                <div class="col col-5"></div>
+                </EditForm>
             </div>
-        </ChildContent>
-        <FooterTemplate>
-            <button type="submit" class="btn btn-primary">Save Options</button>
-        </FooterTemplate>
-    </Modal>
+        </div>
+    </ChildContent>
+    <FooterTemplate>
+        <button type="submit" class="btn btn-primary">Save Options</button>
+    </FooterTemplate>
+</Modal>
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
@@ -189,6 +204,9 @@ else
     private HtmlTable<MongoEntityBike> BikeList;
     private MultiSelect<MongoEntityBikeOption, BikeOption> BikeOptionList;
     private string currentModal = "";
+    private BikeOptionCard BikeOptionCard;
+    private EditContext BikeOptionEditContext;
+    private BikeOption OptionModel = new BikeOption();
     [CascadingParameter]
     public MainLayout Layout { get; set; }
 
@@ -236,9 +254,11 @@ else
     }
     #endregion
     #region "Components handlers"
-    public void OnOptionClicked()
+    public void OnOptionClicked(string optionName)
     {
-        
+        var mo = SelectableBikeOptions.AsQueryable<MongoEntityBikeOption>()
+                              .Where(x => x.BikeOption.Name == optionName).SingleOrDefault();
+        BikeOptionCard.SetBikeOption((BikeOption)mo.BikeOption);
     }
     /// <summary>
     ///
@@ -251,6 +271,7 @@ else
             currentModal = "#EditOptionsModal";
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
 
+
             StateHasChanged();
         });
     }
@@ -259,7 +280,8 @@ else
         try
         {
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message + " " + ex.InnerException);
         }
@@ -311,11 +333,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);
@@ -362,6 +384,7 @@ else
     {
         ProductModel = new GenericBike();
         EditContext = new EditContext(ProductModel);
+        
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
@@ -386,6 +409,7 @@ else
     }
     private async Task GetSelectableOptionsAsync()
     {
+        BikeOptionEditContext = new EditContext(OptionModel);
         var jsonResponse = await RestClient.GetStringAsync("/BikeOption");
         SelectableBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
     }

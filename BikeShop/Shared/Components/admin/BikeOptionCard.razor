@@ -1,0 +1,48 @@
+﻿@using BlazorAnimate
+@using BikeDistributor.Domain.Models
+@if (bikeOption == null)
+{
+    <Alert Visible=true AutoFade=3000 @ref="myAlert">
+        <Spinner /> Click on an option for full detalis
+    </Alert>
+
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@bikeOption.Name</h5>
+            <p class="card-text">
+                <div>@bikeOption.Description</div>
+                <div><strong>Tot. Price:</strong> $ @bikeOption.Price</div>
+            </p>
+        </div>
+    </div>
+}
+
+
+@code {
+    private BikeOption bikeOption { get; set; }
+    private string HTMLId { get; set; }
+    private Alert myAlert;
+    private IJSObjectReference module;
+    [Inject]
+    IJSRuntime JS { get; set; }
+
+    public void SetBikeOption(BikeOption bo)
+    {
+        bikeOption = bo;
+
+        StateHasChanged();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+            myAlert.ChangeVisible(true);
+
+        }
+    }
+}

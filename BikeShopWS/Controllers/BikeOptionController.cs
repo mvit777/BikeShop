@@ -1,4 +1,5 @@
 ﻿using BikeDistributor.Domain.Entities;
+using BikeDistributor.Domain.Models;
 using BikeDistributor.Infrastructure.services;
 using BikeShopWS.Infrastructure;
 using Microsoft.AspNetCore.Cors;
@@ -43,6 +44,30 @@ namespace BikeShopWS.Controllers
                 return null;
             }
 
+        }
+        [HttpPost]
+        [Route("/BikeOption/create")]
+        public async Task<MongoEntityBikeOption> Create(BikeOption bikeOption)
+        {
+            MongoEntityBikeOption mebo = null;
+            try
+            {
+                mebo = await _bikeOptionService.AddBikeOptionAsync(bikeOption);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + " " + ex.InnerException);
+            }
+            return mebo;
+        }
+
+        [HttpPost]
+        [Route("/BikeOption/update")]
+        public MongoEntityBikeOption Update(MongoEntityBikeOption bikeOption)
+        {
+            
+            var meb = _bikeOptionService.Update(bikeOption);
+            return meb;
         }
     }
 }
