@@ -162,7 +162,7 @@ else
                 
                
                 <h5>Add new Bike option</h5>
-                <EditForm EditContext="@BikeOptionEditContext">
+                <EditForm EditContext="@BikeOptionEditContext" OnSubmit="@HandleAddOption">
                     
                     <div class="col-md-6 mb-3">
                         <label for="OptionName">Name</label>
@@ -211,6 +211,18 @@ else
     public MainLayout Layout { get; set; }
 
     #region "Form handlers"
+    private async Task HandleAddOption()
+    {
+        if (BikeOptionEditContext.Validate())
+        {
+            var b = JsonConvert.SerializeObject(OptionModel);
+            var result = await RestClient.PostAsync("/BikeOption/create?bikeoption=" + b, null);
+            //responseContent = await result.Content.ReadAsStringAsync(); //ok but not using it here
+            OptionModel = new BikeOption();
+            await GetSelectableOptionsAsync();
+            StateHasChanged();
+        }
+    }
     /// <summary>
     /// Save Item
     /// </summary>

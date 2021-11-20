@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MV.Framework.providers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,12 +48,13 @@ namespace BikeShopWS.Controllers
         }
         [HttpPost]
         [Route("/BikeOption/create")]
-        public async Task<MongoEntityBikeOption> Create(BikeOption bikeOption)
+        public async Task<MongoEntityBikeOption> Create(string bikeOption)
         {
             MongoEntityBikeOption mebo = null;
             try
             {
-                mebo = await _bikeOptionService.AddBikeOptionAsync(bikeOption);
+                var obj = JsonConvert.DeserializeObject<BikeOption>(bikeOption);
+                mebo = await _bikeOptionService.AddBikeOptionAsync(obj);
             }
             catch (Exception ex)
             {
