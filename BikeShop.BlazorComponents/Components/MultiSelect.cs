@@ -15,6 +15,8 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public string HTMLId { get; set; }
         [Parameter]
+        public string RightPaneId { get; set; } = "multiselect_to";
+        [Parameter]
         public IList<TItem> SelectableItems { get; set; } = new List<TItem>();
         [Parameter]
         public IList<TItem2> SelectedItems { get; set; } = new List<TItem2>();

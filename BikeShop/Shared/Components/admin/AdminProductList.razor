@@ -57,7 +57,7 @@ else
             <th>Model</th>
             <th>Brand</th>
             <th>Type</th>
-            <th>Tot. Price</th>
+            <th>Base Price</th>
             <th>&nbsp;</th>
         </HeaderTemplate>
         <RowTemplate>
@@ -70,7 +70,7 @@ else
                 <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_addOptionsButton")" Icon="oi oi-plus" HTMLCssClass="btn-success btn-sm float-right" Label="ADD OPTIONS" ClickEventName="BikeList_addOptionsIemClick" />
                 }
         </td>
-        <td>@EntityBike.TotalPrice</td>
+        <td>@EntityBike.Bike.BasePrice</td>
         <td>
             <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_editButton")" HTMLCssClass="btn-primary btn-sm" Icon="oi oi-pencil" Label="EDIT" ClickEventName="BikeList_editItemClick" />
             <Button HTMLId="@(EntityBike.Id.Replace(" ","_") + "_deleteButton")" HTMLCssClass="btn-danger btn-sm" Icon="oi oi-trash" Label="DELETE" ClickEventName="BikeList_deleteItemClick" />
@@ -139,7 +139,7 @@ else
             <div class="row">
                 <div class="col col-1">&nbsp;</div>
                 <div class="col col-6">
-                    <MultiSelect HTMLId="multiselect" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@ProductModel.SelectedOptions">
+                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@ProductModel.SelectedOptions">
                         <SelectableItemsTemplate>
                             @foreach (MongoEntityBikeOption mbo in SelectableBikeOptions)
                         {
@@ -184,7 +184,7 @@ else
         </div>
     </ChildContent>
     <FooterTemplate>
-        <button type="submit" class="btn btn-primary">Save Options</button>
+        <button type="submit" class="btn btn-primary" @onclick="OnSaveOptions">Save Options</button>
     </FooterTemplate>
 </Modal>
 }
@@ -211,10 +211,37 @@ else
     public MainLayout Layout { get; set; }
 
     #region "Form handlers"
+    private async Task OnSaveOptions()
+    {
+        //TODO: make a js call to check selecteditems
+        string[] selectedValues = await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions","#multiselect_to");
+        var selectedOptions = (from x in SelectableBikeOptions.AsQueryable()
+                                        .Where(o => selectedValues.Contains(o.Id))
+                               select x.BikeOption).ToList();
+        var mongoEntity = EntityBikes.AsQueryable().Where(x => x.Id == selectedId).SingleOrDefault();
+        var bv = (BikeVariant)mongoEntity.Bike;
+        bv.ClearOptions();
+
+        foreach(var option in selectedOptions)
+        {
+            var o = (BikeOption)option;
+            bv.SetTotalPrice(o);
+        }
+
+        mongoEntity.Update(bv);
+        var Jmeb = JsonConvert.SerializeObject(mongoEntity);
+        await RestClient.PostAsync("/Bikes/update?entity=" + Jmeb, null);
+        selectedId = "";
+        CloseEditBikeModal();
+        await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
+        await GetBikesAsync(true);
+        StateHasChanged();
+    }
     private async Task HandleAddOption()
     {
         if (BikeOptionEditContext.Validate())
         {
+            //TODO: refresh bike option list in specific tab
             var b = JsonConvert.SerializeObject(OptionModel);
             var result = await RestClient.PostAsync("/BikeOption/create?bikeoption=" + b, null);
             //responseContent = await result.Content.ReadAsStringAsync(); //ok but not using it here
@@ -243,7 +270,7 @@ else
 
                 MongoEntity.Update(ProductModel);
                 var meb = JsonConvert.SerializeObject(MongoEntity);
-                await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);//fails: write test
+                await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);
                 CloseEditBikeModal();
                 await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
                 await GetBikesAsync(true);
@@ -282,7 +309,7 @@ else
             selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
             currentModal = "#EditOptionsModal";
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
-
+            //TODO: EXCLUDE ALREADY SELECTED ITEMS FROM OPTIONS LIST
 
             StateHasChanged();
         });

@@ -14,7 +14,7 @@ else
             <h5 class="card-title">@bikeOption.Name</h5>
             <p class="card-text">
                 <div>@bikeOption.Description</div>
-                <div><strong>Tot. Price:</strong> $ @bikeOption.Price</div>
+                <div><strong>Option Price:</strong> $ @bikeOption.Price</div>
             </p>
         </div>
     </div>
@@ -25,7 +25,7 @@ else
     private BikeOption bikeOption { get; set; }
     private string HTMLId { get; set; }
     private Alert myAlert;
-    private IJSObjectReference module;
+    //private IJSObjectReference module;
     [Inject]
     IJSRuntime JS { get; set; }
 
