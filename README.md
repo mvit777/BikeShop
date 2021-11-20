@@ -123,6 +123,9 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 - Shopping cart
 (...more to come..)
 
+## Telemetry
+(...more to come...)
+
 ## Last Paragraph: a quick note about the BikeShop WS ##
 (...more to come...)
 
