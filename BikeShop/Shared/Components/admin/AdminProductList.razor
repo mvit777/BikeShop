@@ -139,7 +139,7 @@ else
             <div class="row">
                 <div class="col col-1">&nbsp;</div>
                 <div class="col col-6">
-                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@ProductModel.SelectedOptions">
+                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
                         <SelectableItemsTemplate>
                             @foreach (MongoEntityBikeOption mbo in SelectableBikeOptions)
                         {
@@ -148,7 +148,7 @@ else
 
                     </SelectableItemsTemplate>
                     <SelectedItemsTemplate>
-                        @foreach (BikeOption bo in ProductModel.SelectedOptions)
+                        @foreach (BikeOption bo in BikeOptionList.SelectedItems)
                             {
                             <option value="@bo.Name">@bo.Name</option>
                             }
@@ -159,16 +159,16 @@ else
                 <BikeOptionCard @ref="BikeOptionCard" />
             </div>
             <div class="col col-5">
-                
-               
+
+
                 <h5>Add new Bike option</h5>
                 <EditForm EditContext="@BikeOptionEditContext" OnSubmit="@HandleAddOption">
-                    
+
                     <div class="col-md-6 mb-3">
                         <label for="OptionName">Name</label>
                         <InputText id="OptionName" @bind-Value="OptionModel.Name" class="form-control" />
                     </div>
-                     <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label for="OptionPrice">Price</label>
                         <InputNumber id="OptionPrice" @bind-Value="OptionModel.Price" class="form-control" />
                     </div>
@@ -176,9 +176,9 @@ else
                         <label for="OptionDescription">Description</label>
                         <InputTextArea id="OptionDescription" @bind-Value="OptionModel.Description" class="form-control" />
                     </div>
-                   <div class="col-12 mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                    <div class="col-12 mb-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </EditForm>
             </div>
         </div>
@@ -207,6 +207,7 @@ else
     private BikeOptionCard BikeOptionCard;
     private EditContext BikeOptionEditContext;
     private BikeOption OptionModel = new BikeOption();
+    private List<BikeOption> SelectedBikeOptions = new List<BikeOption>();
     [CascadingParameter]
     public MainLayout Layout { get; set; }
 
@@ -214,15 +215,15 @@ else
     private async Task OnSaveOptions()
     {
         //TODO: make a js call to check selecteditems
-        string[] selectedValues = await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions","#multiselect_to");
-        var selectedOptions = (from x in SelectableBikeOptions.AsQueryable()
-                                        .Where(o => selectedValues.Contains(o.Id))
+        string[] selectedValues = await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", "#multiselect_to");
+        var selectedOptions = (from x in SelectableBikeOptions.AsQueryable() //bug here
+                                        .Where(o => selectedValues.Contains(o.BikeOption.Name))
                                select x.BikeOption).ToList();
         var mongoEntity = EntityBikes.AsQueryable().Where(x => x.Id == selectedId).SingleOrDefault();
         var bv = (BikeVariant)mongoEntity.Bike;
         bv.ClearOptions();
 
-        foreach(var option in selectedOptions)
+        foreach (var option in selectedOptions)
         {
             var o = (BikeOption)option;
             bv.SetTotalPrice(o);
@@ -304,13 +305,30 @@ else
     /// </summary>
     public void SubscribeToEditOptionPanel()
     {
-        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addOptionsIemClick", (sender, value) =>
+        MessagingCenter.Subscribe<Button, string>(this, "BikeList_addOptionsIemClick", async (sender, value) =>
         {
             selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
+            var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
+            await GetSelectableOptionsAsync();
+            SelectedBikeOptions = new List<BikeOption>();
+            if (MongoEntity.Bike.SelectedOptions != null)
+            {
+                if (MongoEntity.Bike.SelectedOptions.Count > 0)
+                {
+                    SelectableBikeOptions = (from o in SelectableBikeOptions
+                                             where !(from bo in MongoEntity.Bike.SelectedOptions select bo.Name)
+                                            .Contains(o.BikeOption.Name)
+                                             select o)
+                               .ToList<MongoEntityBikeOption>();
+                    SelectedBikeOptions = MongoEntity.Bike.SelectedOptions;
+                }
+            }
+            
+            
+            BikeOptionList.RefreshComponent();
             currentModal = "#EditOptionsModal";
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
-            //TODO: EXCLUDE ALREADY SELECTED ITEMS FROM OPTIONS LIST
-
+            await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            
             StateHasChanged();
         });
     }
@@ -423,7 +441,7 @@ else
     {
         ProductModel = new GenericBike();
         EditContext = new EditContext(ProductModel);
-        
+
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
