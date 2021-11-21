@@ -575,6 +575,10 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
 (TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
 
+## Breaking the Monolith and some refactor
+### An honest review at our AdminBikeList component
+(..more to come..)
+### Getting rid of hardcoded values and configure our components from outside
 
 
 (More to come)
