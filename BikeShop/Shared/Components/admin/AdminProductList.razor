@@ -197,6 +197,7 @@ else
     //private ElementReference MainAlert;
     private Alert MainAlert;
     private GenericBike ProductModel;
+    private List<MongoEntityBikeOption> AllSelectableOptions;
     private List<MongoEntityBikeOption> SelectableBikeOptions;
     private EditContext EditContext;
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
@@ -216,7 +217,7 @@ else
     {
         //TODO: make a js call to check selecteditems
         string[] selectedValues = await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", "#multiselect_to");
-        var selectedOptions = (from x in SelectableBikeOptions.AsQueryable() //bug here
+        var selectedOptions = (from x in AllSelectableOptions.AsQueryable() //bug here
                                         .Where(o => selectedValues.Contains(o.BikeOption.Name))
                                select x.BikeOption).ToList();
         var mongoEntity = EntityBikes.AsQueryable().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -236,6 +237,8 @@ else
         CloseEditBikeModal();
         await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
         await GetBikesAsync(true);
+        await GetSelectableOptionsAsync();//does not fix the bug
+        BikeOptionList.RefreshComponent();
         StateHasChanged();
     }
     private async Task HandleAddOption()
@@ -323,12 +326,12 @@ else
                     SelectedBikeOptions = MongoEntity.Bike.SelectedOptions;
                 }
             }
-            
-            
+
+
             BikeOptionList.RefreshComponent();
             currentModal = "#EditOptionsModal";
             await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
-            
+
             StateHasChanged();
         });
     }
@@ -390,11 +393,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+        // Do actions against the value
+        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {selectedId}";
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);
@@ -469,6 +472,7 @@ else
         BikeOptionEditContext = new EditContext(OptionModel);
         var jsonResponse = await RestClient.GetStringAsync("/BikeOption");
         SelectableBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
+        AllSelectableOptions = SelectableBikeOptions;//save for later use
     }
     #endregion
     #region "Page handlers"
