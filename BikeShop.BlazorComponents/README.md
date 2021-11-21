@@ -596,6 +596,9 @@ It also gives us the opportunity to explore new and smarter ways of setting up j
 >*A toast message pops-up to inform some operation succesfully ended*
 ![Update success](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/toast.png)
 
+>*The options panel*
+![Option Panel](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/OptionPopUp.png)
+
 >*Change user from user box*
 ![User Box](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/BoxUser.png)
 >*List users*
