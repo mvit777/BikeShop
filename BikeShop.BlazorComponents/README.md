@@ -576,7 +576,7 @@ It also gives us the opportunity to explore new and smarter ways of setting up j
 (TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
 
 ## Breaking the Monolith and some refactor
-### An honest review at our AdminBikeList component
+### An honest review at the AdminBikeList component
 (..more to come..)
 ### Getting rid of hardcoded values and configure our components from outside
 
