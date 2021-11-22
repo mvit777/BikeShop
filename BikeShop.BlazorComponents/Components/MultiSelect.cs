@@ -41,6 +41,12 @@ namespace BikeShop.BlazorComponents.Components
             //await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
         }
         
+        public async Task<string[]> GetSelected(string multiselectHtmlId)
+        {
+           string[] res = await JS.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", multiselectHtmlId);
+            return res;
+        }
+
         public void RefreshComponent()
         {
             StateHasChanged();

@@ -139,7 +139,7 @@ else
             <div class="row">
                 <div class="col col-1">&nbsp;</div>
                 <div class="col col-6">
-                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionList" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
+                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionSelect" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
                         <SelectableItemsTemplate>
                             @foreach (MongoEntityBikeOption mbo in SelectableBikeOptions)
                         {
@@ -148,7 +148,7 @@ else
 
                     </SelectableItemsTemplate>
                     <SelectedItemsTemplate>
-                        @foreach (BikeOption bo in BikeOptionList.SelectedItems)
+                        @foreach (BikeOption bo in BikeOptionSelect.SelectedItems)
                             {
                             <option value="@bo.Name" @onclick="@(e=>OnOptionClicked(bo.Name))">@bo.Name</option>
                             }
@@ -203,7 +203,7 @@ else
     private BikeShopUserInfo CurrentUser;//always check if not null in the razor html
     private bool showConfirmButton = false;
     private HtmlTable<MongoEntityBike> BikeList;
-    private MultiSelect<MongoEntityBikeOption, BikeOption> BikeOptionList;
+    private MultiSelect<MongoEntityBikeOption, BikeOption> BikeOptionSelect;
     private string currentModal = "";
     private BikeOptionCard BikeOptionCard;
     private EditContext BikeOptionEditContext;
@@ -216,7 +216,7 @@ else
     private async Task OnSaveOptions()
     {
         //TODO: make a js call to check selecteditems
-        string[] selectedValues = await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", "#multiselect_to");
+        string[] selectedValues = await BikeOptionSelect.GetSelected("#multiselect_to");//await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", "#multiselect_to");
         var selectedOptions = (from x in AllSelectableOptions.AsQueryable() 
                                         .Where(o => selectedValues.Contains(o.BikeOption.Name))
                                select x.BikeOption).ToList();
@@ -238,7 +238,7 @@ else
         await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
         await GetBikesAsync(true);
         await GetSelectableOptionsAsync();
-        
+
         StateHasChanged();
     }
     private async Task HandleAddOption()
@@ -251,7 +251,7 @@ else
             //responseContent = await result.Content.ReadAsStringAsync(); //ok but not using it here
             OptionModel = new BikeOption();
             await GetSelectableOptionsAsync();
-            
+
             StateHasChanged();
         }
     }
@@ -328,8 +328,6 @@ else
                 }
             }
 
-
-            BikeOptionList.RefreshComponent();
             currentModal = "#EditOptionsModal";
             await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
 
@@ -474,6 +472,7 @@ else
         var jsonResponse = await RestClient.GetStringAsync("/BikeOption");
         SelectableBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
         AllSelectableOptions = SelectableBikeOptions;//save for later use
+
     }
     #endregion
     #region "Page handlers"
