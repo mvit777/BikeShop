@@ -641,10 +641,37 @@ var bootstrapNS = {};
 
 
 ```
+- Step4: The last step is letting the library know about this file and export it. In ```BikeShop.BlazorComponents.csproj``` file add this code:
+```
+<ItemGroup>
+		<None Include="wwwroot\MVComponents.js" />
+	</ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\multiselect.min.js" />
+  </ItemGroup>
+```
 As simple as that now the only code we have to add in new projects is the javascript inclusion at step2. Should we add new helper methods to ```MVComponents.js```, recompiling 
 the library project will automatically update every project.
 
-Like I said, for the MultiSelect Double pane component we have to rely on a new external library which is contained in a file called ```multiselect.min.js``` which I already placed in the ```BikeShop.BlazorComponents/wwwroot/```. As you may have noticed, there is no reference to this file in the ```index.html```
+Like I said, for the MultiSelect Double pane component we have to rely on a new external library which is contained in a file called ```multiselect.min.js``` which I already placed in the ```BikeShop.BlazorComponents/wwwroot/```. As you may have noticed, there is no reference to this file in the ```index.html```.
+The ```multiselect.min.js``` is 11 kb, it is not that much but if we start adding size to the already slow first load (remember that wasm app needs to download the entire blazor framework on the client on first load) it won't help much. Since it is possible to load additional javascript at runtime, I want the ```multiselect.min.js``` to be loaded only when is needed, which is to say when a MultiSelect component appear first on some page. So I let lazy-load the ```multiselect.min.js``` lib by the MultiSelect component itself with this code.
+
+[MultiSelect.cs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/MultiSelect.cs)
+```chsharp
+(...code omitted..)
+protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                module = await JS.InvokeAsync<IJSObjectReference>(
+                  "import", "./_content/BikeShop.BlazorComponents/multiselect.min.js");
+                await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
+            }
+            //await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
+        }
+(...code omitted...)
+```
+
 
 
 ## Breaking the Monolith and some refactor
