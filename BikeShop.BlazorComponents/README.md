@@ -578,12 +578,12 @@ First of all, as it is now, my library force a user to copy & paste the code in 
 - Step 2: Add this line of code in ```BikeShop/wwwroot/index.html``` just above the inclusion of ```interop.js```
 ```html
 (code omitted)
- <script src="./_content/BikeShop.BlazorComponents/MVComponents.js"></script>
+ <script src="./_content/BikeShop.BlazorComponents/MVComponents.js"></script><!-- _content is a conventional variable that will be expanded by blazor, don't change it-->
     <script src="js/interop.js"></script> 
 </body>
 (code omitted)
 ```
-So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
+- Step3: Finally let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
 
 *BikeShop/BlazorComponents/wwwroot/MVComponents.js*
 ```csharp
