@@ -657,7 +657,7 @@ Like I said, for the MultiSelect Double pane component we have to rely on a new 
 The ```multiselect.min.js``` is 11 kb, it is not that much but if we start adding size to the already slow first load (remember that wasm app needs to download the entire blazor framework on the client on first load) it won't help much. Since it is possible to load additional javascript at runtime, I want the ```multiselect.min.js``` to be loaded only when is needed, which is to say when a MultiSelect component appear first on some page. So I let lazy-load the ```multiselect.min.js``` lib by the MultiSelect component itself with this code.
 
 [MultiSelect.cs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/MultiSelect.cs)
-```chsharp
+```csharp
 (...code omitted..)
 protected override async Task OnAfterRenderAsync(bool firstRender)
         {
