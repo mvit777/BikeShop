@@ -243,6 +243,7 @@ else
         await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
         await GetBikesAsync(true);
         await GetSelectableOptionsAsync();
+        BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
         StateHasChanged();
     }
     private async Task HandleAddOption()
@@ -255,8 +256,11 @@ else
             //responseContent = await result.Content.ReadAsStringAsync(); //ok but not using it here
             OptionModel = new BikeOption();
             await GetSelectableOptionsAsync();
-
-            StateHasChanged();
+            SelectableBikeOptions = (from o in AllSelectableOptions
+                                     where !(from bo in SelectedBikeOptions select bo.Name)
+                                    .Contains(o.BikeOption.Name)
+                                     select o).ToList();
+            //StateHasChanged();
         }
     }
     /// <summary>
@@ -280,25 +284,21 @@ else
                 MongoEntity.Update(ProductModel);
                 var meb = JsonConvert.SerializeObject(MongoEntity);
                 await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);
-                //CloseEditBikeModal();
                 await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
-                //await GetBikesAsync(true);
+
             }
             else
             {
-                //var data = new StringContent(bike, Encoding.UTF8, "application/json");
                 var bike = JsonConvert.SerializeObject(ProductModel);
-                await RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
-                //CloseEditBikeModal();
+                await RestClient.PostAsync("/Bikes/create?bike=" + bike, null); 
                 await Layout.PopulateMainToastAsync("Operation result", "bike inserted!", "alert-success", "oi oi-circle-check");
-                //responseContent = " HandleSubmit called";
-                //await GetBikesAsync(true);
-                //StateHasChanged();
+
             }
             selectedId = "";
             ProductModel = new GenericBike();
             CloseEditBikeModal();
             await GetBikesAsync(true);
+            StateHasChanged();
         }
 
     }
@@ -317,6 +317,7 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_addOptionsIemClick", async (sender, value) =>
         {
+            BikeOptionSelect.RefreshComponent(new List<MongoEntityBikeOption>(), new List<BikeOption>());
             selectedId = StringHelper.NormaliseStringId(value, "_addOptionsButton");
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>().Where(x => x.Id == selectedId).SingleOrDefault();
             await GetSelectableOptionsAsync();
@@ -333,9 +334,9 @@ else
                     SelectedBikeOptions = MongoEntity.Bike.SelectedOptions;
                 }
             }
+            BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
             currentModal = "#EditOptionsModal";
             await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
-            BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
 
             StateHasChanged();
         });
@@ -344,6 +345,10 @@ else
     {
         try
         {
+            if (currentModal == "#EditOptionsModal")
+            {
+                BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
+            }
             JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
         }
         catch (Exception ex)
@@ -398,11 +403,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-            // Do actions against the value
-            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+        // Do actions against the value
+        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-            // If the value is updating the component make sure to call StateHasChanged
-            message = $"You are editing {selectedId}";
+        // If the value is updating the component make sure to call StateHasChanged
+        message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);
