@@ -72,6 +72,7 @@ var bootstrapNS = {};
 }).apply(bootstrapNS);
 ```
 ==============================END OF UPDATED SECTION =================================
+
 So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
 All the other components I wrapped inside my library can either work without javascript (Ex. Tabs) or can just be activated and interacted by C# only. 
 Let's have a closer look...
@@ -640,6 +641,10 @@ var bootstrapNS = {};
 
 
 ```
+As simple as that now the only code we have to add in new projects is the javascript inclusion at step2. Should we add new helpers method to ```MVComponents.js``` recompiling 
+the library project will update every project.
+
+
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the AdminBikeList component
