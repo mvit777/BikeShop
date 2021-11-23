@@ -46,6 +46,7 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
 now stick this code in the ```wwwroot/js/interop.js``` file
 
 ===================================WARNING======================================
+
 (section updated to reflect .NET 6 new features. Please scroll down to the MultiSelect component to see a smarter way to init the components)
 
 ```javascript
