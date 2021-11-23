@@ -573,7 +573,70 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it does not require any questionable packagemanager to be built (other great plus)
 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
-First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. This is annoying. So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project.
+First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. This is annoying. So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
+
+*BikeShop/BlazorComponents/wwwroot/MVComponents.js*
+```csharp
+//here can go javascript initialisers
+//import "./multiselect.min.js"
+//define namespace for bootstrap components
+var bootstrapNS = {};
+//register js namespace for bootstrap components
+
+    (function () {
+        this.version = "component 1.0";//just a reminder on how to use scoped ns variables
+        //this.JSDataTables = {};
+
+        this.initComponent = function (name) {
+            //SayHello(name);//call to outside function SayHello
+            this.SayHello();
+        }
+        this.SayHello = function (name) {
+            alert("Hello, from bootstrap-datatables component lib " + this.version + " call");
+        }
+        this.ToggleModal = function (modal, mode) {
+            $(modal).modal(mode);
+        }
+        this.ToggleToast = function (toast, options) {
+            $(toast).toast(options);
+        }
+        /********************new code for MultiSelect component*********/
+        this.MultiSelect = function (multiselect, options) {
+            var opt = {
+                search: {
+                    left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                    right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                },
+                fireSearch: function (value) {
+                    return value.length > 3;
+                }
+            }
+            $(multiselect).multiselect(opt);
+        }
+      
+        this.GetSelectedOptions = function (multiselect) {
+            var selectedOptions = [];
+            $(multiselect + ">option").map(function () {
+                selectedOptions.push($(this).val());
+            });
+            console.log("selected options: ");
+            console.log(JSON.stringify(selectedOptions));
+            return selectedOptions;
+        }
+        /******************end of MultiSelect component**************/
+        this.JSDataTable = function (table, options) {
+            if (!$.fn.dataTable.isDataTable(table)) {
+                $(table).DataTable(options);
+                //this.JSDataTables[table] = table;
+            }
+        }
+        this.RefreshJSDataTable = function (table, options) {
+            $(table).dataTable().fnDestroy();
+        }
+    }).apply(bootstrapNS);
+
+
+```
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the AdminBikeList component
