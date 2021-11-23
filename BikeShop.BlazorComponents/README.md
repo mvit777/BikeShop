@@ -45,6 +45,10 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
 ```
 now stick this code in the ```wwwroot/js/interop.js``` file
 
+===================================WARNING======================================
+
+(section updated to reflect .NET 6 new features. Please scroll down to the MultiSelect component to see a smarter way to init the components)
+
 ```javascript
 //define namespace for bootstrap components
 var bootstrapNS = {};
@@ -67,6 +71,8 @@ var bootstrapNS = {};
     }
 }).apply(bootstrapNS);
 ```
+==============================END OF UPDATED SECTION =================================
+
 So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
 All the other components I wrapped inside my library can either work without javascript (Ex. Tabs) or can just be activated and interacted by C# only. 
 Let's have a closer look...
@@ -573,7 +579,101 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it does not require any questionable packagemanager to be built (other great plus)
 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
-(TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
+First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. Let's fix it:
+- Step 1: Erase all the content in ```interop.js``` we are keeping this file only for specific javascript for the BikeShop project
+- Step 2: Add this line of code in ```BikeShop/wwwroot/index.html``` just above the inclusion of ```interop.js```
+```html
+(code omitted)
+ <script src="./_content/BikeShop.BlazorComponents/MVComponents.js"></script><!-- _content is a conventional variable that will be expanded by blazor, don't change it-->
+    <script src="js/interop.js"></script> 
+</body>
+(code omitted)
+```
+- Step3: Let's now create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
+
+*BikeShop/BlazorComponents/wwwroot/MVComponents.js*
+```csharp
+//here can also go javascript initialisers
+//define namespace for bootstrap components
+var bootstrapNS = {};
+//register js namespace for bootstrap components
+
+    (function () {
+        this.ToggleModal = function (modal, mode) {
+            $(modal).modal(mode);
+        }
+        this.ToggleToast = function (toast, options) {
+            $(toast).toast(options);
+        }
+        /********************new code for MultiSelect component*********/
+        this.MultiSelect = function (multiselect, options) {
+            var opt = {
+                search: {
+                    left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                    right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+                },
+                fireSearch: function (value) {
+                    return value.length > 3;
+                }
+            }
+            $(multiselect).multiselect(opt);
+        }
+      
+        this.GetSelectedOptions = function (multiselect) {
+            var selectedOptions = [];
+            $(multiselect + ">option").map(function () {
+                selectedOptions.push($(this).val());
+            });
+            
+            return selectedOptions;
+        }
+        /******************end of MultiSelect component**************/
+        this.JSDataTable = function (table, options) {
+            if (!$.fn.dataTable.isDataTable(table)) {
+                $(table).DataTable(options);
+                //this.JSDataTables[table] = table;
+            }
+        }
+        this.RefreshJSDataTable = function (table, options) {
+            $(table).dataTable().fnDestroy();
+        }
+    }).apply(bootstrapNS);
+
+
+```
+- Step4: The last step is letting the library know about this file and export it. In ```BikeShop.BlazorComponents.csproj``` file add this code:
+```xml
+<ItemGroup>
+    <None Include="wwwroot\MVComponents.js" />
+</ItemGroup>ù
+<ItemGroup>
+    <None Include="wwwroot\multiselect.min.js" />
+  </ItemGroup>
+```
+As simple as that now the only code we have to add in new projects is the javascript inclusion at step2. Should we add new helper methods to ```MVComponents.js```, recompiling 
+the library project will automatically update every project.
+
+Like I said, for the MultiSelect Double pane component we have to rely on a new external library which is contained in a file called ```multiselect.min.js``` which I already placed in the ```BikeShop.BlazorComponents/wwwroot/```. As you may have noticed, there is no reference to this file in the ```index.html```.
+The ```multiselect.min.js``` is 11 kb, it is not that much but if we start adding size to the already slow first load (remember that wasm app needs to download the entire blazor framework on the client on first load) it won't help much. Since it is possible to load additional javascript at runtime, I want the ```multiselect.min.js``` to be loaded only when is needed, which is to say when a MultiSelect component appear first on some page. So I let lazy-load the ```multiselect.min.js``` lib by the MultiSelect component itself with this code.
+
+[MultiSelect.cs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/Components/MultiSelect.cs)
+```csharp
+(...code omitted..)
+protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                module = await JS.InvokeAsync<IJSObjectReference>(
+                  "import", "./_content/BikeShop.BlazorComponents/multiselect.min.js");
+                await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
+            }
+            //await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
+        }
+(...code omitted...)
+```
+This component requires a bit of gymnic to pump data in it and keep in sync with javascript manipulation but it is higly re-usable this way and we have delegated all the move-right, move-left, move-all part to javascript. We were also able to add custom handlers on option click in pure C# without interferring with equivalent handler in javascript. 
+Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor) to know what I mean.
+
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the AdminBikeList component
