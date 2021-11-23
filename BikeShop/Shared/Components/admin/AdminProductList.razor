@@ -139,20 +139,24 @@ else
             <div class="row">
                 <div class="col col-1">&nbsp;</div>
                 <div class="col col-6">
-                    <MultiSelect HTMLId="multiselect" RightPaneId="multiselect_to" @ref="BikeOptionSelect" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
+                    <MultiSelect HTMLId="multiselect" @ref="BikeOptionSelect" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
                         <SelectableItemsTemplate>
-                            @foreach (MongoEntityBikeOption mbo in SelectableBikeOptions)
-                        {
-                            <option value="@mbo.BikeOption.Name" @onclick="@(e=>OnOptionClicked(mbo.BikeOption.Name))">@(mbo.BikeOption.Name)</option>
-                        }
-
+                            @if(SelectableBikeOptions != null){
+                                @foreach (MongoEntityBikeOption mbo in BikeOptionSelect.SelectableItems)
+                                {
+                                    <option value="@mbo.BikeOption.Name" @onclick="@(e=>OnOptionClicked(mbo.BikeOption.Name))">@(mbo.BikeOption.Name)</option>
+                                    
+                                }
+                            }
                     </SelectableItemsTemplate>
                     <SelectedItemsTemplate>
-                        @foreach (BikeOption bo in BikeOptionSelect.SelectedItems)
-                            {
-                            <option value="@bo.Name" @onclick="@(e=>OnOptionClicked(bo.Name))">@bo.Name</option>
-                            }
-
+                            @if(BikeOptionSelect.SelectedItems !=null){
+                                @foreach (BikeOption bo in BikeOptionSelect.SelectedItems)
+                                {
+                                    <option value="@bo.Name" @onclick="@(e=>OnOptionClicked(bo.Name))">@bo.Name</option>
+                                    
+                                }
+                             }
                     </SelectedItemsTemplate>
                 </MultiSelect>
                 <hr />
@@ -217,7 +221,7 @@ else
     {
         //TODO: make a js call to check selecteditems
         string[] selectedValues = await BikeOptionSelect.GetSelected("#multiselect_to");//await JSRuntime.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", "#multiselect_to");
-        var selectedOptions = (from x in AllSelectableOptions.AsQueryable() 
+        var selectedOptions = (from x in AllSelectableOptions.AsQueryable()
                                         .Where(o => selectedValues.Contains(o.BikeOption.Name))
                                select x.BikeOption).ToList();
         var mongoEntity = EntityBikes.AsQueryable().Where(x => x.Id == selectedId).SingleOrDefault();
@@ -233,12 +237,12 @@ else
         mongoEntity.Update(bv);
         var Jmeb = JsonConvert.SerializeObject(mongoEntity);
         await RestClient.PostAsync("/Bikes/update?entity=" + Jmeb, null);
+
         selectedId = "";
         CloseEditBikeModal();
         await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
         await GetBikesAsync(true);
         await GetSelectableOptionsAsync();
-
         StateHasChanged();
     }
     private async Task HandleAddOption()
@@ -276,23 +280,25 @@ else
                 MongoEntity.Update(ProductModel);
                 var meb = JsonConvert.SerializeObject(MongoEntity);
                 await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);
-                CloseEditBikeModal();
+                //CloseEditBikeModal();
                 await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
-                await GetBikesAsync(true);
+                //await GetBikesAsync(true);
             }
             else
             {
                 //var data = new StringContent(bike, Encoding.UTF8, "application/json");
                 var bike = JsonConvert.SerializeObject(ProductModel);
                 await RestClient.PostAsync("/Bikes/create?bike=" + bike, null);
-                CloseEditBikeModal();
+                //CloseEditBikeModal();
                 await Layout.PopulateMainToastAsync("Operation result", "bike inserted!", "alert-success", "oi oi-circle-check");
                 //responseContent = " HandleSubmit called";
-                await GetBikesAsync(true);
+                //await GetBikesAsync(true);
                 //StateHasChanged();
             }
             selectedId = "";
             ProductModel = new GenericBike();
+            CloseEditBikeModal();
+            await GetBikesAsync(true);
         }
 
     }
@@ -319,7 +325,7 @@ else
             {
                 if (MongoEntity.Bike.SelectedOptions.Count > 0)
                 {
-                    SelectableBikeOptions = (from o in SelectableBikeOptions
+                    SelectableBikeOptions = (from o in AllSelectableOptions
                                              where !(from bo in MongoEntity.Bike.SelectedOptions select bo.Name)
                                             .Contains(o.BikeOption.Name)
                                              select o)
@@ -327,9 +333,9 @@ else
                     SelectedBikeOptions = MongoEntity.Bike.SelectedOptions;
                 }
             }
-
             currentModal = "#EditOptionsModal";
             await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
 
             StateHasChanged();
         });
@@ -392,11 +398,11 @@ else
     {
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            // Do actions against the value
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
+            // If the value is updating the component make sure to call StateHasChanged
+            message = $"You are editing {selectedId}";
             MainAlert.ChangeCssClass("alert-primary");
             MainAlert.SetAutoFade(3000);
             MainAlert.ChangeVisible(true);

@@ -44,11 +44,13 @@ namespace BikeShop.BlazorComponents.Components
         public async Task<string[]> GetSelected(string multiselectHtmlId)
         {
            string[] res = await JS.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", multiselectHtmlId);
-            return res;
+           return res;
         }
 
-        public void RefreshComponent()
+        public void RefreshComponent(IList<TItem> selectableItems, IList<TItem2> selectedItems)
         {
+            SelectableItems = selectableItems;
+            SelectedItems = selectedItems;
             StateHasChanged();
         }
 

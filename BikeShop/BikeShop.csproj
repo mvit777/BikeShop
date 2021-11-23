@@ -37,7 +37,9 @@
       <HintPath>..\..\NET_5_0\BikeDistributor\bin\Debug\netcoreapp3.1\MV.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\docs\" />
   </ItemGroup>

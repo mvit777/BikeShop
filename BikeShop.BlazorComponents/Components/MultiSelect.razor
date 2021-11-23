@@ -4,7 +4,6 @@
 	<div class="col-xs-5">
 		<em>Selectable items</em>
 		<select name="from[]" id="@HTMLId" class="form-control" size="8" multiple="multiple">
-			
 			@SelectableItemsTemplate
 		</select>
 	</div>
@@ -18,7 +17,7 @@
 	
 	<div class="col-xs-5">
 		<em>Selected items</em>
-		<select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple">
+		<select name="to[]" id="@(HTMLId)_to" class="form-control" size="8" multiple="multiple">
 			@SelectedItemsTemplate
 		</select>
 	</div>

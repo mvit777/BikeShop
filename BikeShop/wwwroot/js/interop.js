@@ -30,12 +30,14 @@ var bootstrapNS = {};
         }
         $(multiselect).multiselect(opt);
     }
+    
     this.GetSelectedOptions = function (multiselect) {
         var selectedOptions = [];
         $(multiselect + ">option").map(function () {
             selectedOptions.push($(this).val());
         });
-        
+        console.log("selected options: ");
+        console.log(JSON.stringify(selectedOptions));
         return selectedOptions;
     }
     this.JSDataTable = function (table, options) {
