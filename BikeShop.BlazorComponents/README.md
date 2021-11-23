@@ -642,7 +642,7 @@ var bootstrapNS = {};
 
 ```
 - Step4: The last step is letting the library know about this file and export it. In ```BikeShop.BlazorComponents.csproj``` file add this code:
-```
+```xml
 <ItemGroup>
 		<None Include="wwwroot\MVComponents.js" />
 	</ItemGroup>
