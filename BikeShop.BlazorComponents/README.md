@@ -573,12 +573,21 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it does not require any questionable packagemanager to be built (other great plus)
 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
-First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. This is annoying. So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
+First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. Let's fix it:
+- Step 1: Erase all the content in ```interop.js``` we are keeping this file only for specific javascript for the BikeShop project
+- Step 2: Add this line of code in ```BikeShop/wwwroot/index.html``` just above the inclusion of ```interop.js```
+```html
+(code omitted)
+ <script src="./_content/BikeShop.BlazorComponents/MVComponents.js"></script>
+    <script src="js/interop.js"></script> 
+</body>
+(code omitted)
+```
+So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
 
 *BikeShop/BlazorComponents/wwwroot/MVComponents.js*
 ```csharp
-//here can go javascript initialisers
-//import "./multiselect.min.js"
+//here can also go javascript initialisers
 //define namespace for bootstrap components
 var bootstrapNS = {};
 //register js namespace for bootstrap components
