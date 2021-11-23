@@ -671,7 +671,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         }
 (...code omitted...)
 ```
-This component requires a bit of gymnic to pump data in it and keep in sync with javascript manipulation but it is higly re-usable this way and we have delegated all the move-right, move-left, move-all part to javascript. We were also able to add custom handlers on option click in pure C# without interferring with equivalent handler in javascript. 
+This component requires a bit of gymnic in the parent page/component to pump/pull data in/out and keep in sync with javascript manipulation but it is higly re-usable this way and we have delegated all the move-right, move-left, move-all part to javascript. We were also able to add custom handlers on option click in pure C# without interferring with equivalent handler in javascript. 
 Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor) to know what I mean.
 
 
