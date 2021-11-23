@@ -584,16 +584,6 @@ var bootstrapNS = {};
 //register js namespace for bootstrap components
 
     (function () {
-        this.version = "component 1.0";//just a reminder on how to use scoped ns variables
-        //this.JSDataTables = {};
-
-        this.initComponent = function (name) {
-            //SayHello(name);//call to outside function SayHello
-            this.SayHello();
-        }
-        this.SayHello = function (name) {
-            alert("Hello, from bootstrap-datatables component lib " + this.version + " call");
-        }
         this.ToggleModal = function (modal, mode) {
             $(modal).modal(mode);
         }
@@ -619,8 +609,7 @@ var bootstrapNS = {};
             $(multiselect + ">option").map(function () {
                 selectedOptions.push($(this).val());
             });
-            console.log("selected options: ");
-            console.log(JSON.stringify(selectedOptions));
+            
             return selectedOptions;
         }
         /******************end of MultiSelect component**************/
