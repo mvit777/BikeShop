@@ -666,4 +666,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 ### Free/OpenSource component libraries
 It seems I was wrong about the lack of opensource/free libraries
 - [Microsoft.Fast](https://github.com/microsoft/fast-blazor)
+- [Blazored](https://github.com/Blazored) A small collection of components worth taking a look
 - (..more to come..)
