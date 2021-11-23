@@ -45,6 +45,9 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
 ```
 now stick this code in the ```wwwroot/js/interop.js``` file
 
+===================================WARNING======================================
+(section updated to reflect .NET 6 new features. Please scroll down to the MultiSelect component to see a smarter way to init the components)
+
 ```javascript
 //define namespace for bootstrap components
 var bootstrapNS = {};
@@ -67,6 +70,7 @@ var bootstrapNS = {};
     }
 }).apply(bootstrapNS);
 ```
+==============================END OF UPDATED SECTION =================================
 So far this is the only code needed to make Blazor interact with the Bootstrap Modal and JQuery Datatables. 
 All the other components I wrapped inside my library can either work without javascript (Ex. Tabs) or can just be activated and interacted by C# only. 
 Let's have a closer look...
