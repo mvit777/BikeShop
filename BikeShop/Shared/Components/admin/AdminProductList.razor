@@ -198,7 +198,6 @@ else
     private string deletableObjId;
     private string responseContent;
     private string message;
-    //private ElementReference MainAlert;
     private Alert MainAlert;
     private GenericBike ProductModel;
     private List<MongoEntityBikeOption> AllSelectableOptions;
@@ -345,11 +344,7 @@ else
     {
         try
         {
-            if (currentModal == "#EditOptionsModal")
-            {
-                BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
-            }
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");//make 2nd params dynamic
+            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");
         }
         catch (Exception ex)
         {
@@ -388,9 +383,7 @@ else
         {
             showConfirmButton = true;
             message = $"Please confirm you want to delete item {StringHelper.NormaliseStringId(value, "_deleteButton")}";
-            MainAlert.ChangeCssClass("alert-danger");
-            MainAlert.SetAutoFade(10000);
-            MainAlert.ChangeVisible(true);
+            MainAlert.ShowAsDanger(10000);
             deletableObjId = StringHelper.NormaliseStringId(value, "_deleteButton");
 
             StateHasChanged();
@@ -401,16 +394,13 @@ else
     /// </summary>
     public void SubscribeToEditItemClick()
     {
+        // If the value is updating the component make sure to call StateHasChanged
         MessagingCenter.Subscribe<Button, string>(this, "BikeList_editItemClick", (sender, value) =>
         {
-        // Do actions against the value
-        selectedId = StringHelper.NormaliseStringId(value, "_editButton");
+            selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
-        // If the value is updating the component make sure to call StateHasChanged
-        message = $"You are editing {selectedId}";
-            MainAlert.ChangeCssClass("alert-primary");
-            MainAlert.SetAutoFade(3000);
-            MainAlert.ChangeVisible(true);
+            message = $"You are editing {selectedId}";
+            MainAlert.ShowAsInfo(3000);
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
                                 .Where(x => x.Id == selectedId).SingleOrDefault();
             if (MongoEntity.Bike.isStandard)

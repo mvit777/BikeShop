@@ -14,7 +14,7 @@ namespace BikeShop.BlazorComponents.Components
         [Parameter]
         public virtual string HTMLId {get; set;}
         [Parameter]
-        public virtual string HTMLCssClass { get; set; } = "alert-primary";
+        public virtual string HTMLCssClass { get; set; } = "alert-info";
         [Parameter]
         public virtual double AutoFade { get; set; } = 0;
         [Parameter]
@@ -59,6 +59,35 @@ namespace BikeShop.BlazorComponents.Components
             if(_timer!=null)
                 NotifyTimerElapsed(this, null);//reset the timer
             AutoFade = autofade;
+        }
+
+        public void ShowAsDanger(double autofade)
+        {
+            ChangeCssClass("alert-danger");
+            SetAutoFade(autofade);
+            ChangeVisible(true);
+            StateHasChanged();
+        }
+        public void ShowAsInfo(double autofade)
+        {
+            ChangeCssClass("alert-info");
+            SetAutoFade(autofade);
+            ChangeVisible(true);
+            StateHasChanged();
+        }
+        public void ShowAsSuccess(double autofade)
+        {
+            ChangeCssClass("alert-success");
+            SetAutoFade(autofade);
+            ChangeVisible(true);
+            StateHasChanged();
+        }
+        public void ShowAsWarning(double autofade)
+        {
+            ChangeCssClass("alert-warning");
+            SetAutoFade(autofade);
+            ChangeVisible(true);
+            StateHasChanged();
         }
     }
 }
