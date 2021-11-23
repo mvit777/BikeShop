@@ -589,7 +589,7 @@ First of all, as it is now, my library force a user to copy & paste the code in 
 </body>
 (code omitted)
 ```
-- Step3: Finally let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
+- Step3: Let's now create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project. Now let's stick in it this updated code:
 
 *BikeShop/BlazorComponents/wwwroot/MVComponents.js*
 ```csharp
