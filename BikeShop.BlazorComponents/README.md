@@ -641,9 +641,10 @@ var bootstrapNS = {};
 
 
 ```
-As simple as that now the only code we have to add in new projects is the javascript inclusion at step2. Should we add new helpers method to ```MVComponents.js``` recompiling 
-the library project will update every project.
+As simple as that now the only code we have to add in new projects is the javascript inclusion at step2. Should we add new helper methods to ```MVComponents.js```, recompiling 
+the library project will automatically update every project.
 
+Like I said, for the MultiSelect Double pane component we have to rely on a new external library which is contained in a file called ```multiselect.min.js``` which I already placed in the ```BikeShop.BlazorComponents/wwwroot/```. As you may have noticed, there is no reference to this file in the ```index.html```
 
 
 ## Breaking the Monolith and some refactor
