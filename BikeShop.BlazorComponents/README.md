@@ -573,7 +573,7 @@ Bootstrap does not come shipped with such a component (surely there are tons of 
 - it does not require any questionable packagemanager to be built (other great plus)
 
 It also gives us the opportunity to explore new and smarter ways of setting up js-interop and lazy-load additional javascript. 
-(TODO: ADD LINK TO SCREENSHOT OF FINAL STUFF)
+First of all, as it is now, my library force a user to copy & paste the code in ```interop.js```, if we are to re-use the library in many projects any time we add a helper function we need to update every ```interop.js``` in every project. This is annoying. So let's create a ```MVComponents.js``` in the ```wwwwroot/``` folder of the **BikeShop.BlazorComponents** project.
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the AdminBikeList component
