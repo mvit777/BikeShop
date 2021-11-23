@@ -644,9 +644,9 @@ var bootstrapNS = {};
 - Step4: The last step is letting the library know about this file and export it. In ```BikeShop.BlazorComponents.csproj``` file add this code:
 ```xml
 <ItemGroup>
-		<None Include="wwwroot\MVComponents.js" />
-	</ItemGroup>
-  <ItemGroup>
+    <None Include="wwwroot\MVComponents.js" />
+</ItemGroup>ù
+<ItemGroup>
     <None Include="wwwroot\multiselect.min.js" />
   </ItemGroup>
 ```
@@ -671,7 +671,8 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         }
 (...code omitted...)
 ```
-
+This component requires a bit of gymnic to pump data in it and keep in sync with javascript manipulation but it is higly re-usable this way. 
+Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor) to know what I mean.
 
 
 ## Breaking the Monolith and some refactor
