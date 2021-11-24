@@ -120,7 +120,8 @@ Moreover, I suspect the naive implementation of my domain models and Mongo entit
 (...more to come..)
 
 ## Frontend
-- Shopping cart
+### Shopping cart
+This is supposed to be the interesting part of the application as I'm planning it to be also the playground for the ai-training
 (...more to come..)
 
 ## Telemetry
