@@ -689,9 +689,9 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 ### An honest review at the AdminBikeList component
 (..more to come..)
 ### Getting rid of hardcoded values and configure our components from outside
-If you step back to our ```MVComponents.js``` you may notice that we almost our components js initializers take a second parameter ```options``` but we did not really used it.
+If you step back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really used it.
 
-Ex. my beloved jquery datatables:
+Ex. my beloved jquery datatables...
 ```javascript
 this.JSDataTable = function (table, options) {
    if (!$.fn.dataTable.isDataTable(table)) {
@@ -699,7 +699,13 @@ this.JSDataTable = function (table, options) {
    }
 }
 ```
-
+...accept an *options* javascript object that is expected to be passed by Blazor
+```razor
+protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{});
+    }
+```
 (More to come)
 
 ## The Resulting Stuff (so far)
