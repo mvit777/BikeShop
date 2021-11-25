@@ -655,7 +655,7 @@ var bootstrapNS = {};
 ```xml
 <ItemGroup>
     <None Include="wwwroot\MVComponents.js" />
-</ItemGroup>ù
+</ItemGroup>
 <ItemGroup>
     <None Include="wwwroot\multiselect.min.js" />
   </ItemGroup>
