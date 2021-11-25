@@ -706,6 +706,23 @@ protected async override Task OnAfterRenderAsync(bool firstRender)
         await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{});
     }
 ```
+jquery Datatables have a huge number of possible configuration options that can quickly become a nasty lenghty string into our code. Our ```appsettings.json``` configuration file is certainly a more appropriate place for such strings. Let's statrt from there and add a *Settings* entry:
+```json
+{
+  "BikeShopWS": {
+    "baseUrl": "http://localhost:5001"
+  },
+  "Settings": [
+    {
+      "BikeList": {
+        "dom": "Bflrtip",
+        "buttons": [ "searchBuilder", "excel" ]
+      }
+    }
+  ],
+  "Users": [
+   (..code omitted..)
+```
 (More to come)
 
 ## The Resulting Stuff (so far)
