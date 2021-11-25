@@ -706,7 +706,7 @@ protected async override Task OnAfterRenderAsync(bool firstRender)
         await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{});
     }
 ```
-jquery Datatables have a huge number of possible configuration options that can quickly become a nasty lenghty string into our code. Our ```appsettings.json``` configuration file is certainly a more appropriate place for such strings. Let's statrt from there and add a *Settings* entry:
+jquery Datatables have a huge number of possible configuration options that can quickly become a nasty lenghty string into our code. Our ```appsettings.json``` configuration file is certainly a more appropriate place for such strings. Let's start from there and add a *Settings* entry:
 ```json
 {
   "BikeShopWS": {
@@ -723,6 +723,37 @@ jquery Datatables have a huge number of possible configuration options that can 
   "Users": [
    (..code omitted..)
 ```
+"BikeList" is the entry we will apply to the "BikeList Datatable", in this case we want additional buttons for custom searches and excel download. 
+In "BikeOptionList" we might want other options.
+
+Since I dislike quite a bit the way configuration is managed in Blazor I added my own ```ConfigurationService``` and registered int ```Program.cs``` like any other service
+
+```csharp
+var ConfigService = new ConfigService("appsettings.json", http);
+await ConfigService.LoadAsync();
+builder.Services.AddSingleton(ConfigService);
+```
+Next, I slightly modify both ```MVComponents.js``` like this
+```javascript
+this.JSDataTable = function (table, options) {
+ if (!$.fn.dataTable.isDataTable(table)) {
+    var opt = {};
+    if (options.length > 0) {
+       opt = $.parseJSON(options[0]);
+    }          
+    $(table).DataTable(opt);
+ }           
+}
+```
+and ```AdminProductList.razor``` like this:
+```razor
+protected async override Task OnAfterRenderAsync(bool firstRender)
+{
+   string options = ConfigService.GetSetting("BikeList");
+   await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
+ }
+```
+
 (More to come)
 
 ## The Resulting Stuff (so far)
