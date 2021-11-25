@@ -16,6 +16,7 @@
 @inject HttpClient RestClient;
 @inject IJSRuntime JSRuntime;
 @inject BikeShopUserService UserService;
+@inject ConfigService ConfigService;
 @*@inject Bikes.BikesClient bc;
     @inject IMapper m;*@
 
@@ -163,11 +164,10 @@ else
                 <BikeOptionCard @ref="BikeOptionCard" />
             </div>
             <div class="col col-5">
-
-
                 <h5>Add new Bike option</h5>
                 <EditForm EditContext="@BikeOptionEditContext" OnSubmit="@HandleAddOption">
-
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
                     <div class="col-md-6 mb-3">
                         <label for="OptionName">Name</label>
                         <InputText id="OptionName" @bind-Value="OptionModel.Name" class="form-control" />
@@ -491,8 +491,8 @@ else
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[] { });
+        string options = ConfigService.GetSetting("BikeList");
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
     }
     #endregion
 }

@@ -47,5 +47,11 @@
   <ItemGroup>
     <Protobuf Include="Protos\bike.proto" GrpcServices="Client" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings-dist.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 	
 </Project>

@@ -39,13 +39,18 @@ var bootstrapNS = {};
             $(multiselect + ">option").map(function () {
                 selectedOptions.push($(this).val());
             });
-            console.log("selected options: ");
-            console.log(JSON.stringify(selectedOptions));
+            //console.log("selected options: ");
+            //console.log(JSON.stringify(selectedOptions));
             return selectedOptions;
         }
         this.JSDataTable = function (table, options) {
             if (!$.fn.dataTable.isDataTable(table)) {
-                $(table).DataTable(options);
+                //var opt = {dom: 'Bfrtip',buttons: ['copy', 'excel', 'pdf']};//fix it, only copy button appears, plugin missing?
+                var opt = {};
+                if (options.length > 0) {
+                    opt = $.parseJSON(options[0]);
+                }          
+                $(table).DataTable(opt);
                 //this.JSDataTables[table] = table;
             }
         }

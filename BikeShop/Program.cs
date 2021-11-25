@@ -24,17 +24,19 @@ namespace BikeShop
         {
             //var mongoUrl = "";
             //var mongoDb = "";
-
+            var configFile = "appsettings.json";
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
             builder.Services.AddScoped(localClient => http);
-            using var response = await http.GetAsync("appsettings.json");
+            using var response = await http.GetAsync(configFile);
             using var stream = await response.Content.ReadAsStreamAsync();
             builder.Configuration.AddJsonStream(stream);
             //mongoUrl = builder.Configuration.GetSection("Mongo").GetValue<string>("url","");
             //mongoDb = builder.Configuration.GetSection("Mongo").GetValue<string>("dbName", "");
-
+            var ConfigService = new ConfigService(configFile, http);
+            await ConfigService.LoadAsync();
+            builder.Services.AddSingleton(ConfigService);
             ////=======================cannot use tcp in blazor wasm
             //var mongoContext = new MongoDBContext(mongoUrl, mongoDb);
             //var BS = new MongoBikeService(mongoContext);
@@ -43,7 +45,6 @@ namespace BikeShop
             var baseUrl = builder.Configuration.GetSection("BikeShopWS").GetValue<string>("baseUrl", "");
             var restClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
             builder.Services.AddScoped(RestClient => restClient);
-
             /****************just some shit to pretend we have a login system in place*******/
             var users = builder.Configuration.GetSection("Users").GetChildren();
             
