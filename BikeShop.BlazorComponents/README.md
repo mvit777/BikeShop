@@ -689,7 +689,16 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 ### An honest review at the AdminBikeList component
 (..more to come..)
 ### Getting rid of hardcoded values and configure our components from outside
+If you step back to our ```MVComponents.js``` you may notice that we almost our components js initializers take a second parameter ```options``` but we did not really used it.
 
+Ex. my beloved jquery datatables:
+```javascript
+this.JSDataTable = function (table, options) {
+   if (!$.fn.dataTable.isDataTable(table)) {
+         $(table).DataTable(options);
+   }
+}
+```
 
 (More to come)
 
