@@ -753,6 +753,8 @@ protected async override Task OnAfterRenderAsync(bool firstRender)
    await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
  }
 ```
+Now I can have different configurations for each jquery datatable without nasty strings in code and I can extend this approach even to all the other js components.
+Not bad.
 
 (More to come)
 
