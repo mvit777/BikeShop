@@ -477,6 +477,8 @@ from the perspective of the developer using the component on some page it looks 
             MainAlert.ChangeCssClass("alert-danger"); //here we change alert style at runtime
             MainAlert.SetAutoFade(10000); //here we change duration. It will auto fade in 10 secs
             MainAlert.ChangeVisible(true);//change visibility
+            //or we can just group in a single method call like this:
+            //MainAlert.ShowAsDanger(10000);
             deletableObjId = value;
 
             StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
@@ -490,8 +492,11 @@ from the perspective of the developer using the component on some page it looks 
             selectedId = StringHelper.NormaliseStringId(value, "_editButton");
             showConfirmButton = false;
             message = $"You are editing {selectedId}";
-            MainAlert.ChangeCssClass("alert-primary");
+            MainAlert.ChangeCssClass("alert-info");
             MainAlert.ChangeVisible(true);
+            //or we can just group in a single method call like this:
+            //MainAlert.ShowAsInfo(3000);
+
            // ...code omitted....
 
             StateHasChanged();//probably not required but no roundtrip to the server as it is a wasm application
@@ -671,7 +676,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
         }
 (...code omitted...)
 ```
-This component requires a bit of gymnic to pump data in it and keep in sync with javascript manipulation but it is higly re-usable this way and we have delegated all the move-right, move-left, move-all part to javascript. We were also able to add custom handlers on option click in pure C# without interferring with equivalent handler in javascript. 
+This component requires a bit of LINQ gymnic in the parent page/component to pump/pull data in/out and keep in sync with javascript manipulation but it is highly re-usable this way and we have delegated all the move-right, move-left, move-all part to javascript. We were also able to add custom handlers on option click in pure C# without interferring with equivalent handler in javascript. 
 Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/blob/master/BikeShop/Shared/Components/admin/AdminProductList.razor) to know what I mean.
 
 
@@ -766,5 +771,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 ### Free/OpenSource component libraries
 It seems I was wrong about the lack of opensource/free libraries
 - [Microsoft.Fast](https://github.com/microsoft/fast-blazor) The Microsoft.Fast.Components.FluentUI package provides a lightweight set of Blazor component wrappers around Microsoft's official FluentUI Web Components
-- [Blazored](https://github.com/Blazored) A small collection of components worth taking a look
+- [Blazored](https://github.com/Blazored) A small collection of not-so-common components worth taking a look
 - (..more to come..)
