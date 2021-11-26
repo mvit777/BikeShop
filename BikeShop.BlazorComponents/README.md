@@ -753,7 +753,7 @@ jquery Datatables have a huge number of possible configuration options that can 
 ```
 "BikeList" is the entry we will apply to the "BikeList Datatable", in this case we want additional buttons for custom searches and excel download. 
 In "BikeOptionList" we might want other options.
-![New buttons show up](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/datable-buttons.png)
+
 Since I dislike quite a bit the way configuration is managed in Blazor I added my own ```ConfiService``` and registered int ```Program.cs``` like any other service
 
 ```csharp
@@ -783,6 +783,9 @@ protected async override Task OnAfterRenderAsync(bool firstRender)
 ```
 Now I can have different configurations for each jquery datatable without nasty strings in code and I can extend this approach even to all the other js components.
 Not bad.
+
+![New buttons show up](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/datable-buttons.png)
+
 Another place that need cleanup of hardcoded values is when I make calls to API. Should the API design change for some reason having something like this will save a lot of time
 (not yet implemented)
 ```csharp
