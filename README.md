@@ -28,8 +28,9 @@ After a a day of unsuccesful trying to connect to a MongoDb server I fully under
 `
 (this only applies to blazor wasm not blazor server) but it means http is the only protocol supported, which in turn means 
 the whole System.Net namespace (with the exception of System.Net.Http) is not supported which in turn means no direct connection to Databases or sending mails unless I 
-put up a webservice backend. 
-Next time I'll make sure to better read the [docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-6.0)
+put up a webservice backend. As a cherry on the pie my crafted-with-love Config class accept only a path in the constructor (lol).
+Next time I'll make sure to better read the [docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-6.0).
+Jokes apart, most of the [MV.Framework](https://github.com/mvit777/BikeDistributor/tree/master/MV.Framework) stuff will be used by the webservice, so it is not useless.
 
 ## a nice findout: the HttpClient ##
 Being forced to add a Webservice to fill the gaps in the blazor app, I installed the RestSharp package (which is extremly popular these days), built a thin wrapper around it and stuffed everything into the BikeDistributor library. 
