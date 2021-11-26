@@ -753,7 +753,7 @@ jquery Datatables have a huge number of possible configuration options that can 
 ```
 "BikeList" is the entry we will apply to the "BikeList Datatable", in this case we want additional buttons for custom searches and excel download. 
 In "BikeOptionList" we might want other options.
-
+![New buttons show up](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/datable-buttons.png)
 Since I dislike quite a bit the way configuration is managed in Blazor I added my own ```ConfiService``` and registered int ```Program.cs``` like any other service
 
 ```csharp
