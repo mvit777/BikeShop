@@ -704,7 +704,7 @@ Moreover this library is only a small secondary project of a larger project you 
 
 ### 1. Stuck on Bootstrap 4.6.1
 at some point I even moaned about the fact that Blazor did not come shipped with the latest Bootstrap and stated that it was anyway trivial to upgrade to the latest version.
-While the second part of the preceding sentence remains true, my library is not really Bootstrap 5+ ready. In fact, what I did not consider is that every Bootstrap major release most inevitably bring some HTML modifications to the components (especially to foster inclusive usability) which in turn make some of my components behave a bit funnily or not work at all (the Spinner component looks pretty funny on Bootstrap 5+ but it is not a very big problem this one).
+While the second part of the preceding sentence remains true, my library is not really Bootstrap 5+ ready. In fact, what I did not consider is that every Bootstrap major release most inevitably bring some HTML modifications to the components (especially to foster inclusive usability) which in turn make some of my components behave a bit funnily or not work at all (the Spinner component looks pretty funny on Bootstrap 5+ but it is not a very big problem this one). One other big change is that starting from v.5, Bootstrap does no longer require the use of jquery, the components now use vanilla E6 javascript which probably is it is biggest feature. As name implies, jquery Datatables...
 
 (..more to come..)
 ### 4. Getting rid of hardcoded values and configure our components from outside
