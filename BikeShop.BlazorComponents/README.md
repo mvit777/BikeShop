@@ -698,7 +698,12 @@ While I'm overall satisfied with the libray and its usage I already spotted some
 3) The name ```bootstrapNS``` I chose for my namespace is rather (un)fortunate
 4) Too many hardcoded values and magic strings around
 
-### 1. 
+### A bit of background (let's start with some excuses)
+When I started this project back in October 2021 I did not consider we were only one month away from the release of .NET6 that will have brought new features to Blazor itself. 
+Moreover this library is only a small secondary project of a larger project (you can [read here](https://github.com/mvit777/BikeDistributor) about), the rationale behind creating my own component library is that I need maximum control and I want to test javascript interop
+
+### 1. Stuck on Bootstrap 4.6.1
+
 
 (..more to come..)
 ### 4. Getting rid of hardcoded values and configure our components from outside
