@@ -687,10 +687,12 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the library and its usage on the AdminBikeList page
-While I'm overall satisfied with the libray I already spotted a lot of room for improvement. I make a quick list and then we will expand on every single problem and try to address it
+While I'm overall satisfied with the libray and its usage on  I already spotted a lot of room for improvement. I make a quick list and then I will expand on every single problem and try to address it
 
-1 I'm not taking full advantage of some .NET 6 new features that are actually very handy
-2 I'm stuck on Bootstrap 4.6.1 while current version is 5.1
+- 1) I'm not taking full advantage of some .NET 6 new features that are actually very handy (see .cshtml files)
+- 2) I'm stuck on Bootstrap 4.6.1 while current version is 5.1
+- 3) The name I chose for my namespace is rather (un)fortunate
+- 4) Too many hardcoded values and magic strings around
 
 (..more to come..)
 ### Getting rid of hardcoded values and configure our components from outside
