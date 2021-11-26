@@ -61,6 +61,6 @@ else
     }
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#OptionList", new object[] { });
+        await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#OptionList", new object[] { });
     }
 }

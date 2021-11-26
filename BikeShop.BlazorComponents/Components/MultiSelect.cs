@@ -36,14 +36,14 @@ namespace BikeShop.BlazorComponents.Components
             {
                 module = await JS.InvokeAsync<IJSObjectReference>(
                   "import", "./_content/BikeShop.BlazorComponents/multiselect.min.js");
-                await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
+                await JS.InvokeVoidAsync("MVComponents.MultiSelect", "#" + HTMLId, new object[] { });
             }
             //await JS.InvokeVoidAsync("bootstrapNS.MultiSelect", "#" + HTMLId, new object[] { });
         }
         
         public async Task<string[]> GetSelected(string multiselectHtmlId)
         {
-           string[] res = await JS.InvokeAsync<string[]>("bootstrapNS.GetSelectedOptions", multiselectHtmlId);
+           string[] res = await JS.InvokeAsync<string[]>("MVComponents.GetSelectedOptions", multiselectHtmlId);
            return res;
         }
 

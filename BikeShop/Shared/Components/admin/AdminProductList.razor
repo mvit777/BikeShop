@@ -335,7 +335,7 @@ else
             }
             BikeOptionSelect.RefreshComponent(SelectableBikeOptions, SelectedBikeOptions);
             currentModal = "#EditOptionsModal";
-            await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            await JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", currentModal, "show");
 
             StateHasChanged();
         });
@@ -344,7 +344,7 @@ else
     {
         try
         {
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "hide");
+            JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", currentModal, "hide");
         }
         catch (Exception ex)
         {
@@ -416,7 +416,7 @@ else
 
             EditContext = new EditContext(ProductModel);
             currentModal = "#EditBikeModal";
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", currentModal, "show");
 
             StateHasChanged();
         });
@@ -433,7 +433,7 @@ else
             EditContext = new EditContext(ProductModel);
 
             currentModal = "#EditBikeModal";
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", currentModal, "show");
+            JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", currentModal, "show");
             selectedId = "";
             StateHasChanged();
         });
@@ -456,7 +456,7 @@ else
             {
                 //responseContent = " bikes found " + EntityBikes.Count.ToString();
                 BikeList.RefreshComponent(EntityBikes);
-                await JSRuntime.InvokeVoidAsync("bootstrapNS.RefreshJSDataTable", "#BikeList", new object[] { });
+                await JSRuntime.InvokeVoidAsync("MVComponents.RefreshJSDataTable", "#BikeList", new object[] { });
                 StateHasChanged();
             }
 
@@ -492,7 +492,7 @@ else
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         string options = ConfigService.GetSetting("BikeList");
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
+        await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#BikeList", new object[]{ options });
     }
     #endregion
 }

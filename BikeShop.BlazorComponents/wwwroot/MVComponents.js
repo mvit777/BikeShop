@@ -1,7 +1,7 @@
 //here can go javascript initialisers
 //import "./multiselect.min.js"
 //define namespace for bootstrap components
-var bootstrapNS = {};
+var MVComponents = {};
 //register js namespace for bootstrap components
 
     (function () {
@@ -57,5 +57,5 @@ var bootstrapNS = {};
         this.RefreshJSDataTable = function (table, options) {
             $(table).dataTable().fnDestroy();
         }
-    }).apply(bootstrapNS);
+    }).apply(MVComponents);
 

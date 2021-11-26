@@ -73,21 +73,21 @@
     public async Task PopulateMainToastAsync(string title, string message, string cssClass, string icon = "oi oi-info")
     {
         MainToast.RefreshComponent(title, message, icon, cssClass);
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "show");
+        await JSRuntime.InvokeVoidAsync("MVComponents.ToggleToast", "#MainToast", "show");
         StateHasChanged();
     }
     private void SubscribeToCloseToast()
     {
         MessagingCenter.Subscribe<Button, string>(this, "closeToast", (sender, value) =>
         {
-            JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleToast", "#MainToast", "hide");
+            JSRuntime.InvokeVoidAsync("MVComponents.ToggleToast", "#MainToast", "hide");
             StateHasChanged();
         });
     }
 
     protected async Task CloseUsersModal()
     {
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "hide");
+        await JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", "#UsersModal", "hide");
     }
 
     private async Task Impersonate(MouseEventArgs e, string username)

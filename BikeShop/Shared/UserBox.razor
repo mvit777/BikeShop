@@ -43,7 +43,7 @@
     protected async Task OnBtnImpersonateMenuClicked()
     {
         //placed in MainLayout
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.ToggleModal", "#UsersModal", "show");
+        await JSRuntime.InvokeVoidAsync("MVComponents.ToggleModal", "#UsersModal", "show");
     }
 
     protected void SubScribeToUserChanged()
