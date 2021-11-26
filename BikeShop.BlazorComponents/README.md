@@ -16,6 +16,10 @@ Once you also have imported the BikeShop.BlazorComponents.dll into your Blazor p
 @using AKSoftware.Blazor.Utilities
 @using BikeShop.BlazorComponents.Components
 ```
+===================================WARNING======================================
+
+(section updated to reflect .NET 6 new features. Please scroll down to the MultiSelect component to see a smarter way to init the components)
+
 Now navigate to the ```wwwroot``` folder and add a file ```interop.js``` or whatever name it suits you. Make sure to include datatables.css in the head tag in index.html
 together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) before the closing </body>
 
@@ -25,29 +29,30 @@ together with jquery.js, bootstrap.min.js, datatables.min.js (in this order) bef
   <head>
     (...omitted...)
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- datatables -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/fh-3.2.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.5/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/fh-3.2.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.5/datatables.min.css" /> 
     <!-- local -->
     <link href="css/app.css" rel="stylesheet" />
-    <!-- <link href="BikeShop.styles.css" rel="stylesheet" /> -->
+    <link href="BikeShop.styles.css" rel="stylesheet" />
   </head>
   <body>
     (...omitted...)
     
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/cr-1.5.4/date-1.1.1/fc-4.0.0/fh-3.2.0/kt-2.6.4/r-2.2.9/rg-1.1.3/rr-1.2.8/sc-2.0.5/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/date-1.1.1/sc-2.0.5/sb-1.3.0/sp-1.4.0/sl-1.3.3/datatables.min.js"></script>
+
+    <!-- <script src="./_content/BikeShop.BlazorComponents/MVComponents.js"></script>-->
     <script src="js/interop.js"></script>
 </body>
 ```
 now stick this code in the ```wwwroot/js/interop.js``` file
 
-===================================WARNING======================================
-
-(section updated to reflect .NET 6 new features. Please scroll down to the MultiSelect component to see a smarter way to init the components)
 
 ```javascript
 //define namespace for bootstrap components
@@ -650,7 +655,7 @@ var bootstrapNS = {};
 ```xml
 <ItemGroup>
     <None Include="wwwroot\MVComponents.js" />
-</ItemGroup>ù
+</ItemGroup>
 <ItemGroup>
     <None Include="wwwroot\multiselect.min.js" />
   </ItemGroup>
@@ -681,10 +686,103 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 
 
 ## Breaking the Monolith and some refactor
-### An honest review at the AdminBikeList component
-(..more to come..)
-### Getting rid of hardcoded values and configure our components from outside
+### An honest review at the library and its usage on the AdminBikeList page
+>*If you don't do self evaluation, you ain't nobody*
+> 
+> Mike Tyson (one of my favorite philosophers)
 
+While I'm overall satisfied with the libray and its usage I already spotted some minor problems and a lot of room for improvement. I make a quick list and then I will expand on every single problem and try to address it
+
+1) I'm stuck on Bootstrap 4.6.1 while current version is 5.1
+2) I'm not taking full advantage of some .NET 6 new features that are actually very handy (see .cshtml files)
+3) The name ```bootstrapNS``` I chose for my namespace is rather (un)fortunate
+4) Too many hardcoded values and magic strings around
+
+### A bit of background (let's start with some excuses)
+When I started this project back in October 2021 I did not consider we were only one month away from the release of .NET6 that will have brought new features to Blazor itself. 
+Moreover this library is only a small secondary project of a larger project you can [read here](https://github.com/mvit777/BikeDistributor) about. The rationale behind creating my own component library is that I needed maximum control and I wanted to test javascript interop by leveraging on beatiful Bootstrap components (well the real reason is that for a personal project I can't afford any of the excellent commercial libs listed on bottom of this page and turned out doing my own is also a lot of fun, but it sounds a lot less epic :)
+
+### 1. Stuck on Bootstrap 4.6.1
+at some point I even moaned about the fact that Blazor did not come shipped with the latest Bootstrap and stated that it was anyway trivial to upgrade to the latest version.
+While the second part of the preceding sentence remains true, my library is not really Bootstrap 5+ ready. In fact, what I did not consider is that every Bootstrap major release most inevitably bring some HTML modifications to the components (especially to foster inclusive usability) which in turn make some of my components behave a bit funnily or not work at all (the Spinner component looks pretty funny on Bootstrap 5+ but it is not a very big problem this one). One other big change is that starting from v.5, Bootstrap does no longer require the use of jquery, the components now use vanilla E6 javascript which is probably its biggest new feature. As the name implies, jquery Datatables on the contrary still needs it. Especially after this last consideration, upgrading my library to Bootstrap 5+ is not really worth the value. In the end, it will probably work for years as it is. However it is already a bit outdated, one thing to bear in mind.
+
+### 2. NET 6 brought some interesting features I'm not using
+while I'm happy with the micro-components wrappers (buttons, alerts, toast, etc..) the complete page looks now a bit cluttered of code and markup. 
+New version of Blazor permits the use of .cshtml where one can even pour javascript. This sounds extremly interesting and as soon as I get more familiar with other new features I'm sure I will be able to further componentize the page without adding un-needed complexity.  
+(..more to come..)
+
+### 3. Finding a better name for my components namespace
+While tinkering with the javascript console, I noticed that Bootstrap components define their namespace with the not un-predicatable name ```bootstrap```.
+My ```bootstrapNS``` does not mean much in the first place (since it also packs non-bootstrap components) and most important is extremly confusing.
+Re-naming it ```MVComponents``` is a no-brainer and very quick to do.
+
+### 4. Getting rid of hardcoded values and configure our components from outside
+Since we are stepping back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
+
+Ex. my beloved jquery datatables...
+```javascript
+this.JSDataTable = function (table, options) {
+   if (!$.fn.dataTable.isDataTable(table)) {
+         $(table).DataTable(options);
+   }
+}
+```
+...accept an *options* javascript object that is expected to be passed by Blazor
+```razor
+protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{});
+    }
+```
+jquery Datatables have a huge number of possible configuration options that can quickly become a nasty lenghty string into our code. Our ```appsettings.json``` configuration file is certainly a more appropriate place for such strings. Let's start from there and add a *Settings* entry:
+```json
+{
+  "BikeShopWS": {
+    "baseUrl": "http://localhost:5001"
+  },
+  "Settings": [
+    {
+      "BikeList": {
+        "dom": "Bflrtip",
+        "buttons": [ "searchBuilder", "excel" ]
+      }
+    }
+  ],
+  "Users": [
+   (..code omitted..)
+```
+"BikeList" is the entry we will apply to the "BikeList Datatable", in this case we want additional buttons for custom searches and excel download. 
+In "BikeOptionList" we might want other options.
+
+Since I dislike quite a bit the way configuration is managed in Blazor I added my own ```ConfiService``` and registered int ```Program.cs``` like any other service
+
+```csharp
+var ConfigService = new ConfigService("appsettings.json", http);
+await ConfigService.LoadAsync();
+builder.Services.AddSingleton(ConfigService);
+```
+Next, I slightly modify both ```MVComponents.js``` like this
+```javascript
+this.JSDataTable = function (table, options) {
+ if (!$.fn.dataTable.isDataTable(table)) {
+    var opt = {};
+    if (options.length > 0) {
+       opt = $.parseJSON(options[0]);
+    }          
+    $(table).DataTable(opt);
+ }           
+}
+```
+and ```AdminProductList.razor``` like this:
+```razor
+protected async override Task OnAfterRenderAsync(bool firstRender)
+{
+   string options = ConfigService.GetSetting("BikeList");
+   await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
+ }
+```
+Now I can have different configurations for each jquery datatable without nasty strings in code and I can extend this approach even to all the other js components.
+Not bad.
 
 (More to come)
 
