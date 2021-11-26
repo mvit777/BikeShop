@@ -713,7 +713,7 @@ New version of Blazor permits the use of .cshtml where one can even pour javascr
 
 ### 3. Finding a better name for my components namespace
 While tinkering with the javascript console, I noticed that Bootstrap components define their namespace with the not un-predicatable name ```bootstrap```.
-My ```bootstrapNS``` does not mean much in the first place (since it also packs non-bootstrap components) and most important is extremly confusing.
+My ```bootstrapNS``` was not that much meaniningful in the first place since it also packs non-bootstrap components and most important is extremly confusing.
 Re-naming it ```MVComponents``` is a no-brainer and very quick to do. (Please from now when you see a reference to bootstrapNS make a mental note it is actually MVComponents)
 
 ### 4. Getting rid of hardcoded values and configure our components from outside
@@ -783,6 +783,13 @@ protected async override Task OnAfterRenderAsync(bool firstRender)
 ```
 Now I can have different configurations for each jquery datatable without nasty strings in code and I can extend this approach even to all the other js components.
 Not bad.
+Another place that need cleanup of hardcoded values is when I make calls to API. Should the API design change for some reason having something like this will save a lot of time
+(not yet implemented)
+```csharp
+ var url = ConfigService.GetUrl("BikeList.Read");
+ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>(url);
+```
+
 
 (More to come)
 
