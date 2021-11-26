@@ -687,6 +687,8 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 
 ## Breaking the Monolith and some refactor
 ### An honest review at the library and its usage on the AdminBikeList page
+>*If you don't do self evaluation, you ain't nobody - Mike Tyson*
+
 While I'm overall satisfied with the libray and its usage on  I already spotted a lot of room for improvement. I make a quick list and then I will expand on every single problem and try to address it
 
 1) I'm not taking full advantage of some .NET 6 new features that are actually very handy (see .cshtml files)
