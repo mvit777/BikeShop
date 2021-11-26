@@ -708,13 +708,16 @@ While the second part of the preceding sentence remains true, my library is not 
 
 ### 2. NET 6 brought some interesting features I'm not using
 while I'm happy with the micro-components wrappers (buttons, alerts, toast, etc..) the complete page looks now a bit cluttered of code and markup. 
-New version of Blazor permits the use of .cshtml where one can even pour javascript. This sounds extremly interesting and as soon as I get more familiar with other new features I'm sure I will be able to further componentize the page without adding complexity.  
+New version of Blazor permits the use of .cshtml where one can even pour javascript. This sounds extremly interesting and as soon as I get more familiar with other new features I'm sure I will be able to further componentize the page without adding un-needed complexity.  
 (..more to come..)
 
 ### 3. Finding a better name for my components namespace
+While tinkering with the javascript console, I noticed that Bootstrap components define their namespace with the not un-predicatable name ```bootstrap```.
+My ```bootstrapNS``` does not mean much in the first place (since it also packs non-bootstrap components) and most important is extremly confusing.
+Re-naming it ```MVComponents``` is a no-brainer and very quick to do.
 
 ### 4. Getting rid of hardcoded values and configure our components from outside
-If you step back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
+Since we are stepping back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
 
 Ex. my beloved jquery datatables...
 ```javascript
