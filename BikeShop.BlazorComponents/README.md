@@ -691,15 +691,17 @@ Please see the [AdminProductList component](https://github.com/mvit777/BikeShop/
 > 
 > Mike Tyson (one of my favorite philosophers)
 
-While I'm overall satisfied with the libray and its usage on  I already spotted a lot of room for improvement. I make a quick list and then I will expand on every single problem and try to address it
+While I'm overall satisfied with the libray and its usage I already spotted some minor problems and a lot of room for improvement. I make a quick list and then I will expand on every single problem and try to address it
 
-1) I'm not taking full advantage of some .NET 6 new features that are actually very handy (see .cshtml files)
-2) I'm stuck on Bootstrap 4.6.1 while current version is 5.1
+1) I'm stuck on Bootstrap 4.6.1 while current version is 5.1
+2) I'm not taking full advantage of some .NET 6 new features that are actually very handy (see .cshtml files)
 3) The name ```bootstrapNS``` I chose for my namespace is rather (un)fortunate
 4) Too many hardcoded values and magic strings around
 
+### 1. 
+
 (..more to come..)
-### Getting rid of hardcoded values and configure our components from outside
+### 4. Getting rid of hardcoded values and configure our components from outside
 If you step back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
 
 Ex. my beloved jquery datatables...
