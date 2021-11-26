@@ -706,7 +706,13 @@ Moreover this library is only a small secondary project of a larger project you 
 at some point I even moaned about the fact that Blazor did not come shipped with the latest Bootstrap and stated that it was anyway trivial to upgrade to the latest version.
 While the second part of the preceding sentence remains true, my library is not really Bootstrap 5+ ready. In fact, what I did not consider is that every Bootstrap major release most inevitably bring some HTML modifications to the components (especially to foster inclusive usability) which in turn make some of my components behave a bit funnily or not work at all (the Spinner component looks pretty funny on Bootstrap 5+ but it is not a very big problem this one). One other big change is that starting from v.5, Bootstrap does no longer require the use of jquery, the components now use vanilla E6 javascript which is probably its biggest new feature. As the name implies, jquery Datatables on the contrary still needs it. Especially after this last consideration, upgrading my library to Bootstrap 5+ is not really worth the value. In the end, it will probably work for years as it is. However it is already a bit outdated, one thing to bear in mind.
 
+### 2. NET 6 brought some interesting features I'm not using
+while I'm happy with the micro-components wrappers (buttons, alerts, toast, etc..) the complete page looks now a bit cluttered of code and markup. 
+New version of Blazor permits the use of .cshtml where one can even pour javascript. This sounds extremly interesting and as soon as I get more familiar with other new features I'm sure I will be able to further componentize the page without adding complexity.  
 (..more to come..)
+
+### 3. Finding a better name for my components namespace
+
 ### 4. Getting rid of hardcoded values and configure our components from outside
 If you step back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
 
