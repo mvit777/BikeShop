@@ -700,10 +700,11 @@ While I'm overall satisfied with the libray and its usage I already spotted some
 
 ### A bit of background (let's start with some excuses)
 When I started this project back in October 2021 I did not consider we were only one month away from the release of .NET6 that will have brought new features to Blazor itself. 
-Moreover this library is only a small secondary project of a larger project (you can [read here](https://github.com/mvit777/BikeDistributor) about), the rationale behind creating my own component library is that I need maximum control and I want to test javascript interop
+Moreover this library is only a small secondary project of a larger project you can [read here](https://github.com/mvit777/BikeDistributor) about. The rationale behind creating my own component library is that I need maximum control and I wanted to test javascript interop by leveraging on beatiful Bootstrap components (well the real reason is that for a personal project I can't afford any of the commercial libs listed below and turned out doing my own is also a lot of fun, but it sounds a lot less epic :)
 
 ### 1. Stuck on Bootstrap 4.6.1
-
+at some point I even moaned about the fact that Blazor did not come shipped with the latest Bootstrap and stated that it was anyway trivial to upgrade to the latest version.
+While the second part of the preceding sentence remains true, my library is not really Bootstrap 5+ ready. In fact, what I did not consider is that every Bootstrap major release most inevitably bring some HTML modifications to the components (especially to foster inclusive usability) which in turn make some of my components behave a bit funnily or not work at all (the Spinner component looks pretty funny on Bootstrap 5+ but it is not a very big problem this one).
 
 (..more to come..)
 ### 4. Getting rid of hardcoded values and configure our components from outside
