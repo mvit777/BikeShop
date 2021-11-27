@@ -786,7 +786,7 @@ Not bad.
 
 ![New buttons show up](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/datable-buttons.png)
 
-Another place that need cleanup of hardcoded values is when I make calls to API. Should the API design change for some reason having something like this will save a lot of time
+Another place that needs cleanup of hardcoded values is where I make calls to API. Should the API design change for some reason having something like this will save a lot of time
 (not yet implemented)
 ```csharp
  var url = ConfigService.GetUrl("BikeList.Read");
