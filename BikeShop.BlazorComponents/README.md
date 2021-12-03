@@ -713,8 +713,8 @@ New version of Blazor permits the use of .cshtml where one can even pour javascr
 
 ### 3. Finding a better name for my components namespace
 While tinkering with the javascript console, I noticed that Bootstrap components define their namespace with the not un-predicatable name ```bootstrap```.
-My ```bootstrapNS``` does not mean much in the first place (since it also packs non-bootstrap components) and most important is extremly confusing.
-Re-naming it ```MVComponents``` is a no-brainer and very quick to do.
+My ```bootstrapNS``` was not that much meaniningful in the first place since it also packs non-bootstrap components and most important is extremly confusing.
+Re-naming it ```MVComponents``` is a no-brainer and very quick to do. (Please from now when you see a reference to bootstrapNS make a mental note it is actually MVComponents)
 
 ### 4. Getting rid of hardcoded values and configure our components from outside
 Since we are stepping back to our ```MVComponents.js``` you may notice that almost all the components js initializers take a second parameter ```options``` but we did not really use it.
@@ -731,7 +731,7 @@ this.JSDataTable = function (table, options) {
 ```razor
 protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{});
+        await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#BikeList", new object[]{});
     }
 ```
 jquery Datatables have a huge number of possible configuration options that can quickly become a nasty lenghty string into our code. Our ```appsettings.json``` configuration file is certainly a more appropriate place for such strings. Let's start from there and add a *Settings* entry:
@@ -778,11 +778,21 @@ and ```AdminProductList.razor``` like this:
 protected async override Task OnAfterRenderAsync(bool firstRender)
 {
    string options = ConfigService.GetSetting("BikeList");
-   await JSRuntime.InvokeVoidAsync("bootstrapNS.JSDataTable", "#BikeList", new object[]{ options });
+   await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#BikeList", new object[]{ options });
  }
 ```
 Now I can have different configurations for each jquery datatable without nasty strings in code and I can extend this approach even to all the other js components.
 Not bad.
+
+![New buttons show up](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/datable-buttons.png)
+
+Another place that needs cleanup of hardcoded values is where I make calls to API. Should the API design change for some reason having something like this will save a lot of time
+(not yet implemented)
+```csharp
+ var url = ConfigService.GetUrl("BikeList.Read");
+ EntityBikes = await RestClient.GetFromJsonAsync<List<MongoEntityBike>>(url);
+```
+
 
 (More to come)
 
@@ -870,4 +880,5 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 It seems I was wrong about the lack of opensource/free libraries
 - [Microsoft.Fast](https://github.com/microsoft/fast-blazor) The Microsoft.Fast.Components.FluentUI package provides a lightweight set of Blazor component wrappers around Microsoft's official FluentUI Web Components
 - [Blazored](https://github.com/Blazored) A small collection of not-so-common components worth taking a look
+- [Radzen](https://blazor.radzen.com/) A 60+ collection of free and opensource components
 - (..more to come..)
