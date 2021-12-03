@@ -31,6 +31,7 @@ var MVComponents = {};
                     return value.length > 3;
                 }
             }
+            
             $(multiselect).multiselect(opt);
         }
 
@@ -45,13 +46,11 @@ var MVComponents = {};
         }
         this.JSDataTable = function (table, options) {
             if (!$.fn.dataTable.isDataTable(table)) {
-                //var opt = {dom: 'Bfrtip',buttons: ['copy', 'excel', 'pdf']};//fix it, only copy button appears, plugin missing?
                 var opt = {};
                 if (options.length > 0) {
                     opt = $.parseJSON(options[0]);
                 }          
                 $(table).DataTable(opt);
-                //this.JSDataTables[table] = table;
             }
         }
         this.RefreshJSDataTable = function (table, options) {

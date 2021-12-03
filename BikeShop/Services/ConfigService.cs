@@ -29,5 +29,15 @@ namespace BikeShop.Services
 
             return o["Settings"][0][settingName].ToString();
         }
+
+        public string GetUrl(string urlName)
+        {
+            string[] u = urlName.Split(new char[] { '.' });
+            JToken o = JObject.Parse(_rawJson)["BikeShopWS"]["urls"];
+            JToken url = o.SelectToken(u[0]).Value<string>(u[1]);
+            //var url = o["BikeShopWS"]["urls"][0][u[0]][urlName].ToString();
+            
+            return url.ToString();
+        }
     }
 }

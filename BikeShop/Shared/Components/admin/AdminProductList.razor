@@ -142,22 +142,24 @@ else
                 <div class="col col-6">
                     <MultiSelect HTMLId="multiselect" @ref="BikeOptionSelect" SelectableItems="@SelectableBikeOptions" SelectedItems="@SelectedBikeOptions">
                         <SelectableItemsTemplate>
-                            @if(SelectableBikeOptions != null){
-                                @foreach (MongoEntityBikeOption mbo in BikeOptionSelect.SelectableItems)
-                                {
-                                    <option value="@mbo.BikeOption.Name" @onclick="@(e=>OnOptionClicked(mbo.BikeOption.Name))">@(mbo.BikeOption.Name)</option>
-                                    
-                                }
+                            @if (SelectableBikeOptions != null)
+                        {
+                            @foreach (MongoEntityBikeOption mbo in BikeOptionSelect.SelectableItems)
+                            {
+                                <option value="@mbo.BikeOption.Name" @onclick="@(e=>OnOptionClicked(mbo.BikeOption.Name))">@(mbo.BikeOption.Name)</option>
+
                             }
+                        }
                     </SelectableItemsTemplate>
                     <SelectedItemsTemplate>
-                            @if(BikeOptionSelect.SelectedItems !=null){
-                                @foreach (BikeOption bo in BikeOptionSelect.SelectedItems)
+                        @if (BikeOptionSelect.SelectedItems != null)
+                            {
+                            @foreach (BikeOption bo in BikeOptionSelect.SelectedItems)
                                 {
-                                    <option value="@bo.Name" @onclick="@(e=>OnOptionClicked(bo.Name))">@bo.Name</option>
-                                    
+                                <option value="@bo.Name" @onclick="@(e=>OnOptionClicked(bo.Name))">@bo.Name</option>
+
                                 }
-                             }
+                            }
                     </SelectedItemsTemplate>
                 </MultiSelect>
                 <hr />
@@ -235,7 +237,8 @@ else
 
         mongoEntity.Update(bv);
         var Jmeb = JsonConvert.SerializeObject(mongoEntity);
-        await RestClient.PostAsync("/Bikes/update?entity=" + Jmeb, null);
+        var url = ConfigService.GetUrl("BikeList.Update");
+        await RestClient.PostAsync(url + Jmeb, null);
 
         selectedId = "";
         CloseEditBikeModal();
@@ -251,7 +254,8 @@ else
         {
             //TODO: refresh bike option list in specific tab
             var b = JsonConvert.SerializeObject(OptionModel);
-            var result = await RestClient.PostAsync("/BikeOption/create?bikeoption=" + b, null);
+            var url = ConfigService.GetUrl("BikeOptionList.Create");
+            var result = await RestClient.PostAsync(url + b, null);
             //responseContent = await result.Content.ReadAsStringAsync(); //ok but not using it here
             OptionModel = new BikeOption();
             await GetSelectableOptionsAsync();
@@ -282,14 +286,16 @@ else
 
                 MongoEntity.Update(ProductModel);
                 var meb = JsonConvert.SerializeObject(MongoEntity);
-                await RestClient.PostAsync("/Bikes/update?entity=" + meb, null);
+                var url = ConfigService.GetUrl("BikeList.Update");
+                await RestClient.PostAsync(url + meb, null);
                 await Layout.PopulateMainToastAsync("Operation result", "bike update!", "alert-success", "oi oi-circle-check");
 
             }
             else
             {
                 var bike = JsonConvert.SerializeObject(ProductModel);
-                await RestClient.PostAsync("/Bikes/create?bike=" + bike, null); 
+                var url = ConfigService.GetUrl("BikeList.Create");
+                await RestClient.PostAsync(url + bike, null);
                 await Layout.PopulateMainToastAsync("Operation result", "bike inserted!", "alert-success", "oi oi-circle-check");
 
             }
@@ -364,7 +370,8 @@ else
             var MongoEntity = EntityBikes.AsQueryable<MongoEntityBike>()
                               .Where(x => x.Id == deletableObjId).SingleOrDefault();
 
-            await RestClient.PostAsync("/Bikes/delete?entity=" + JsonConvert.SerializeObject(MongoEntity), null);
+            var url = ConfigService.GetUrl("BikeList.Delete");
+            await RestClient.PostAsync(url + JsonConvert.SerializeObject(MongoEntity), null);
             MainAlert.ChangeVisible(false);
             showConfirmButton = false;
             deletableObjId = null;
@@ -448,15 +455,17 @@ else
         //url = Configuration.GetSection("BikeShopWS").GetValue("baseUrl", "");
         try
         {
-            var jsonResponse = await RestClient.GetStringAsync("/Bikes");
+            var url = ConfigService.GetUrl("BikeList.Read");
+            var jsonResponse = await RestClient.GetStringAsync(url);
             EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
             //var response = await bc.GetBikesAsync(new Google.Protobuf.WellKnownTypes.Empty());
             //EntityBikes = m.Map<List<MongoEntityBike>>(response.BikeEntities.AsEnumerable());
             if (refreshTable)
             {
                 //responseContent = " bikes found " + EntityBikes.Count.ToString();
+                string options = ConfigService.GetSetting("BikeList");
                 BikeList.RefreshComponent(EntityBikes);
-                await JSRuntime.InvokeVoidAsync("MVComponents.RefreshJSDataTable", "#BikeList", new object[] { });
+                await JSRuntime.InvokeVoidAsync("MVComponents.RefreshJSDataTable", "#BikeList", new object[] { options });
                 StateHasChanged();
             }
 
@@ -470,7 +479,8 @@ else
     private async Task GetSelectableOptionsAsync()
     {
         BikeOptionEditContext = new EditContext(OptionModel);
-        var jsonResponse = await RestClient.GetStringAsync("/BikeOption");
+        var url = ConfigService.GetUrl("BikeOptionList.Read");
+        var jsonResponse = await RestClient.GetStringAsync(url);
         SelectableBikeOptions = JsonUtils.DeserializeMongoEntityBikeOptionList(jsonResponse);
         AllSelectableOptions = SelectableBikeOptions;//save for later use
 
@@ -492,7 +502,7 @@ else
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         string options = ConfigService.GetSetting("BikeList");
-        await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#BikeList", new object[]{ options });
+        await JSRuntime.InvokeVoidAsync("MVComponents.JSDataTable", "#BikeList", new object[] { options });
     }
     #endregion
 }
