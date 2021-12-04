@@ -15,8 +15,7 @@ namespace BikeShop.Services
         public ConfigService(string jsonFilePath, HttpClient client)
         {
             _client = client;
-            _jsonFilePath = jsonFilePath;
-            
+            _jsonFilePath = jsonFilePath;           
         }
         
         public async Task LoadAsync()
@@ -27,9 +26,10 @@ namespace BikeShop.Services
 
         public string GetSetting(string settingName)
         {
-            JToken o = JObject.Parse(_rawJson);
-
-            return o["Settings"][0][settingName].ToString();
+            JToken o = JObject.Parse(_rawJson)["Settings"][settingName];
+            //JToken setting = o.Value<string>(settingName);
+            return o.ToString();
+            //return o["Settings"][0][settingName].ToString();
         }
 
         public string GetUrl(string urlName)
