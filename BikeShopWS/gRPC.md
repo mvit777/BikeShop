@@ -8,7 +8,7 @@ In particular, handling of null values and mapping of "grpc entities" (don't kno
 While [Code first project](https://docs.microsoft.com/en-us/aspnet/core/grpc/code-first?view=aspnetcore-5.0) might come to rescue it has some drawbacks on its own.
 Moreover, I suspect the naive implementation of my domain models and Mongo entities played a role in the above problems. Definetly time for a refactor and more study/planning before a second attempt. However, I'm definetly not giving up. I'll soon branch the project and keep trying. In the meanwhile, I moved the documentation of first attempt here and I'll keep updating it. At least the server part will co-exist without problems.
 
-## The project
+## The server part
 since for the moment I want to keep co-existing both Api, REST and gRPC, I'm going to simply add gRPC on top of the existing [BikeShopWS](https://github.com/mvit777/BikeShop/tree/master/BikeShopWS) which I'm already publishing on my local IIS. 
 
 According to [MS docs](https://docs.microsoft.com/en-us/aspnet/core/grpc/supported-platforms?view=aspnetcore-5.0) ```IIS gRPC support requires .NET 5 and Windows 10 Build 20300.1000 or later```. 
