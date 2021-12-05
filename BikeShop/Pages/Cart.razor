@@ -1,6 +1,61 @@
 ﻿@page "/cart"
-<h3>Cart</h3>
 
+@using BikeDistributor.Domain.Models;
+@using BikeDistributor.Domain.Entities;
+@using BikeDistributor.Infrastructure.core;
+@using BikeDistributor.Infrastructure.interfaces;
+@using BikeShop.BlazorComponents.Components;
+@using AKSoftware.Blazor.Utilities;
+@using BikeShop.Helpers;
+@using BikeShop.Services;
+@using System.Text;
+@using Newtonsoft.Json;
+
+@inject HttpClient RestClient;
+@inject IJSRuntime JSRuntime;
+@inject BikeShopUserService UserService;
+@inject ConfigService ConfigService;
+
+<h3 class="text-muted">Cart</h3>
+@if (EntityBikes == null)
+{
+    <Spinner />
+}
+else
+{
+    <div class="card-group">
+        @foreach (MongoEntityBike meb in EntityBikes)
+        {
+            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">@meb.Bike.Model</div>
+                <div class="card-body text-dark">
+                    <h5 class="card-title">@meb.Bike.Brand</h5>
+                    <p class="card-text">@meb.Bike.Description</p>
+                </div>
+                <div class="card-footer text-muted">
+                    @(meb.Bike.isStandard == true ? "only:" : "from:")
+                    $ @meb.Bike.BasePrice
+                </div>
+            </div>
+        }
+    </div>
+}
 @code {
+    private List<MongoEntityBike> EntityBikes;
+    private async Task GetBikesAsync()
+    {
+        var url = ConfigService.GetUrl("BikeList.Read");
+        var jsonResponse = await RestClient.GetStringAsync(url);
+        EntityBikes = JsonUtils.DeserializeMongoEntityBikeList(jsonResponse);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await GetBikesAsync();
+    }
+
+    //protected async override Task OnAfterRenderAsync(bool firstRender)
+    //{
+
+    //}
 
 }

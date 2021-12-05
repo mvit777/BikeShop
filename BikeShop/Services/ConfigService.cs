@@ -27,9 +27,8 @@ namespace BikeShop.Services
         public string GetSetting(string settingName)
         {
             JToken o = JObject.Parse(_rawJson)["Settings"][settingName];
-            //JToken setting = o.Value<string>(settingName);
+            
             return o.ToString();
-            //return o["Settings"][0][settingName].ToString();
         }
 
         public string GetUrl(string urlName)
