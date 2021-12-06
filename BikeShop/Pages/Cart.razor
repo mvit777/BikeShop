@@ -23,13 +23,35 @@
 }
 else
 {
-    <div class="card-group">
+    <form>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input class="form-control-lg" type="text" placeholder="Search">
+                    </div>
+                </div>
+               <Button HTMLCssClass="btn-primary" HTMLId="btnAdvancedSearch" Label="Find my Bike" />
+            </div>
+            <br />
+            <div class="input-group">
+                <div class="input-group-text">
+                    <input type="radio" class="p-1" aria-label="Radio button for following text input" checked><span style="padding: 5px">All</span> 
+                    <input type="radio" class="p-1" aria-label="Radio button for following text input"><span style="padding: 5px">Only Standard Bikes</span> 
+                    <input type="radio" class="p-1"  aria-label="Radio button for following text input"><span style="padding: 5px">Only Customisable Bikes</span>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+    <div class="card-group" style="justify-content: space-between;">
         @foreach (MongoEntityBike meb in EntityBikes)
         {
             <div class="card border-dark mb-3" style="max-width: 18rem;">
-                <div class="card-header">@meb.Bike.Model</div>
+                <div class="card-header">@meb.Bike.Brand</div>
                 <div class="card-body text-dark">
-                    <h5 class="card-title">@meb.Bike.Brand</h5>
+                    <h5 class="card-title">@meb.Bike.Model</h5>
                     <p class="card-text">@meb.Bike.Description</p>
                 </div>
                 <div class="card-footer text-muted">
