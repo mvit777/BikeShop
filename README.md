@@ -133,7 +133,7 @@ This is supposed to be the interesting part of the application as I'm planning i
 ## Deploying on Linux ##
 If you can enjoy an active Azure subscription, the [App Service](https://docs.microsoft.com/en-us/azure/app-service/overview) is all you need.
 I had the pleasure to use it for a paid project some time ago and it is truly great, integration with visual studio publish feature is also great.
-Basically you will see the magic of .NET being a truly portable no-bullshit multi-platform development enviroment (compile once and deploy everywhere for real).
+Basically you will see the magic of .NET being a truly portable no-bullshit multi-platform development enviroment in just a bunch of clicks on both Visualstudio and Azure.
 
 For local testing I will instead use:
 ### plain [VirtualBox](https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html)
