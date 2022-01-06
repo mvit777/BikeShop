@@ -136,7 +136,13 @@ I had the pleasure to use it for a paid project some time ago and it is truly gr
 Basically you will see the magic of .NET being a truly portable no-bullshit multi-platform development enviroment (compile once and deploy everywhere for real).
 
 For local testing I will instead use:
-### plain VirtualBox
+### plain [VirtualBox](https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html)
+Once you have a VirtualBox, an Ubuntu Server 21.04 LTS guest with [guest additions](https://www.virtualbox.org/manual/ch04.html) installed, you might want to 
+create a shared folder following this [excellent guide](https://gist.github.com/estorgio/0c76e29c0439e683caca694f338d4003)
+(...more to come...)
+
+### an alternative way to using a shared folder
+Let's build a powershell script to compile and deploy via scp directly on the linux box
 (...more to come...)
 
 ### Docker + VirtualBox
