@@ -130,8 +130,18 @@ This is supposed to be the interesting part of the application as I'm planning i
 ## Telemetry
 (...more to come...)
 
-## Last Paragraph: a quick note about the BikeShop WS ##
+## Deploying on Linux ##
+If you can enjoy an active Azure subscription, the [App Service](https://docs.microsoft.com/en-us/azure/app-service/overview) is all you need.
+I had the pleasure to use it for a paid project some time ago and it is truly great, integration with visual studio publish feature is also great.
+Basically you will see the magic of .NET being a truly portable no-bullshit multi-platform development enviroment (compile once and deploy everywhere for real).
+
+For local testing I will instead use:
+### plain VirtualBox
 (...more to come...)
+
+### Docker + VirtualBox
+(...more to come...)
+
 
 ### Related and inspiring links ###
 - [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0) An introduction to Blazor
