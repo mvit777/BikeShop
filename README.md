@@ -148,7 +148,7 @@ This is supposed to be the interesting part of the application as I'm planning i
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
-- [Telerik .NET Web, Desktop & Mobile Products Webinar](Wednesday, February 2 I 11:00 am – 1:00 pm ET) 90+ truly native Blazor components, 90+ components in the updated web design kits for Figma
+- [Telerik .NET Web, Desktop & Mobile Products Webinar](https://www.telerik.com/campaigns/wb-telerik-r1-2022-release-webinar-web-desktop-mobile-products) Wednesday, February 2 I 11:00 am – 1:00 pm ET
 - [Uno Conf 2021](https://unoconf.com/) November 30, 2021
 >The Uno Platform is a UI Platform for building single-codebase applications for Windows, Web/WebAssembly, iOS, macOS, Android and Linux.
 >It allows C# and Windows XAML code to run on all target platforms, while allowing you control of every pixel.
