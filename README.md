@@ -224,6 +224,10 @@ Environment=ASPNETCORE_ENVIRONMENT=Production
 [Install]
 WantedBy=multi-user.target
 ```
+and then enable it
+```bash
+sudo systemctl enable kestrel-bikews.service
+```
 (...more to come...)
 
 
