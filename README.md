@@ -190,6 +190,7 @@ and stick this code in it. All requests to ```dev.bikews.com``` will be re-direc
     CustomLog ${APACHE_LOG_DIR}bikews-access.log common
 </VirtualHost>
 ```
+Since ```dev.bikews.com``` is not a registered and existing domain we have to trick both the host machine and the ubuntu guest to believe it exists, to do so
 (...more to come...)
 
 ### an alternative way to using a shared folder
