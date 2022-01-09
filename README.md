@@ -202,11 +202,10 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 ```
 (...more to come...)
 
-### an alternative way to using a shared folder
-Let's build a powershell script to compile and deploy via scp directly on the linux box
-(...more to come...)
 
 ### Docker + VirtualBox
+#### an alternative way to using a shared folder
+Let's build a powershell script to compile and deploy via scp directly on the linux box
 (...more to come...)
 
 
