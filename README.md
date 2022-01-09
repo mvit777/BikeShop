@@ -154,9 +154,9 @@ sudo apt-get update;
 sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-6.0
 
 ```
-After this step we create a folder to contain our application and install required modules for apache to act as a proxy
+After this step we create a folder to contain our application and activate required modules for apache to act as a proxy
 ```bash
-mkdir /home/<your username>/shared
+mkdir /home/<your username>/shared/bikews
 sudo a2enmod proxy ssl headers
 ```
 (...more to come...)
