@@ -159,6 +159,17 @@ After this step we create a folder to contain our application and activate requi
 mkdir /home/<your username>/shared/bikews
 sudo a2enmod proxy ssl headers
 ```
+we know step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
+but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Start.cs``` file.
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
+ app.UseForwardedHeaders(new ForwardedHeadersOptions
+ {
+   ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+  });
+ #(omitted code..)
+}
+```
 (...more to come...)
 
 ### an alternative way to using a shared folder
