@@ -144,6 +144,7 @@ If you also completed the last step, the Apache ```wwwroot``` should be sym-link
 
 The next step is installing the .netcore runtime on the Ubuntu guest. More information and options can be found on [MS site here](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu) but basically all you need to do is this:
 ```bash
+#download and compile package
 wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
@@ -153,7 +154,11 @@ sudo apt-get update;
 sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-6.0
 
 ```
-
+After this step we create a folder to contain our application and install required modules for apache to act as a proxy
+```bash
+mkdir /home/<your username>/shared
+sudo a2enmod proxy ssl headers
+```
 (...more to come...)
 
 ### an alternative way to using a shared folder
