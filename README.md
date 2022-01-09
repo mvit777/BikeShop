@@ -207,7 +207,7 @@ For this purpose we create a service definition file
 Description=The bikeshop webservice
 
 [Service]
-WorkingDirectory=/var/www/bikews
+WorkingDirectory=/var/www/html/bikews
 ExecStart=/usr/local/bin/dotnet /var/www/html/bikews/BikeShopWS.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
