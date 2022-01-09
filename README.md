@@ -205,7 +205,7 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 
 ### Docker + VirtualBox
 #### an alternative way to using a shared folder
-Let's build a powershell script to compile and deploy via scp directly on the linux box
+Let's build a powershell script to compile and deploy via scp directly on a linux box created with the buzz-of-the-jour
 (...more to come...)
 
 
