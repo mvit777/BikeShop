@@ -175,7 +175,7 @@ Now we can configure an apache Virtualhost to act as entry point for our applica
 ```bash 
 sudo /etc/apache2/sites-available/bikews.conf
 ```
-and stick this code in it. All requests to ```dev.bikews.com``` will be re-directed to ```http://127.0.0.1:5000```
+and stick this code in it. All requests to ```dev.bikews.com``` will be forwarded to ```http://127.0.0.1:5000```
 ```bash 
 <VirtualHost *:*>
     RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
@@ -199,6 +199,26 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 ```
 # the following ip is the ip of the linux guest
 192.168.1.134   dev.bikews.com
+```
+the last step is creating a service to manage the Kestrel process (the application server). 
+For this purpose we create a service definition file
+```bash
+[Unit]
+Description=The bikeshop webservice
+
+[Service]
+WorkingDirectory=/var/www/bikews
+ExecStart=/usr/local/bin/dotnet /var/www/html/bikews/BikeShopWS.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=bikeshopws
+User=apache
+Environment=ASPNETCORE_ENVIRONMENT=Production 
+
+[Install]
+WantedBy=multi-user.target
 ```
 (...more to come...)
 
