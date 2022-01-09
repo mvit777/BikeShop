@@ -130,7 +130,7 @@ This is supposed to be the interesting part of the application as I'm planning i
 ## Telemetry
 (...more to come...)
 
-## Deploying the BikeShop webservice on a Linux server##
+## Deploying the BikeShop webservice on a Linux server ##
 If you can enjoy an active Azure subscription, the [App Service](https://docs.microsoft.com/en-us/azure/app-service/overview) is all you need.
 I had the pleasure to use it for a paid project some time ago and it is truly great, integration with visual studio publish feature is also great.
 Basically you will see the magic of .NET being a no-bullshit multi-platform development enviroment in just a bunch of clicks on both Visualstudio and Azure with no hassle at all.
