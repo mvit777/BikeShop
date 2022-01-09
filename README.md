@@ -218,7 +218,7 @@ Restart=always
 RestartSec=10
 KillSignal=SIGINT
 SyslogIdentifier=bikeshopws
-User=apache
+User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production 
 
 [Install]
