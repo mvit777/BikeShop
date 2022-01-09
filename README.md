@@ -159,7 +159,7 @@ After this step we create a folder to contain our application and activate requi
 mkdir /home/<your username>/shared/bikews
 sudo a2enmod proxy ssl headers
 ```
-we know step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
+we now step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
 but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Startup.cs``` file.
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
@@ -191,6 +191,15 @@ and stick this code in it. All requests to ```dev.bikews.com``` will be re-direc
 </VirtualHost>
 ```
 Since ```dev.bikews.com``` is not a registered and existing domain we have to trick both the host machine and the ubuntu guest to believe it exists, to do so
+we add this line to ```/etc/hosts``` on the linux guest
+```
+127.0.0.1 dev.bikews.com
+```
+and this line on ```C:\Windows\System32\drivers\etc\hosts```
+```
+# the following ip is the ip of the linux guest
+192.168.1.134   dev.bikews.com
+```
 (...more to come...)
 
 ### an alternative way to using a shared folder
