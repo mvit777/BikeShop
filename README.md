@@ -160,7 +160,7 @@ mkdir /home/<your username>/shared/bikews
 sudo a2enmod proxy ssl headers
 ```
 we know step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
-but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Start.cs``` file.
+but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Startup.cs``` file.
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
  app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -169,6 +169,26 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
   });
  #(omitted code..)
 }
+```
+Next, we can publish the webservice the shared folder. Since we have installed the .netcore runtime on the server, we can choose it as target.
+Now we can configure an apache Virtualhost to act as entry point for our application. 
+```bash 
+sudo /etc/apache2/sites-available/bikews.conf
+```
+and stick this code in it. All requests to ```dev.bikews.com``` will be re-directed to ```http://127.0.0.1:5000```
+```bash 
+<VirtualHost *:*>
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+</VirtualHost>
+
+<VirtualHost *:80>
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:5000/
+    ProxyPassReverse / http://127.0.0.1:5000/
+    ServerName dev.bikews.com
+    ErrorLog ${APACHE_LOG_DIR}bikews-error.log
+    CustomLog ${APACHE_LOG_DIR}bikews-access.log common
+</VirtualHost>
 ```
 (...more to come...)
 
