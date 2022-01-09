@@ -203,6 +203,10 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 the last step is creating a service to manage the Kestrel process (the application server). 
 For this purpose we create a service definition file
 ```bash
+sudo nano /etc/systemd/system/kestrel-helloapp.service
+```
+and slap this configuration inside it
+```
 [Unit]
 Description=The bikeshop webservice
 
