@@ -157,7 +157,7 @@ sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-g
 After this step we create a folder to contain our application and activate required modules for apache to act as a proxy
 ```bash
 mkdir /home/<your username>/shared/bikews
-sudo a2enmod proxy ssl headers
+sudo a2enmod proxy ssl headers proxy_http
 ```
 we now step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
 but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Startup.cs``` file.
