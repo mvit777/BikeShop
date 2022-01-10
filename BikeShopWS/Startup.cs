@@ -9,6 +9,7 @@ using MV.Framework.providers;
 using BikeDistributor.Domain.Models;
 using BikeShopWS.Infrastructure;
 using GrpcBike;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace BikeShopWS
 {
@@ -76,8 +77,12 @@ namespace BikeShopWS
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeShopWS v1"));
             }
-
-
+            /*required for linux publishing as we use apache as a proxy */
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            /*end required*/
             app.UseHttpsRedirection();
 
             app.UseRouting();

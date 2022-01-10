@@ -83,7 +83,7 @@ namespace BikeShop
                 //cfg.CreateMap<EntityBike, IBike>().As<BikeVariant>();
                 cfg.CreateMap<EntityMongoBike, MongoEntityBike>()
                 .ConstructUsing(d=>new MongoEntityBike(
-                                        BikeFactory.Create(d.Bike.Brand,d.Bike.Model, d.Bike.Price, d.IsStandard, (List<BikeOption>)d.SelectedOptions.AsEnumerable())
+                                        BikeFactory.Create(d.Bike.Brand,d.Bike.Model, d.Bike.Price, d.IsStandard, d.Bike.Description,(List<BikeOption>)d.SelectedOptions.AsEnumerable())
                                                     .GetBike())
                                 );
 

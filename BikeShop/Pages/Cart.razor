@@ -16,13 +16,16 @@
 @inject BikeShopUserService UserService;
 @inject ConfigService ConfigService;
 
-<h3 class="text-muted">Cart</h3>
+<h3 class="text-muted"><span class="oi oi-pulse"></span>Catalogue<span class="oi oi-pulse"></span><span class="oi oi-pulse" style="margin-left:-15px"></span></h3>
 @if (EntityBikes == null)
 {
     <Spinner />
 }
 else
 {
+    <div class="float-right alert-warning" style="position:sticky; padding: 10px">
+        <h4><span class="oi oi-cart"></span> Your Cart</h4>
+    </div>
     <form>
         <div class="form-group">
             <div class="input-group">
@@ -34,7 +37,7 @@ else
                <Button HTMLCssClass="btn-primary" HTMLId="btnAdvancedSearch" Label="Find my Bike" />
             </div>
             <br />
-            <div class="input-group">
+            <div class="input-gthickoup">
                 <div class="input-group-text">
                     <input type="radio" class="p-1" aria-label="Radio button for following text input" checked><span style="padding: 5px">All</span> 
                     <input type="radio" class="p-1" aria-label="Radio button for following text input"><span style="padding: 5px">Only Standard Bikes</span> 
@@ -49,14 +52,19 @@ else
         @foreach (MongoEntityBike meb in EntityBikes)
         {
             <div class="card border-dark mb-3" style="max-width: 18rem;">
-                <div class="card-header">@meb.Bike.Brand</div>
+                <div class="card-header"><h4 class="badge badge-pill badge-light" style="padding: 10px;border:1px solid #000"><em>@meb.Bike.Brand</em></h4></div>
                 <div class="card-body text-dark">
                     <h5 class="card-title">@meb.Bike.Model</h5>
                     <p class="card-text">@meb.Bike.Description</p>
+                    <Button HTMLCssClass="btn-success btn-sm" Label="Buy" HTMLId="@(meb.Id.Replace(" ","_") + "_buyButton")" ClickEventName="Cart_addItemClick"  />
+                    @if (meb.IsStandard == false)
+                    {
+                        <Button HTMLCssClass="btn-info btn-sm" Label="Customise" HTMLId="@(meb.Id.Replace(" ","_") + "_buyButton")"  />
+                    }        
                 </div>
                 <div class="card-footer text-muted">
                     @(meb.Bike.isStandard == true ? "only:" : "from:")
-                    $ @meb.Bike.BasePrice
+                    <span class="oi oi-dollar"></span> @meb.Bike.BasePrice
                 </div>
             </div>
         }
@@ -64,6 +72,14 @@ else
 }
 @code {
     private List<MongoEntityBike> EntityBikes;
+
+    public void SubscribeToAddItemToCart()
+    {
+        MessagingCenter.Subscribe<Button, string>(this, "Cart_addItemClick", (sender, value) =>
+        {
+
+        });
+    }
     private async Task GetBikesAsync()
     {
         var url = ConfigService.GetUrl("BikeList.Read");

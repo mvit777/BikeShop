@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="AKSoftware.Blazor.Utilities" Version="1.0.0" />
     <PackageReference Include="BlazorAnimate" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
   </ItemGroup>
 
 </Project>
