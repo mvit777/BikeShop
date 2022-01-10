@@ -230,6 +230,25 @@ sudo systemctl enable kestrel-bikews.service
 sudo systemctl start kestrel-bikews.service
 # to check the status: should show "running"
 sudo systemctl status kestrel-bikews.service
+● kestrel-bikews.service - The bikeshop webservice
+     Loaded: loaded (/etc/systemd/system/kestrel-bikews.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2022-01-10 13:02:23 UTC; 14s ago
+   Main PID: 2395 (dotnet)
+      Tasks: 16 (limit: 5676)
+     Memory: 91.4M
+     CGroup: /system.slice/kestrel-bikews.service
+             └─2395 /usr/share/dotnet/dotnet /var/www/html/bikews/BikeShopWS.dll
+
+Jan 10 13:02:23 ubuserver systemd[1]: Started The bikeshop webservice.
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[14]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Now listening on: http://localhost:5000
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Application started. Press Ctrl+C to shut down.
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Hosting environment: Production
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Content root path: /home/marcello/shared/bikews
+
 ```
 (...more to come...)
 
