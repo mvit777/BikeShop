@@ -700,7 +700,7 @@ While I'm overall satisfied with the libray and its usage I already spotted some
 
 ### A bit of background (let's start with some excuses)
 When I started this project back in October 2021 I did not consider we were only one month away from the release of .NET6 that will have brought new features to Blazor itself. 
-Moreover this library is only a small secondary project of a larger project you can [read here](https://github.com/mvit777/BikeDistributor) about. The rationale behind creating my own component library is that I needed maximum control and I wanted to test javascript interop by leveraging on beatiful Bootstrap components (well the real reason is that for a personal project I can't afford any of the excellent commercial libs listed on bottom of this page and turned out doing my own is also a lot of fun, but it sounds a lot less epic :)
+Moreover this library is only a small secondary project of a larger project you can [read here](https://github.com/mvit777/BikeDistributor) about. The rationale behind creating my own component library is that I needed maximum control and I wanted to test javascript interop by leveraging on beatiful Bootstrap components (well the real reason is that for a personal project I can't afford any of the excellent commercial libs listed on bottom of this page and turned out doing my own is also a lot of fun, but it sounds a lot less epic :). Most of all the MS [Fast Library](https://github.com/microsoft/fast-blazor) looks really good.
 
 ### 1. Stuck on Bootstrap 4.6.1
 at some point I even moaned about the fact that Blazor did not come shipped with the latest Bootstrap and stated that it was anyway trivial to upgrade to the latest version.

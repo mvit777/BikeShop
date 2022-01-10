@@ -3,7 +3,7 @@ A thrown away blazor wasm client for consuming the [BikeDistributor library](htt
 
 **(Note: the recent release of .NET6 brought a lot of new stuff for Blazor. As a consequence, some of the contents below is not entirely actual. In the next days I'll try to update what is relevant)**
 
-This is actually my first try at building an [wasm blazor app](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0). 
+This is actually my first try at building an [wasm blazor app](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-6.0). 
 I was a bit skeptical at start, I expected a similar experience as building webapp with old days webforms. 
 In fact the programming model (*) is very much the same but a lot smoother. 
 You get a strong Déjà vu  feeling and start thinking that "...this is how webforms should have been back in the days..."
@@ -130,8 +130,136 @@ This is supposed to be the interesting part of the application as I'm planning i
 ## Telemetry
 (...more to come...)
 
-## Last Paragraph: a quick note about the BikeShop WS ##
+## Deploying the BikeShop webservice on a Linux server ##
+If you can enjoy an active Azure subscription, the [App Service](https://docs.microsoft.com/en-us/azure/app-service/overview) is all you need.
+I had the pleasure to use it for a paid project some time ago and it is truly great, integration with visual studio publish feature is also great.
+Basically you will see the magic of .NET being a no-bullshit multi-platform development enviroment in just a bunch of clicks on both Visualstudio and Azure with no hassle at all.
+
+For local testing I will instead use:
+### plain [VirtualBox](https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html)
+Once you have a VirtualBox, an Ubuntu Server 21.04 LTS guest with [guest additions](https://www.virtualbox.org/manual/ch04.html) installed, you might want to 
+create a shared folder following this [excellent guide](https://gist.github.com/estorgio/0c76e29c0439e683caca694f338d4003), the guide is for outdated 18.04 but works smoothly with no modifications for 21.04.
+Once you completed every step you should end-up with an auto-mounting folder called ```shared``` on the windows host and a mountpoint equally named on the Ubuntu guest.
+If you also completed the last step, the Apache ```wwwroot``` should be sym-linked to the aforementioned ```shared``` folder.
+
+The next step is installing the .netcore runtime on the Ubuntu guest. More information and options can be found on [MS site here](https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu) but basically all you need to do is this:
+```bash
+#download and compile package
+wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+# and then install only the runtime since we are not developing on linux but just publishing
+sudo apt-get update;
+sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-6.0
+
+```
+After this step we create a folder to contain our application and activate required modules for apache to act as a proxy
+```bash
+mkdir /home/<your username>/shared/bikews
+sudo a2enmod proxy ssl headers proxy_http
+```
+we now step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
+but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Startup.cs``` file.
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
+ app.UseForwardedHeaders(new ForwardedHeadersOptions
+ {
+   ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+  });
+ #(omitted code..)
+}
+```
+Next, we can publish the webservice in the shared folder. Since we have installed the .netcore runtime on the server, we can choose it as target.
+Now we can configure an apache Virtualhost to act as entry point for our application. 
+```bash 
+sudo /etc/apache2/sites-available/bikews.conf
+```
+and stick this code in it. All requests to ```dev.bikews.com``` will be forwarded to ```http://127.0.0.1:5000```
+```bash 
+<VirtualHost *:*>
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+</VirtualHost>
+
+<VirtualHost *:80>
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:5000/
+    ProxyPassReverse / http://127.0.0.1:5000/
+    ServerName dev.bikews.com
+    ErrorLog ${APACHE_LOG_DIR}bikews-error.log
+    CustomLog ${APACHE_LOG_DIR}bikews-access.log common
+</VirtualHost>
+```
+Since ```dev.bikews.com``` is not a registered and existing domain we have to trick both the host machine and the ubuntu guest to believe it exists, to do so
+we add this line to ```/etc/hosts``` on the linux guest
+```
+127.0.0.1 dev.bikews.com
+```
+and this line on ```C:\Windows\System32\drivers\etc\hosts```
+```
+# the following ip is the ip of the linux guest
+192.168.1.134   dev.bikews.com
+```
+the last step is creating a service to manage the Kestrel process (the application server). 
+For this purpose we create a service definition file
+```bash
+sudo nano /etc/systemd/system/kestrel-bikews.service
+```
+and slap this configuration inside it
+```
+[Unit]
+Description=The bikeshop webservice
+
+[Service]
+WorkingDirectory=/var/www/html/bikews
+ExecStart=/usr/share/dotnet/dotnet /var/www/html/bikews/BikeShopWS.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=bikeshopws
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production 
+
+[Install]
+WantedBy=multi-user.target
+```
+and then enable and start it
+```bash
+sudo systemctl enable kestrel-bikews.service
+sudo systemctl start kestrel-bikews.service
+# to check the status: should show "running"
+sudo systemctl status kestrel-bikews.service
+● kestrel-bikews.service - The bikeshop webservice
+     Loaded: loaded (/etc/systemd/system/kestrel-bikews.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2022-01-10 13:02:23 UTC; 14s ago
+   Main PID: 2395 (dotnet)
+      Tasks: 16 (limit: 5676)
+     Memory: 91.4M
+     CGroup: /system.slice/kestrel-bikews.service
+             └─2395 /usr/share/dotnet/dotnet /var/www/html/bikews/BikeShopWS.dll
+
+Jan 10 13:02:23 ubuserver systemd[1]: Started The bikeshop webservice.
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[14]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Now listening on: http://localhost:5000
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Application started. Press Ctrl+C to shut down.
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Hosting environment: Production
+Jan 10 13:02:28 ubuserver bikeshopws[2395]: info: Microsoft.Hosting.Lifetime[0]
+Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Content root path: /home/marcello/shared/bikews
+
+```
+Now by typing http://dev.bikews.com/bikes from the Windows host I get the list of bikes, which means everything works as expected.
+The "real" last step is adding support for the https protocol as otherwise our Blazor client which runs on https as well will not be able to comunicate with.
 (...more to come...)
+
+
+### Docker + VirtualBox
+#### an alternative way to using a shared folder
+Let's build a powershell script to compile and deploy via scp directly on a linux box created with the buzz-of-the-jour
+(...more to come...)
+
 
 ### Related and inspiring links ###
 - [Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-5.0) An introduction to Blazor
@@ -148,6 +276,7 @@ This is supposed to be the interesting part of the application as I'm planning i
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
+- [Telerik .NET Web, Desktop & Mobile Products Webinar](https://www.telerik.com/campaigns/wb-telerik-r1-2022-release-webinar-web-desktop-mobile-products) Wednesday, February 2 I 11:00 am – 1:00 pm ET
 - [Uno Conf 2021](https://unoconf.com/) November 30, 2021
 >The Uno Platform is a UI Platform for building single-codebase applications for Windows, Web/WebAssembly, iOS, macOS, Android and Linux.
 >It allows C# and Windows XAML code to run on all target platforms, while allowing you control of every pixel.
