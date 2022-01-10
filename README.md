@@ -170,7 +170,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
  #(omitted code..)
 }
 ```
-Next, we can publish the webservice the shared folder. Since we have installed the .netcore runtime on the server, we can choose it as target.
+Next, we can publish the webservice in the shared folder. Since we have installed the .netcore runtime on the server, we can choose it as target.
 Now we can configure an apache Virtualhost to act as entry point for our application. 
 ```bash 
 sudo /etc/apache2/sites-available/bikews.conf
