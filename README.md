@@ -203,6 +203,7 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 the last step is creating a service to manage the Kestrel process (the application server). 
 For this purpose we create a service definition file
 ```bash
+# this service will auto-start at every boot
 sudo nano /etc/systemd/system/kestrel-bikews.service
 ```
 and slap this configuration inside it
