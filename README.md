@@ -277,7 +277,7 @@ Let's build a powershell script to compile and deploy via scp directly on a linu
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
-- [splunk - Stay Ahead of the Curve](https://events.splunk.com/predictions-2022-how-to-stay-ahead-of-the-curve) webinar series on security and observability. Predicting 2022
+- [splunk - Stay Ahead of the Curve](https://events.splunk.com/predictions-2022-how-to-stay-ahead-of-the-curve) a 3 acts webinar series on security and observability. January 13-18-20, 2022
 - [Telerik .NET Web, Desktop & Mobile Products Webinar](https://www.telerik.com/campaigns/wb-telerik-r1-2022-release-webinar-web-desktop-mobile-products) Wednesday, February 2 I 11:00 am – 1:00 pm ET
 - [Uno Conf 2021](https://unoconf.com/) November 30, 2021
 >The Uno Platform is a UI Platform for building single-codebase applications for Windows, Web/WebAssembly, iOS, macOS, Android and Linux.
