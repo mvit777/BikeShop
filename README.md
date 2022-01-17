@@ -200,7 +200,9 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 # the following ip is the ip of the linux guest
 192.168.1.134   dev.bikews.com
 ```
-the last step is creating a service to manage the Kestrel process (the application server). 
+It is worth noting that when rebooting the VM there is a chance you get a different IP (cause default is DHCP). In that case you might want to set a static IP for your box and this [handy guide](https://www.ernieleseberg.com/virtualbox-with-static-ip-on-ubuntu-server-guest/) may help you doing that.
+
+Next step is creating a service to manage the Kestrel process (the application server). 
 For this purpose we create a service definition file
 ```bash
 # this service will auto-start at every boot
