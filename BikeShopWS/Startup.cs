@@ -58,7 +58,6 @@ namespace BikeShopWS
                 options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
             });
             services.AddGrpcReflection();
-            
         }
 
         private MongoDBContext GetMongoContext(WsConfig config)
@@ -78,10 +77,11 @@ namespace BikeShopWS
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BikeShopWS v1"));
             }
             /*required for linux publishing as we use apache as a proxy */
-            //app.UseForwardedHeaders(new ForwardedHeadersOptions
-            //{
-            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            //});
+            //TODO: add if os is linux
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             /*end required*/
             app.UseHttpsRedirection();
 
