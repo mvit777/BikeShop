@@ -257,12 +257,36 @@ Now by typing http://dev.bikews.com/bikes from the Windows host I get the list o
 The "real" last step is adding support for the https protocol as otherwise our Blazor client which runs on https as well will not be able to comunicate with.
 The apache virtualhost needs to be changed like the following
 ```
-#put code
+<VirtualHost *:*>
+    RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+</VirtualHost>
+
+<VirtualHost *:443>
+    Protocols             h2 http/1.1
+    ProxyPreserveHost On
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+    SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
+    ProxyPass / http://127.0.0.1:5000/
+    ProxyPassReverse / http://127.0.0.1:5000/
+    SSLProtocol           all -SSLv3 -TLSv1 -TLSv1.1
+    SSLHonorCipherOrder   off
+    SSLCompression        off
+    SSLSessionTickets     on
+    SSLUseStapling        off
+    SSLCipherSuite        ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+    ServerName dev.bikews.com
+    #ServerAlias *.example.com
+    ErrorLog ${APACHE_LOG_DIR}bikews-error.log
+    CustomLog ${APACHE_LOG_DIR}bikews-access.log common
+</VirtualHost>
+
 ```
 and finally we got https working
 
 ![console output](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/linux_box.png)
 
+The [paragraph Secure the App](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-6.0#secure-the-app) on MS docs lists a plethora of other measures one have to take in order to call it
 
 ### Docker + VirtualBox
 #### an alternative way to using a shared folder
