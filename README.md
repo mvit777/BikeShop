@@ -137,8 +137,8 @@ Basically you will see the magic of .NET being a no-bullshit multi-platform deve
 
 For local testing I will instead use:
 ### plain [VirtualBox](https://www.oracle.com/virtualization/technologies/vm/downloads/virtualbox-downloads.html)
-Once you have a VirtualBox, an Ubuntu Server 21.04 LTS guest with [guest additions](https://www.virtualbox.org/manual/ch04.html) installed, you might want to 
-create a shared folder following this [excellent guide](https://gist.github.com/estorgio/0c76e29c0439e683caca694f338d4003), the guide is for outdated 18.04 but works smoothly with no modifications for 21.04.
+Once you have a VirtualBox, an Ubuntu Server 20.04 LTS guest with [guest additions](https://www.virtualbox.org/manual/ch04.html) installed, you might want to 
+create a shared folder following this [excellent guide](https://gist.github.com/estorgio/0c76e29c0439e683caca694f338d4003), the guide is for outdated 18.04 but works smoothly with no modifications for 20.04.
 Once you completed every step you should end-up with an auto-mounting folder called ```shared``` on the windows host and a mountpoint equally named on the Ubuntu guest.
 If you also completed the last step, the Apache ```wwwroot``` should be sym-linked to the aforementioned ```shared``` folder.
 
