@@ -286,7 +286,7 @@ and finally we got https working
 
 ![console output](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/linux_box.png)
 
-The [paragraph Secure the App](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-6.0#secure-the-app) on MS docs lists a plethora of other measures one have to take in order to call it
+The [paragraph Secure the App](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-apache?view=aspnetcore-6.0#secure-the-app) on MS docs lists a plethora of other measures that are absolutely necessary when deploying to production but they make little sense in a testing environment.
 
 ### Docker + VirtualBox
 #### an alternative way to using a shared folder
