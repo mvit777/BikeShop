@@ -259,8 +259,8 @@ The apache virtualhost needs to be changed like the following
 ```
 #put code
 ```
-
 and finally we got https working
+
 ![console output](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/linux_box.png)
 
 
