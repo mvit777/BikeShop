@@ -255,7 +255,12 @@ Jan 10 13:02:28 ubuserver bikeshopws[2395]:       Content root path: /home/marce
 ```
 Now by typing http://dev.bikews.com/bikes from the Windows host I get the list of bikes, which means everything works as expected.
 The "real" last step is adding support for the https protocol as otherwise our Blazor client which runs on https as well will not be able to comunicate with.
-(...more to come...)
+The apache virtualhost needs to be changed like the following
+```
+#put code
+```
+and finally we got https working
+![console output](https://github.com/mvit777/BikeShop/blob/master/BikeShop/wwwroot/images/docs/linux_box.png)
 
 
 ### Docker + VirtualBox
