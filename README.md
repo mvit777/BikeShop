@@ -157,7 +157,7 @@ sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-g
 After this step we create a folder to contain our application and activate required modules for apache to act as a proxy
 ```bash
 mkdir /home/<your username>/shared/bikews
-sudo a2enmod proxy ssl headers proxy_http
+sudo a2enmod proxy ssl headers proxy_http rewrite
 ```
 we now step back to VisualStudio and publish our app to the newly created folder bikews which is reachable from visualstudio since it is a shared folder
 but before this step we have to instruct the webservice to use a proxy. To do so, we add this line at the very top of the ```Configure``` method in the ```Startup.cs``` file.
@@ -200,9 +200,12 @@ and this line on ```C:\Windows\System32\drivers\etc\hosts```
 # the following ip is the ip of the linux guest
 192.168.1.134   dev.bikews.com
 ```
-the last step is creating a service to manage the Kestrel process (the application server). 
+It is worth noting that when rebooting the VM there is a chance you get a different IP (cause default is DHCP). In that case you might want to set a static IP for your box and this [handy guide](https://www.ernieleseberg.com/virtualbox-with-static-ip-on-ubuntu-server-guest/) may help you doing that.
+
+Next step is creating a service to manage the Kestrel process (the application server). 
 For this purpose we create a service definition file
 ```bash
+# this service will auto-start at every boot
 sudo nano /etc/systemd/system/kestrel-bikews.service
 ```
 and slap this configuration inside it
@@ -276,6 +279,7 @@ Let's build a powershell script to compile and deploy via scp directly on a linu
 - [List of Commercial Components libs](https://github.com/mvit777/BikeShop/blob/master/BikeShop.BlazorComponents/README.md#commercial-components-libraries) (This anchor link does not seem to work properly, just scroll at the bottom of the linked .md)
 
 ## News
+- [splunk - Stay Ahead of the Curve](https://events.splunk.com/predictions-2022-how-to-stay-ahead-of-the-curve) a 3 acts webinar series on security and observability. January 13-18-20, 2022
 - [Telerik .NET Web, Desktop & Mobile Products Webinar](https://www.telerik.com/campaigns/wb-telerik-r1-2022-release-webinar-web-desktop-mobile-products) Wednesday, February 2 I 11:00 am – 1:00 pm ET
 - [Uno Conf 2021](https://unoconf.com/) November 30, 2021
 >The Uno Platform is a UI Platform for building single-codebase applications for Windows, Web/WebAssembly, iOS, macOS, Android and Linux.
