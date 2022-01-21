@@ -291,7 +291,7 @@ The [paragraph Secure the App](https://docs.microsoft.com/en-us/aspnet/core/host
 #### an alternative way to using a shared folder
 (Let's build a powershell script to compile and deploy via scp directly on a linux box created with the buzz-of-the-jour.)
 
-First a little recap and an explanation on what I want to achieve. In the previous paragraph I set up a virtual ubuntu server on VirtualBox and deployed the BikeShop webservice on it. The intent was to show that the C# code can run on Linux without modifications. The experiment was fine and pretty quick to set up but what we ended up with was just an enhancement of my testing enviroment.
+First a little recap and an explanation on what I want to achieve. In the previous paragraph I set up an Ubuntu server on VirtualBox and deployed the BikeShop webservice on it. The intent was to show that the C# code can run on Linux without modifications. The experiment was fine and pretty quick to set up but what we ended up with was just an enhancement of my testing enviroment.
 
 We can actually push the boundaries of our experiment by creating a container ready to be pushed in production. These time I'm gonna use Docker. Honestly speaking, I have no experience with Docker so it is a good occasion for me to learn the technology.
 
