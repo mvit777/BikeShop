@@ -332,7 +332,7 @@ Docker represents a big paradigm shift in deploying applications. Rather than pr
 
 docker@DockerServer:~$ docker run -it ubuntu:latest
 ```
-that will download, install, run and log us into the latest release of a minimal Ubuntu Server image pulled from [Docker Hub](https://hub.docker.com/).
+that will download, install, run and log us into the latest release of a minimal Ubuntu Server image pulled from [Docker Hub](https://hub.docker.com/). When the operation is finished we will be automaticatly logged in our new container.
 
 (...more to come...)
 
