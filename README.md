@@ -306,14 +306,19 @@ c:\> choco install docker-machine
 C:\> choco install docker-cli
 C:\> choco install docker-compose
 ```
-the first command above download the iso containing the Docker Engine. In case you wonder where it is installed, the path should look something like this
+the first command above also download the iso containing the Docker Engine. In case you wonder where it is installed, the path should look something like this
 
-```C:\ProgramData\chocolatey\bin```
+```C:\ProgramData\chocolatey\bin``` where you will find ```docker-machine.exe``` and ```docker.exe```.
 
 To run it as a VM we issue this command (**DockerServer** is an arbitrary name I gave to distinguish it from other VM inside VirtualBox)
 ```powershell
 docker-machine create --driver virtualbox DockerServer
 ```
+if you check the VirtualBox user interface now, you will notice a new VM named DockerServer just popped and since it is also running we can ssh into it
+```powershell
+docker-machine ssh DockerServer
+```
+
 (...more to come...)
 
 
