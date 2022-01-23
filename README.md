@@ -297,7 +297,15 @@ We can actually push the boundaries of our experiment by creating a container re
 
 At first I was a bit put down by the fact that Docker for Windows does not run on Windows 10 Home, until I stumbled across this [cool Sitepoint article](https://www.sitepoint.com/docker-windows-10-home/) and discovered how to circumvent the problem. It turned out that to run a Linux container on Windows does not need the Hyper-V technology thanks to an alternative tool called the Docker-Machine. Let's see how.
 
+The above mentioned SitePoint's article goes in great details (which are worth reading) and documents two different ways to install Docker on a Windows Home box, the one we are interested and will follow is the one the author calls "using Git Bash", though we are using powershell to do it.
 
+The first tool we need is the package manager [Chocolatey](https://chocolatey.org/). Once installed, we can fire-up powershell and issue the following command:
+
+```powershell
+c:\> choco install docker-machine
+C:\> choco install docker-cli
+C:\> choco install docker-compose
+```
 
 
 
