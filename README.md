@@ -316,9 +316,16 @@ docker-machine create --driver virtualbox DockerServer
 ```
 if you check the VirtualBox user interface now, you will notice a new VM named DockerServer just popped and since it is also running we can ssh into it
 ```powershell
-docker-machine ssh DockerServer
-```
+c:\> docker-machine ssh DockerServer
+   ( '>')
+  /) TC (\   Core is distributed with ABSOLUTELY NO WARRANTY.
+ (/-_--_-\)           www.tinycorelinux.net
 
+docker@DockerServer:~$ cat /etc/issue
+Core Linux
+```
+as seen from the last 2 lines of code we are now inside a box running a minimal kernel Linux Core Os. From now on we can use ```docker```.
+Docker represents a big paradigm shift in deploying applications. Rather than provision our minimal Os with packages, with "provision" it with ```containers```. Containers in the Docker lingo are isolated process runinning the minimum software required for our task. In our case we want a minimal installation of Ubuntu Server with apache and .NET runtime we are not interested in anything else. Let's see how
 (...more to come...)
 
 
