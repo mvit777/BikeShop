@@ -314,7 +314,19 @@ To run it as a VM we issue this command (**DockerServer** is an arbitrary name I
 ```powershell
 docker-machine create --driver virtualbox DockerServer
 ```
-if you check the VirtualBox user interface now, you will notice a new VM named DockerServer just popped and since it is also running we can ssh into it
+if you check the VirtualBox user interface now, you will notice a new VM named DockerServer just popped and it is running. Before logging in you may want to issue this command
+```powershell
+PS C:\Users\Marcello> docker-machine env DockerUbuServer
+```
+that should output something like this:
+```
+SET DOCKER_TLS_VERIFY=1
+SET DOCKER_HOST=tcp://192.168.99.101:2376
+SET DOCKER_CERT_PATH=C:\Users\Marcello\.docker\machine\machines\DockerUbuServer
+SET DOCKER_MACHINE_NAME=DockerUbuServer
+SET COMPOSE_CONVERT_WINDOWS_PATHS=true
+```
+just copy it and ssh into the machine
 ```powershell
 c:\> docker-machine ssh DockerServer
    ( '>')
@@ -325,7 +337,11 @@ docker@DockerServer:~$ cat /etc/issue
 Core Linux
 ```
 as seen from the last 2 lines of code we are now inside a box running a minimal kernel Linux Core Os. From now on we can use ```docker```.
-Docker represents a big paradigm shift in deploying applications. Rather than provision our minimal Os with packages, with "provision" it with ```containers```. Containers in the Docker lingo are isolated process runinning the minimum software required for our task. In our case we want a minimal installation of Ubuntu Server with apache and .NET runtime we are not interested in anything else. Let's issue this command
+Docker represents a big paradigm shift in deploying applications. Rather than provision our minimal Os with packages, with "provision" it with ```containers```. Containers in the Docker lingo are isolated process runinning the minimum software required for our task. In our case we want a minimal installation of Ubuntu Server with apache and .NET runtime we are not interested in anything else. 
+
+Open or edit the .bashrc file with vi ```docker@DockerServer:~$ vi .bashrc``` and paste the copied output, so that we have set a static IP for our machine
+
+Now let's issue this command
 ```
 # docker@DockerServer:~$ docker run --help
 # Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
