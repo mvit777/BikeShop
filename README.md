@@ -316,13 +316,13 @@ docker-machine create --driver virtualbox DockerServer
 ```
 if you check the VirtualBox user interface now, you will notice a new VM named DockerServer just popped and it is running. Before logging in you may want to issue this command
 ```powershell
-PS C:\Users\Marcello> docker-machine env DockerUbuServer
+PS C:\Users\Marcello> docker-machine env DockerServer
 ```
 that should output something like this:
 ```
 SET DOCKER_TLS_VERIFY=1
 SET DOCKER_HOST=tcp://192.168.99.101:2376
-SET DOCKER_CERT_PATH=C:\Users\Marcello\.docker\machine\machines\DockerUbuServer
+SET DOCKER_CERT_PATH=C:\Users\Marcello\.docker\machine\machines\DockerServer
 SET DOCKER_MACHINE_NAME=DockerUbuServer
 SET COMPOSE_CONVERT_WINDOWS_PATHS=true
 ```
