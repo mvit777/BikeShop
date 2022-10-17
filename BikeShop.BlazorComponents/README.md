@@ -878,7 +878,7 @@ As usual for MS stack there is already a big ecosystem of commercial products ba
 
 ### Free/OpenSource component libraries
 It seems I was wrong about the lack of opensource/free libraries
-- [BlazorBootstrap](https://getblazorbootstrap.com/) A very recent entry but as extremly smooth as far as I tested. If you wanna stick to boostrap (like me) this the lib to go
+- [BlazorBootstrap](https://getblazorbootstrap.com/) A very recent entry but extremely smooth as far as I tested. If you wanna stick to boostrap (like me) this the lib to go
 - [Microsoft.Fast](https://github.com/microsoft/fast-blazor) The Microsoft.Fast.Components.FluentUI package provides a lightweight set of Blazor component wrappers around [Microsoft's official FluentUI Web Components](https://brave-cliff-0c0c93310.azurestaticapps.net/)
 - [Blazored](https://github.com/Blazored) A small collection of not-so-common components worth taking a look
 - [Radzen](https://blazor.radzen.com/) A 60+ collection of free and opensource components
