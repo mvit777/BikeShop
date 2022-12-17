@@ -866,7 +866,7 @@ In fact, if you have a very predictable page structure (like my Datatable List +
 
 - [So Why Doesn't Microsoft Provide Its Own Blazor Component Library?](https://visualstudiomagazine.com/articles/2021/08/13/blazor-components.aspx) Don't forget to read the comments at this VisualStudio magazine article. When people take things at heart is a good sign.
 - [Telerik Blazor REPL](https://www.telerik.com/blazor-ui/repl) A read–eval–print loop sandbox kindly offered online by Telerik. (Unluckily but understandbly Github markdown doesn't allow iframe)
-- [BUnit](https://github.com/bUnit-dev) a suite for unit-testing
+- [bUnit](https://github.com/bUnit-dev) bUnit is a testing library for Blazor components
 ### Commercial Components libraries
 As usual for MS stack there is already a big ecosystem of commercial products backing Blazor. If you want to stay on the safe path, here is a work-in-progress list of commercially supported Components libraries (in no particular order):
 - [Telerik](https://demos.telerik.com/blazor-ui)
